@@ -36,12 +36,6 @@ public:
     [[nodiscard]] virtual std::string to_string() const = 0;
 
     /**
-     * generate data from (Json style?) string
-     * @param str input string
-     */
-    virtual void form_string(const std::string& str) = 0;
-
-    /**
      * print (Json style?) string of the data structure
      */
     void print() const {
@@ -56,7 +50,7 @@ public:
      * Simple constructor , init the array with 0
      * @param size Size of the array
      */
-    explicit Array(int size);
+    explicit Array(size_t size);
 
     /**
      * copy constructor
@@ -69,12 +63,26 @@ public:
      * @param other an integer array head pointer
      * @param size size of the target array
      */
-    Array(int* other,int size);
+    Array(int* other,size_t size);
 
     /**
      * destructor
      */
-    ~Array() override;//TODO
+    ~Array() override;
+
+    /**
+     * assignment
+     * @param other another Array Object
+     * @return self object
+     */
+    Array& operator=(const Array& other);
+
+    /**
+     * equals
+     * @param other another Array Object
+     * @return self object
+     */
+    bool operator==(const Array& other);
 
     /**
      * sort function , using Dual-Pivot Quicksort
@@ -87,14 +95,14 @@ public:
      * @param key searching key
      * @return if key is searched in the array, then return the index; and in the otherwise return -1
      */
-    int search(int key);//TODO
+    int search(int key);
 
     /**
      * searching for key in array, the array must be ascending
      * @param key searching key
      * @return if key is searched in the array, then return the index; and in the otherwise return -1
      */
-    int binary_search(int key);//TODO
+    [[nodiscard]] size_t binary_search(int key) const;
 
     /**
      * new a subarray, index end is not belong to subarray.
@@ -102,20 +110,20 @@ public:
      * @param end end index
      * @return new subarray pointer
      */
-    Array* subarray(int start, int end);//TODO
+    Array* subarray(size_t start, size_t end);
 
     /**
      * equals function
      * @param other other Array
      * @return is them equals or not
      */
-    bool equals(const Array& other);//TODO
+    bool equals(const Array& other);
 
     /**
      * fill all array with input value
      * @param value fill value
      */
-    void fill(int value);//TODO
+    void fill(int value) const;
 
     /**
      * new a LinkedList from array
@@ -125,13 +133,13 @@ public:
 
     [[nodiscard]] std::string to_string() const override;
 
-    void form_string(const std::string &str) override;
+    static Array* form_string(const std::string &str);
 
 private:
-     /**
+    /**
      * Size of the array
      */
-    int size;
+    size_t size;
     /**
      * head pointer of the array
      */
@@ -141,6 +149,7 @@ private:
      * clear data and release space
      */
     void clear();
+
 };
 
 template <typename T>
