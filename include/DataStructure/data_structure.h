@@ -6,7 +6,7 @@
 #define DATA_STRUCTURE_H
 
 namespace MyDataStructure {
-
+    void printMessage();
 }
 
 #endif //DATA_STRUCTURE_H

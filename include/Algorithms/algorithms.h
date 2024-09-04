@@ -6,7 +6,7 @@
 #define ALGORITHMS_H
 
 namespace MyAlgorithms {
-
+    void printMessage();
 }
 
 #endif //ALGORITHMS_H

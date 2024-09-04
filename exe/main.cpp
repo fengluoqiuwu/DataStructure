@@ -3,9 +3,9 @@
 //
 // app/main.cpp
 
-#include "MyLibrary/mylib.h"
+#include "Algorithms/algorithms.h"
 
 int main() {
-    MyLibrary::printMessage();
+    MyAlgorithms::printMessage();
     return 0;
 }

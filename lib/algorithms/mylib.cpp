@@ -3,9 +3,9 @@
 //
 // lib/mylib.cpp
 
-#include "MyLibrary/mylib.h"
+#include "Algorithms/algorithms.h"
 #include <iostream>
 
-void MyLibrary::printMessage() {
+void MyAlgorithms::printMessage() {
     std::cout << "Hello from MyLibrary!" << std::endl;
 }

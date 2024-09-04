@@ -8,4 +8,5 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 
 # 包含子目录
 add_subdirectory(lib/algorithms)  # 添加库
+add_subdirectory(lib/data_structure)  # 添加库
 add_subdirectory(exe)  # 添加应用程序
