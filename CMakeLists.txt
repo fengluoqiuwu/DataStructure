@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.29)
-project(../../../../DataStructure)
+project(DataStructure)
 
 # 设置 C++ 标准版本
 set(CMAKE_CXX_STANDARD 23)
