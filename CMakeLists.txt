@@ -5,9 +5,13 @@ project(DataStructure)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_VERBOSE_MAKEFILE ON)
-set(CMAKE_TOOLCHAIN_FILE "${PROJECT_SOURCE_DIR}/lib/data_structure/vcpkg/scripts/buildsystems/vcpkg.cmake")
+# 定义 vcpkg 工具链文件路径变量
+set(VCPKG "${PROJECT_SOURCE_DIR}/vcpkg")
+# 设置 CMake 工具链文件路径
+set(CMAKE_TOOLCHAIN_FILE "${VCPKG}/scripts/buildsystems/vcpkg.cmake" CACHE STRING "Vcpkg toolchain file")
 
 # 包含子目录
 add_subdirectory(lib/algorithms)  # 添加库
 add_subdirectory(lib/data_structure)  # 添加库
 add_subdirectory(exe)  # 添加应用程序
+
