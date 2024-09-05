@@ -5,6 +5,7 @@ project(DataStructure)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_VERBOSE_MAKEFILE ON)
+set(CMAKE_TOOLCHAIN_FILE "${PROJECT_SOURCE_DIR}/lib/data_structure/vcpkg/scripts/buildsystems/vcpkg.cmake")
 
 # 包含子目录
 add_subdirectory(lib/algorithms)  # 添加库

@@ -138,7 +138,7 @@ void Array::fill(int value) const
 
 LinkedList<int>* Array::toList() const
 {
-    return nullptr;
+    return new LinkedList<int>(data,size);
 }
 
 void Array::clear()
@@ -162,7 +162,7 @@ std::string Array::to_string() const
     return oss.str();
 }
 
-Array* Array::form_string(const std::string& str)
+Array Array::form_string(const std::string& str)
 {
     std::vector<int> arr;
     std::string number;
@@ -217,5 +217,5 @@ Array* Array::form_string(const std::string& str)
         array[i] = arr[i];
     }
 
-    return new Array(array, arr.size());
+    return {array, arr.size()};
 }

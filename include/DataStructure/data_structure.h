@@ -8,6 +8,7 @@
 #include <iostream>
 #include <ostream>
 #include <string>
+#include <nlohmann/json.hpp>
 
 /**
  * Basic data structure class
@@ -137,9 +138,18 @@ public:
      */
     [[nodiscard]] LinkedList<int>* toList() const;//TODO
 
+    /**
+     * change array to String style
+     * @return (Maybe Json style) string of the array
+     */
     [[nodiscard]] std::string to_string() const override;
 
-    static Array* form_string(const std::string &str);
+    /**
+     * change string style array to Array object
+     * @param str (Maybe Json style) string of the array
+     * @return Array from string style
+     */
+    static Array form_string(const std::string &str);
 
 private:
     /**
@@ -221,27 +231,27 @@ public:
      * @param index adding index
      * @param value adding value
      */
-    void add(int index, T value);
+    void add(size_t index, T value);
 
     /**
      * get data by giving index
      * @param index getting index
      * @return data at given index,you can change it by overwrite operator =
      */
-    T &get(int index) const;
+    T &get(size_t index) const;
 
     /**
      * set data in given index to input value
      * @param index setting index
      * @param value setting value
      */
-    void set(int index, T value);
+    void set(size_t index, T value);
 
     /**
      * remove node at given index
      * @param index remove index
      */
-    void remove(int index);
+    void remove(size_t index);
 
     /**
      * remove all data equals to given value
@@ -254,19 +264,19 @@ public:
      * @param value value to find
      * @return is it contained or not
      */
-    bool contains(T value);
+    [[nodiscard]] bool contains(T value) const;
 
     /**
      * get size of linked list
      * @return size of Linked list
      */
-    size_t get_size() const;
+    [[nodiscard]] size_t get_size() const;
 
     /**
      * check is LinkedList empty
      * @return is empty or not
      */
-    bool is_empty() const;
+    [[nodiscard]] bool is_empty() const;
 
     /**
      * add a node at head of the LinkedList
@@ -313,6 +323,21 @@ public:
      * @return first data
      */
     T pop_last();
+
+    /**
+     * change linked list to string style
+     * Only use the function if DataType is int,float,double,or string
+     * @return (Maybe Json style)string of Linked list
+     */
+    [[nodiscard]] std::string to_string() const override;
+
+    /**
+     * change string style array to LinkedList
+     * Only use the function if DataType is int,float,double,or string
+     * @param str (Maybe Json style)string of array of string
+     * @return LinkedList Object of string
+     */
+    [[nodiscard]] static LinkedList<T> form_string(const std::string &str);
 
 private:
     /**
@@ -390,11 +415,11 @@ private:
 
     /**
      * This function will return the Node has input index in previous LinkedList.
-     * It can return tail_node but can't return head_note.
      * @param index finding index
+     * @param include_tail can it search for tail_node?
      * @return next node
      */
-    Node<T> * get_node_pointer(size_t index);
+    Node<T> * get_node_pointer(size_t index, bool include_tail);
 };
 
 #endif //DATA_STRUCTURE_H
