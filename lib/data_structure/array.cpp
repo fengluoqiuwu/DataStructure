@@ -21,6 +21,13 @@ Array::Array(const Array& other)
     std::copy(other.data, other.data + size, this->data);
 }
 
+Array::Array(Array&& other) noexcept
+{
+    this->size = other.size;
+    this->data = other.data;
+    other.data = nullptr;
+}
+
 Array::Array(int* other, size_t size)
 {
     this->size = size;
@@ -45,9 +52,33 @@ Array& Array::operator=(const Array& other)
     return *this;
 }
 
+Array& Array::operator=(Array&& other) noexcept
+{
+    if (this != &other)
+    {
+        clear();
+        this->size = other.size;
+        this->data = other.data;
+        other.data = nullptr;
+    }
+
+    return *this;
+}
+
 bool Array::operator==(const Array& other)
 {
-    return this->equals(other);
+    if (this->size != other.size)
+    {
+        return false;
+    }
+    for (int i = 0; i < this->size; i++)
+    {
+        if (this->data[i] != other.data[i])
+        {
+            return false;
+        }
+    }
+    return true;
 }
 
 void Array::sort(bool ascending)
@@ -100,22 +131,6 @@ Array* Array::subarray(size_t start, size_t end)
     return new Array(data + start, end - start);
 }
 
-bool Array::equals(const Array& other)
-{
-    if (this->size != other.size)
-    {
-        return false;
-    }
-    for (int i = 0; i < this->size; i++)
-    {
-        if (this->data[i] != other.data[i])
-        {
-            return false;
-        }
-    }
-    return true;
-}
-
 void Array::fill(int value) const
 {
     std::fill(data, data + size, value);
@@ -123,7 +138,7 @@ void Array::fill(int value) const
 
 LinkedList<int>* Array::toList() const
 {
-
+    return nullptr;
 }
 
 void Array::clear()
