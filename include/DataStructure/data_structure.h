@@ -136,7 +136,7 @@ public:
      * new a LinkedList from array
      * @return LinkedList pointer
      */
-    [[nodiscard]] LinkedList<int>* toList() const;//TODO
+    [[nodiscard]] LinkedList<int>* toList() const;
 
     /**
      * change array to String style
@@ -181,7 +181,7 @@ public:
      * copy Constructor from another LinkedList
      * @param other another Linked List
      */
-    LinkedList(const LinkedList &other); // TODO
+    LinkedList(const LinkedList &other);
 
     /**
      * move Constructor from another LinkedList
@@ -194,7 +194,7 @@ public:
      * @param other an array head of T
      * @param size array size
      */
-    LinkedList(T *other, size_t size); // TODO
+    LinkedList(T *other, size_t size);
 
     /**
      * destructor, we free space there
