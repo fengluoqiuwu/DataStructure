@@ -1,10 +1,11 @@
 //
 // Created by Eden_ on 24-9-5.
 //
-
+#pragma once
 
 #include <sstream>
-#include <DataStructure/data_structure.h>
+#include "linked_list.h"
+#include <nlohmann/json.hpp>
 
 template <typename T>
 LinkedList<T>::LinkedList(){

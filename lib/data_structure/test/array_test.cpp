@@ -3,7 +3,7 @@
 //
 
 #include <gtest/gtest.h>
-#include "DataStructure/data_structure.h"
+#include "data_structure.h"
 
 // 测试类定义
 class ArrayTest : public ::testing::Test {
@@ -17,6 +17,6 @@ protected:
 
 TEST_F(ArrayTest,SimpleConstructorInitTest)
 {
-    // Array a(10);
-    // ASSERT_EQ("[0,0,0,0,0,0,0,0,0,0]",a.to_string());
+    array a(10);
+    ASSERT_EQ("[0,0,0,0,0,0,0,0,0,0]",a.to_string());
 }

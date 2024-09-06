@@ -5,54 +5,54 @@
 #include <sstream>
 #include <vector>
 
-#include "DataStructure/data_structure.h"
+#include "data_structure.h"
 
-Array::Array(const size_t size)
+array::array(const size_t size)
 {
     this->size = size;
     data = new int[size];
-    std::fill(data, data + size, 0);
+    std::fill_n(data, size, 0);
 }
 
-Array::Array(const Array& other)
+array::array(const array& other)
 {
     this->size = other.size;
     data = new int[size];
-    std::copy(other.data, other.data + size, this->data);
+    std::copy_n(other.data, size, this->data);
 }
 
-Array::Array(Array&& other) noexcept
+array::array(array&& other) noexcept
 {
     this->size = other.size;
     this->data = other.data;
     other.data = nullptr;
 }
 
-Array::Array(int* other, size_t size)
+array::array(int* other, size_t size)
 {
     this->size = size;
     data = new int[size];
-    std::copy(other, other + size, this->data);
+    std::copy_n(other, size, this->data);
 }
 
-Array::~Array()
+array::~array()
 {
     clear();
 }
 
-Array& Array::operator=(const Array& other)
+array& array::operator=(const array& other)
 {
     if (this != &other)
     {
         clear();
         this->size = other.size;
         this->data = new int[size];
-        std::copy(other.data, other.data + size, this->data);
+        std::copy_n(other.data, size, this->data);
     }
     return *this;
 }
 
-Array& Array::operator=(Array&& other) noexcept
+array& array::operator=(array&& other) noexcept
 {
     if (this != &other)
     {
@@ -65,7 +65,7 @@ Array& Array::operator=(Array&& other) noexcept
     return *this;
 }
 
-bool Array::operator==(const Array& other)
+bool array::operator==(const array& other) const
 {
     if (this->size != other.size)
     {
@@ -81,12 +81,12 @@ bool Array::operator==(const Array& other)
     return true;
 }
 
-void Array::sort(bool ascending)
+void array::sort(bool ascending)
 {
 
 }
 
-int Array::search(int key)
+int array::search(const int key) const
 {
     for (auto i = 0; i < size; i++)
     {
@@ -98,7 +98,7 @@ int Array::search(int key)
     return -1;
 }
 
-size_t Array::binary_search(int key) const
+size_t array::binary_search(const int key) const
 {
     int *left = data, *right = data + size, *mid = nullptr;
     while (left < right)
@@ -107,7 +107,7 @@ size_t Array::binary_search(int key) const
 
         if (key == *mid)
         {
-            return (int)(mid - left);
+            return static_cast<int>(mid - left);
         }
         if (key < *mid)
         {
@@ -121,34 +121,34 @@ size_t Array::binary_search(int key) const
     return -1;
 }
 
-Array* Array::subarray(size_t start, size_t end)
+array* array::subarray(const size_t start, const size_t end) const
 {
     if (start >= end)
     {
-        return new Array(0);
+        return new array(0);
     }
 
-    return new Array(data + start, end - start);
+    return new array(data + start, end - start);
 }
 
-void Array::fill(int value) const
+void array::fill(const int value) const
 {
-    std::fill(data, data + size, value);
+    std::fill_n(data, size, value);
 }
 
-LinkedList<int>* Array::toList() const
+LinkedList<int>* array::toList() const
 {
     return new LinkedList<int>(data,size);
 }
 
-void Array::clear()
+void array::clear()
 {
     delete[] data;
     data = nullptr;
     size = 0;
 }
 
-std::string Array::to_string() const
+std::string array::to_string() const
 {
     std::ostringstream oss;
     oss << "[";
@@ -162,7 +162,7 @@ std::string Array::to_string() const
     return oss.str();
 }
 
-Array Array::form_string(const std::string& str)
+array array::form_string(const std::string& str)
 {
     std::vector<int> arr;
     std::string number;
