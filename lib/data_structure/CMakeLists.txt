@@ -21,7 +21,8 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     # 添加测试
     enable_testing()
     file(GLOB TEST_SRC test/*.cpp)
-    add_executable(DataStructureTest ${TEST_SRC})
+    add_executable(DataStructureTest ${TEST_SRC}
+            test/linked_list_test.cpp)
     target_link_libraries(DataStructureTest PRIVATE DataStructure nlohmann_json::nlohmann_json gtest gtest_main)
     add_test(NAME DataStructureTest COMMAND DataStructureTest)
 endif()

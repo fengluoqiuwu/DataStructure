@@ -151,18 +151,16 @@ TEST_F(ArrayTest,FunctionToListTest)
 {
     int a[10]={1,2,3,4,5,6,7,8,9,10};
     const auto * b=new array(a,10);
-    const auto * c=new LinkedList<int>(a,10);
+    const auto * c=new linked_list<int>(a,10);
     const auto * d=b->to_list();
-    std::cout<<c->to_string()<<std::endl;
-    std::cout<<d->to_string()<<std::endl;
 
     ASSERT_EQ(true,*d==*c);
 }
 
 TEST_F(ArrayTest,FunctionFromStringAndToStringTest)
 {
-    std::string a="[1,2,3,4,5,6,7,8,9,10]";
-    auto b = array::from_string(a);
+    const std::string a="[1,2,3,4,5,6,7,8,9,10]";
+    const auto b = array::from_string(a);
 
     ASSERT_EQ(a,b.to_string());
 }

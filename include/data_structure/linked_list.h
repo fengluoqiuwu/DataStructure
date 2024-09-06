@@ -7,56 +7,56 @@
 #include "object.h"
 
 template <typename T>
-class LinkedList : public object
+class linked_list : public object
 {
 public:
     /**
      * Simple constructor, Init it as an empty linked list
      */
-    LinkedList();
+    linked_list();
 
     /**
-     * copy Constructor from another LinkedList
+     * copy Constructor from another linked_list
      * @param other another Linked List
      */
-    LinkedList(const LinkedList &other);
+    linked_list(const linked_list &other);
 
     /**
-     * move Constructor from another LinkedList
+     * move Constructor from another linked_list
      * @param other another Linked List
      */
-    LinkedList(LinkedList &&other) noexcept;
+    linked_list(linked_list &&other) noexcept;
 
     /**
      * constructor copy from an array of T
      * @param other an array head of T
      * @param size array size
      */
-    LinkedList(T *other, size_t size);
+    linked_list(T *other, size_t size);
 
     /**
      * destructor, we free space there
      */
-    ~LinkedList() override;
+    ~linked_list() override;
 
     /**
      * copy = operator
      */
-    LinkedList &operator=(const LinkedList &other);
+    linked_list &operator=(const linked_list &other);
 
     /**
      * move = operator
-     * @param other other LinkedList
+     * @param other other linked_list
      * @return self
      */
-    LinkedList &operator=(LinkedList &&other) noexcept;
+    linked_list &operator=(linked_list &&other) noexcept;
 
     /**
      * compare == operator
-     * @param other other LinkedList
+     * @param other other linked_list
      * @return is it equals or not
      */
-    bool operator==(const LinkedList &other) const;
+    bool operator==(const linked_list &other) const;
 
     /**
      * add value to the tail of linked list
@@ -71,12 +71,19 @@ public:
      */
     void add(size_t index, T value);
 
+       /**
+        * get data by giving index, you can rewrite the value
+        * @param index getting index
+        * @return data at given index,you can change it by overwrite operator =
+        */
+    T &get(size_t index);
+
     /**
-     * get data by giving index
+     * get data by giving index, you can not rewrite the value
      * @param index getting index
      * @return data at given index,you can change it by overwrite operator =
      */
-    T &get(size_t index) const;
+    T get(size_t index) const;
 
     /**
      * set data in given index to input value
@@ -98,7 +105,7 @@ public:
     void remove(T value);
 
     /**
-     * does LinkedList contain value
+     * does linked_list contain value
      * @param value value to find
      * @return is it contained or not
      */
@@ -111,19 +118,19 @@ public:
     [[nodiscard]] size_t get_size() const;
 
     /**
-     * check is LinkedList empty
+     * check is linked_list empty
      * @return is empty or not
      */
     [[nodiscard]] bool is_empty() const;
 
     /**
-     * add a node at head of the LinkedList
+     * add a node at head of the linked_list
      * @param value adding value
      */
     void add_first(T value);
 
     /**
-     * add a node at tail of the LinkedList
+     * add a node at tail of the linked_list
      * @param value adding value
      */
     void add_last(T value);
@@ -138,44 +145,56 @@ public:
      */
     void remove_last();
 
+       /**
+        * peek first object data, you can rewrite the value
+        * @return first data object
+        */
+    T &get_first();
+
     /**
-     * peek first object
+     * peek first object data, you can not rewrite the value
      * @return first data object
      */
-    T &peek_first() const;
+    T get_first() const;
+
+       /**
+        * peek last object data, you can rewrite the value
+        * @return last data object
+        */
+    T &get_last();
 
     /**
-     * peek last object
+     * peek last object data, you can not rewrite the value
      * @return last data object
      */
-    T &peek_last() const;
+    T get_last() const;
 
     /**
-     * get copy of first data and remove it from LinkedList
+     * get copy of first data and remove it from linked_list
      * @return first data
      */
     T pop_first();
 
     /**
-     * get copy of first data and remove it from LinkedList
+     * get copy of first data and remove it from linked_list
      * @return first data
      */
     T pop_last();
 
     /**
      * change linked list to string style
-     * Only use the function if DataType is int,float,double,or string
+     * Only use the function if DataType is int,float,or string
      * @return (Maybe Json style)string of Linked list
      */
     [[nodiscard]] std::string to_string() const override;
 
     /**
-     * change string style array to LinkedList
-     * Only use the function if DataType is int,float,double,or string
+     * change string style array to linked_list
+     * Only use the function if DataType is int,float,or string
      * @param str (Maybe Json style)string of array of string
-     * @return LinkedList Object of string
+     * @return linked_list Object of string
      */
-    [[nodiscard]] static LinkedList<T> from_string(const std::string &str);
+    [[nodiscard]] static linked_list<T> from_string(const std::string &str);
 
 private:
     /**
@@ -252,12 +271,12 @@ private:
     void clear();
 
     /**
-     * This function will return the Node has input index in previous LinkedList.
+     * This function will return the Node has input index in previous linked_list.
      * @param index finding index
      * @param include_tail can it search for tail_node?
      * @return next node
      */
-    Node<T> * get_node_pointer(size_t index, bool include_tail);
+    Node<T> * get_node_pointer(size_t index, bool include_tail) const;
 };
 
 #include "linked_list.tpp"

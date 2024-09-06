@@ -144,9 +144,9 @@ void array::fill(const int value) const
     std::fill_n(data, size, value);
 }
 
-LinkedList<int>* array::to_list() const
+linked_list<int>* array::to_list() const
 {
-    return new LinkedList<int>(data,size);
+    return new linked_list<int>(data,size);
 }
 
 void array::clear()

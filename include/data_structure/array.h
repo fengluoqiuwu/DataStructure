@@ -102,10 +102,10 @@ public:
     void fill(int value) const;
 
     /**
-     * new a LinkedList from array
-     * @return LinkedList pointer
+     * new a linked_list from array
+     * @return linked_list pointer
      */
-    [[nodiscard]] LinkedList<int>* to_list() const;
+    [[nodiscard]] linked_list<int>* to_list() const;
 
     /**
      * change array to String style

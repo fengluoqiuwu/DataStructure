@@ -8,14 +8,14 @@
 #include <nlohmann/json.hpp>
 
 template <typename T>
-LinkedList<T>::LinkedList(){
+linked_list<T>::linked_list(){
     head_node->next = tail_node;
     tail_node->previous = head_node;
     size=0;
 }
 
 template <typename T>
-LinkedList<T>::LinkedList(const LinkedList& other)
+linked_list<T>::linked_list(const linked_list& other)
 {
     head_node->next = tail_node;
     tail_node->previous = head_node;
@@ -30,17 +30,19 @@ LinkedList<T>::LinkedList(const LinkedList& other)
 }
 
 template <typename T>
-LinkedList<T>::LinkedList(LinkedList&& other) noexcept {
+linked_list<T>::linked_list(linked_list&& other) noexcept {
     head_node = other.head_node;
-    other.head_node = nullptr;
     tail_node = other.tail_node;
-    other.tail_node = nullptr;
     size = other.size;
+
+    other.head_node = new Node<T>(nullptr,nullptr);
+    other.tail_node = new Node<T>(nullptr,other.head_node);
+    other.head_node->next = other.tail_node;
     other.size = 0;
 }
 
 template <typename T>
-LinkedList<T>::LinkedList(T* other, const size_t size)
+linked_list<T>::linked_list(T* other, const size_t size)
 {
     head_node->next = tail_node;
     tail_node->previous = head_node;
@@ -53,7 +55,7 @@ LinkedList<T>::LinkedList(T* other, const size_t size)
 }
 
 template <typename T>
-LinkedList<T>::~LinkedList()
+linked_list<T>::~linked_list()
 {
     clear();
     head_node = nullptr;
@@ -61,7 +63,7 @@ LinkedList<T>::~LinkedList()
 }
 
 template <typename T>
-LinkedList<T> &LinkedList<T>::operator=(const LinkedList &other)
+linked_list<T> &linked_list<T>::operator=(const linked_list &other)
 {
     if (this != &other)
     {
@@ -78,16 +80,18 @@ LinkedList<T> &LinkedList<T>::operator=(const LinkedList &other)
 }
 
 template <typename T>
-LinkedList<T> &LinkedList<T>::operator=(LinkedList &&other) noexcept
+linked_list<T> &linked_list<T>::operator=(linked_list &&other) noexcept
 {
     if (this != &other)
     {
         clear();
         head_node = other.head_node;
-        other.head_node = nullptr;
         tail_node = other.tail_node;
-        other.tail_node = nullptr;
         size = other.size;
+
+        other.head_node = new Node<T>(nullptr,nullptr);
+        other.tail_node = new Node<T>(nullptr,other.head_node);
+        other.head_node->next = other.tail_node;
         other.size = 0;
     }
 
@@ -95,7 +99,7 @@ LinkedList<T> &LinkedList<T>::operator=(LinkedList &&other) noexcept
 }
 
 template <typename T>
-bool LinkedList<T>::operator==(const LinkedList &other) const
+bool linked_list<T>::operator==(const linked_list &other) const
 {
     if (this == &other) return true;
 
@@ -119,7 +123,7 @@ bool LinkedList<T>::operator==(const LinkedList &other) const
 }
 
 template <typename T>
-void LinkedList<T>::add(T value)
+void linked_list<T>::add(T value)
 {
     tail_node->previous->next = new Node<T>(value, tail_node,tail_node->previous);
     tail_node->previous = tail_node->previous->next;
@@ -127,7 +131,7 @@ void LinkedList<T>::add(T value)
 }
 
 template <typename T>
-void LinkedList<T>::add(const size_t index, T value)
+void linked_list<T>::add(const size_t index, T value)
 {
     Node<T> * next_node = get_node_pointer(index,true);
     if (next_node == nullptr)
@@ -142,7 +146,7 @@ void LinkedList<T>::add(const size_t index, T value)
 }
 
 template <typename T>
-T &LinkedList<T>::get(size_t index) const
+T &linked_list<T>::get(const size_t index)
 {
     Node<T> * node = get_node_pointer(index,false);
     if (node == nullptr)
@@ -153,9 +157,20 @@ T &LinkedList<T>::get(size_t index) const
 }
 
 template <typename T>
-void LinkedList<T>::set(size_t index, T value)
+T linked_list<T>::get(const size_t index) const
 {
-    Node<T> * node = get_node_pointer(index);
+    Node<T> * node = get_node_pointer(index,false);
+    if (node == nullptr)
+    {
+        throw std::out_of_range("index out of range");
+    }
+    return node->data;
+}
+
+template <typename T>
+void linked_list<T>::set(const size_t index, T value)
+{
+    Node<T> * node = get_node_pointer(index,false);
     if (node == nullptr)
     {
         throw std::out_of_range("index out of range");
@@ -164,9 +179,9 @@ void LinkedList<T>::set(size_t index, T value)
 }
 
 template <typename T>
-void LinkedList<T>::remove(size_t index)
+void linked_list<T>::remove(size_t index)
 {
-    Node<T> * node = get_node_pointer(index);
+    Node<T> * node = get_node_pointer(index,false);
 
     if (node == nullptr)
     {
@@ -180,7 +195,7 @@ void LinkedList<T>::remove(size_t index)
 }
 
 template <typename T>
-void LinkedList<T>::remove(T value)
+void linked_list<T>::remove(T value)
 {
     Node<T> * temp = head_node->next;
     Node<T> * deleted_node = nullptr;
@@ -204,7 +219,7 @@ void LinkedList<T>::remove(T value)
 }
 
 template <typename T>
-bool LinkedList<T>::contains(T value) const
+bool linked_list<T>::contains(T value) const
 {
     Node<T> * temp = head_node->next;
 
@@ -220,19 +235,19 @@ bool LinkedList<T>::contains(T value) const
 }
 
 template <typename T>
-size_t LinkedList<T>::get_size() const
+size_t linked_list<T>::get_size() const
 {
     return size;
 }
 
 template <typename T>
-bool LinkedList<T>::is_empty() const
+bool linked_list<T>::is_empty() const
 {
     return size == 0;
 }
 
 template <typename T>
-void LinkedList<T>::add_first(T value)
+void linked_list<T>::add_first(T value)
 {
     auto * new_node = new Node<T>(value, head_node->next,head_node);
     new_node->next->previous = new_node;
@@ -241,13 +256,13 @@ void LinkedList<T>::add_first(T value)
 }
 
 template <typename T>
-void LinkedList<T>::add_last(T value)
+void linked_list<T>::add_last(T value)
 {
     add(value);
 }
 
 template <typename T>
-void LinkedList<T>::remove_first()
+void linked_list<T>::remove_first()
 {
     if (is_empty())
     {
@@ -263,7 +278,7 @@ void LinkedList<T>::remove_first()
 }
 
 template <typename T>
-void LinkedList<T>::remove_last()
+void linked_list<T>::remove_last()
 {
     if (is_empty())
     {
@@ -279,7 +294,7 @@ void LinkedList<T>::remove_last()
 }
 
 template <typename T>
-T &LinkedList<T>::peek_first() const
+T &linked_list<T>::get_first()
 {
     if (is_empty())
     {
@@ -291,7 +306,19 @@ T &LinkedList<T>::peek_first() const
 }
 
 template <typename T>
-T &LinkedList<T>::peek_last() const
+T linked_list<T>::get_first() const
+{
+    if (is_empty())
+    {
+        std::cout <<"The list is empty."<< __FILE__ << " at line " << __LINE__ <<std::endl;
+        throw std::out_of_range("Linked List is empty!");
+    }
+
+    return head_node->next->data;
+}
+
+template <typename T>
+T &linked_list<T>::get_last()
 {
     if (is_empty())
     {
@@ -303,7 +330,7 @@ T &LinkedList<T>::peek_last() const
 }
 
 template <typename T>
-T LinkedList<T>::pop_first()
+T linked_list<T>::get_last() const
 {
     if (is_empty())
     {
@@ -311,13 +338,25 @@ T LinkedList<T>::pop_first()
         throw std::out_of_range("Linked List is empty!");
     }
 
-    T temp = peek_first();
+    return tail_node->previous->data;
+}
+
+template <typename T>
+T linked_list<T>::pop_first()
+{
+    if (is_empty())
+    {
+        std::cout <<"The list is empty."<< __FILE__ << " at line " << __LINE__ <<std::endl;
+        throw std::out_of_range("Linked List is empty!");
+    }
+
+    T temp = get_first();
     remove_first();
     return temp;
 }
 
 template <typename T>
-T LinkedList<T>::pop_last()
+T linked_list<T>::pop_last()
 {
     if (is_empty())
     {
@@ -325,18 +364,17 @@ T LinkedList<T>::pop_last()
         throw std::out_of_range("Linked List is empty!");
     }
 
-    T temp = peek_last();
+    T temp = get_last();
     remove_last();
     return temp;
 }
 
 template <typename T>
-std::string LinkedList<T>::to_string() const
+std::string linked_list<T>::to_string() const
 {
     // 仅支持特定类型
     if constexpr (!(std::is_same_v<T, int> ||
                     std::is_same_v<T, float> ||
-                    std::is_same_v<T, double> ||
                     std::is_same_v<T, std::string>)) {
         std::cout <<"The function only support int,float,double and string."<< __FILE__<< " at line " << __LINE__ <<std::endl;
         throw std::invalid_argument("Unsupported data type for JSON serialization.");
@@ -350,7 +388,7 @@ std::string LinkedList<T>::to_string() const
 
     while (current!=tail_node) {
         if (!first) {
-            json_output << ", ";  // 分隔多个值
+            json_output << ",";  // 分隔多个值
         } else {
             first = false;
         }
@@ -371,7 +409,7 @@ std::string LinkedList<T>::to_string() const
 }
 
 template <typename T>
-LinkedList<T> LinkedList<T>::from_string(const std::string &str)
+linked_list<T> linked_list<T>::from_string(const std::string &str)
 {
     nlohmann::json json_array = nlohmann::json::parse(str);
 
@@ -380,7 +418,7 @@ LinkedList<T> LinkedList<T>::from_string(const std::string &str)
         throw std::invalid_argument("JSON is not an array");
     }
 
-    LinkedList list;
+    linked_list list;
 
     for (const auto& item : json_array) {
         if constexpr (std::is_same_v<T, int>) {
@@ -396,13 +434,6 @@ LinkedList<T> LinkedList<T>::from_string(const std::string &str)
             } else {
                 std::cerr << "JSON value type mismatch for float." << std::endl;
                 throw std::invalid_argument("JSON contains non-float values.");
-            }
-        } else if constexpr (std::is_same_v<T, double>) {
-            if (item.is_number_float()) {
-                list.add(item.get<double>());
-            } else {
-                std::cerr << "JSON value type mismatch for double." << std::endl;
-                throw std::invalid_argument("JSON contains non-double values.");
             }
         } else if constexpr (std::is_same_v<T, std::string>) {
             if (item.is_string()) {
@@ -421,7 +452,7 @@ LinkedList<T> LinkedList<T>::from_string(const std::string &str)
 }
 
 template <typename T>
-void LinkedList<T>::clear()
+void linked_list<T>::clear()
 {
     Node<T> * temp = head_node->next;
     Node<T> * deleted_node = nullptr;
@@ -437,7 +468,7 @@ void LinkedList<T>::clear()
 }
 
 template <typename T>
-typename LinkedList<T>::template Node<T> * LinkedList<T>::get_node_pointer(const size_t index, const bool include_tail)
+typename linked_list<T>::template Node<T> * linked_list<T>::get_node_pointer(const size_t index, const bool include_tail) const
 {
     if(include_tail)
     {
