@@ -26,6 +26,7 @@ array::array(array&& other) noexcept
     this->size = other.size;
     this->data = other.data;
     other.data = nullptr;
+    other.size = 0;
 }
 
 array::array(int* other, size_t size)
@@ -67,6 +68,8 @@ array& array::operator=(array&& other) noexcept
 
 bool array::operator==(const array& other) const
 {
+    if (this == &other) return true;
+
     if (this->size != other.size)
     {
         return false;
@@ -79,6 +82,11 @@ bool array::operator==(const array& other) const
         }
     }
     return true;
+}
+
+size_t array::get_size() const
+{
+    return this->size;
 }
 
 void array::sort(bool ascending)
@@ -136,7 +144,7 @@ void array::fill(const int value) const
     std::fill_n(data, size, value);
 }
 
-LinkedList<int>* array::toList() const
+LinkedList<int>* array::to_list() const
 {
     return new LinkedList<int>(data,size);
 }
@@ -162,7 +170,7 @@ std::string array::to_string() const
     return oss.str();
 }
 
-array array::form_string(const std::string& str)
+array array::from_string(const std::string& str)
 {
     std::vector<int> arr;
     std::string number;

@@ -62,10 +62,16 @@ public:
     bool operator==(const array& other) const;
 
     /**
+     * get size of array
+     * @return size of array
+     */
+    [[nodiscard]] size_t get_size() const;
+
+    /**
      * sort function , using Dual-Pivot Quicksort
      * @param ascending is ascending or not
      */
-    void sort(bool ascending);//TODO
+    void sort(bool ascending);//TODO,And Remember to Complete Test Function
 
     /**
      * searching for key in array
@@ -99,7 +105,7 @@ public:
      * new a LinkedList from array
      * @return LinkedList pointer
      */
-    [[nodiscard]] LinkedList<int>* toList() const;
+    [[nodiscard]] LinkedList<int>* to_list() const;
 
     /**
      * change array to String style
@@ -112,7 +118,7 @@ public:
      * @param str (Maybe Json style) string of the array
      * @return Array from string style
      */
-    static array form_string(const std::string &str);
+    static array from_string(const std::string &str);
 
 private:
     /**

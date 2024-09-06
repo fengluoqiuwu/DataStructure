@@ -10,14 +10,16 @@
 template <typename T>
 LinkedList<T>::LinkedList(){
     head_node->next = tail_node;
-    tail_node->previous = tail_node;
+    tail_node->previous = head_node;
     size=0;
 }
 
 template <typename T>
 LinkedList<T>::LinkedList(const LinkedList& other)
 {
-    LinkedList();
+    head_node->next = tail_node;
+    tail_node->previous = head_node;
+    size=0;
 
     Node<T> * temp = other.head_node;
     while (temp->next!=other.tail_node)
@@ -40,7 +42,10 @@ LinkedList<T>::LinkedList(LinkedList&& other) noexcept {
 template <typename T>
 LinkedList<T>::LinkedList(T* other, const size_t size)
 {
-    LinkedList();
+    head_node->next = tail_node;
+    tail_node->previous = head_node;
+    this->size=0;
+
     for (size_t i = 0; i < size; i++)
     {
         add(other[i]);
@@ -90,8 +95,10 @@ LinkedList<T> &LinkedList<T>::operator=(LinkedList &&other) noexcept
 }
 
 template <typename T>
-bool LinkedList<T>::operator==(const LinkedList &other)
+bool LinkedList<T>::operator==(const LinkedList &other) const
 {
+    if (this == &other) return true;
+
     if (this->size != other.size)
     {
         return false;
@@ -364,7 +371,7 @@ std::string LinkedList<T>::to_string() const
 }
 
 template <typename T>
-LinkedList<T> LinkedList<T>::form_string(const std::string &str)
+LinkedList<T> LinkedList<T>::from_string(const std::string &str)
 {
     nlohmann::json json_array = nlohmann::json::parse(str);
 

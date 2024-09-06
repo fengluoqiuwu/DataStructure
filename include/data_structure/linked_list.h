@@ -56,7 +56,7 @@ public:
      * @param other other LinkedList
      * @return is it equals or not
      */
-    bool operator==(const LinkedList &other);
+    bool operator==(const LinkedList &other) const;
 
     /**
      * add value to the tail of linked list
@@ -175,7 +175,7 @@ public:
      * @param str (Maybe Json style)string of array of string
      * @return LinkedList Object of string
      */
-    [[nodiscard]] static LinkedList<T> form_string(const std::string &str);
+    [[nodiscard]] static LinkedList<T> from_string(const std::string &str);
 
 private:
     /**
