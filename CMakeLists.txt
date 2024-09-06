@@ -5,13 +5,29 @@ project(DataStructure)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_VERBOSE_MAKEFILE ON)
-# 定义 vcpkg 工具链文件路径变量
-set(VCPKG "${PROJECT_SOURCE_DIR}/vcpkg")
-# 设置 CMake 工具链文件路径
-set(CMAKE_TOOLCHAIN_FILE "${VCPKG}/scripts/buildsystems/vcpkg.cmake" CACHE STRING "Vcpkg toolchain file")
+
+include(FetchContent)
+
+# 下载 nlohmann_json
+FetchContent_Declare(
+        nlohmann_json
+        GIT_REPOSITORY https://github.com/nlohmann/json.git
+        GIT_TAG main  # 可以根据需要设置特定版本或使用最新的 release 标签
+)
+
+FetchContent_MakeAvailable(nlohmann_json)
+
+# 下载GoogleTest
+FetchContent_Declare(
+        googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG main  # 使用最新主分支
+)
+
+FetchContent_MakeAvailable(googletest)
 
 # 包含子目录
-add_subdirectory(lib/algorithms)  # 添加库
+#add_subdirectory(lib/algorithms)  # 添加库
 add_subdirectory(lib/data_structure)  # 添加库
-add_subdirectory(exe)  # 添加应用程序
+#add_subdirectory(exe)  # 添加应用程序
 
