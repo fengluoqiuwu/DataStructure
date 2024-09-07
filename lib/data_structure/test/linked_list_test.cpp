@@ -303,3 +303,69 @@ TEST_F(LinkedListTest,FunctionToStringAndFromStringTest)
     ASSERT_EQ(linked_list<float>::from_string(test_float).to_string(),test_float);
     ASSERT_EQ(linked_list<std::string>::from_string(test_string).to_string(),test_string);
 }
+
+TEST_F(LinkedListTest,IteratorTest)
+{
+    int a[10] = {1,2,3,4,5,6,7,8,9,10};
+    auto* list = new linked_list<int>(a,10);
+
+    linked_list<int>::Iterator it = list->begin();
+    linked_list<int>::Iterator it2 = list->end();
+
+    ASSERT_EQ(*it,1);
+    *it = 2;
+    ASSERT_EQ(*it,2);
+    ++it;
+    ASSERT_EQ(*it,2);
+    --it2;
+    ASSERT_EQ(*it2,10);
+
+    delete list;
+
+    class test
+    {
+        public:
+        int data;
+    };
+
+    test* t = new test[5];
+    t[0].data = 1;t[1].data = 2;t[2].data = 3;t[3].data = 4;t[4].data = 5;
+
+    auto* list1 = new linked_list<test>(t,5);
+
+    ASSERT_EQ(list1->begin()->data,1);
+
+    delete list1;
+}
+
+TEST_F(LinkedListTest,ConstIteratorTest)
+{
+    int a[10] = {1,2,3,4,5,6,7,8,9,10};
+    const auto* list = new linked_list<int>(a,10);
+
+    linked_list<int>::ConstIterator it = list->begin();
+    linked_list<int>::ConstIterator it2 = list->end();
+
+    ASSERT_EQ(*it,1);
+    ++it;
+    ASSERT_EQ(*it,2);
+    --it2;
+    ASSERT_EQ(*it2,10);
+
+    delete list;
+
+    class test
+    {
+    public:
+        int data;
+    };
+
+    test* t = new test[5];
+    t[0].data = 1;t[1].data = 2;t[2].data = 3;t[3].data = 4;t[4].data = 5;
+
+    auto* list1 = new linked_list<test>(t,5);
+
+    ASSERT_EQ(list1->begin()->data,1);
+
+    delete list1;
+}

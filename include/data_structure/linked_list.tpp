@@ -379,33 +379,35 @@ std::string linked_list<T>::to_string() const
         std::cout <<"The function only support int,float,double and string."<< __FILE__<< " at line " << __LINE__ <<std::endl;
         throw std::invalid_argument("Unsupported data type for JSON serialization.");
                     }
+    else
+    {
+        std::ostringstream json_output;
 
-    std::ostringstream json_output;
+        json_output << "[";  // 开始 JSON 数组
+        Node* current = head_node->next;
+        bool first = true;
 
-    json_output << "[";  // 开始 JSON 数组
-    Node* current = head_node->next;
-    bool first = true;
+        while (current!=tail_node) {
+            if (!first) {
+                json_output << ",";  // 分隔多个值
+            } else {
+                first = false;
+            }
 
-    while (current!=tail_node) {
-        if (!first) {
-            json_output << ",";  // 分隔多个值
-        } else {
-            first = false;
+            // 判断类型并格式化输出
+            if constexpr (std::is_same_v<T, std::string>) {
+                json_output << "\"" << current->data << "\"";  // 字符串加双引号
+            } else {
+                json_output << current->data;  // 数字类型直接输出
+            }
+
+            current = current->next;
         }
 
-        // 判断类型并格式化输出
-        if constexpr (std::is_same_v<T, std::string>) {
-            json_output << "\"" << current->data << "\"";  // 字符串加双引号
-        } else {
-            json_output << current->data;  // 数字类型直接输出
-        }
+        json_output << "]";  // 结束 JSON 数组
 
-        current = current->next;
+        return json_output.str();  // 返回 JSON 字符串
     }
-
-    json_output << "]";  // 结束 JSON 数组
-
-    return json_output.str();  // 返回 JSON 字符串
 }
 
 template <typename T>
@@ -509,50 +511,38 @@ typename linked_list<T>::Node * linked_list<T>::get_node_pointer(const size_t in
 template <typename T>
 T& linked_list<T>::Iterator::operator*() const
 {
-    if (current == nullptr) {
+    if (this->current == nullptr) {
         throw std::out_of_range("Attempt to dereference an invalid iterator.");
     }
-    return current->data;
+    return this->current->data;
 }
 
 template <typename T>
 T* linked_list<T>::Iterator::operator->() const
 {
-    if (current == nullptr) {
+    if (this->current == nullptr) {
         throw std::out_of_range("Attempt to access an invalid iterator.");
     }
-    return &(current->data);
+    return &(this->current->data);
 }
 
 template <typename T>
-bool linked_list<T>::Iterator::operator==(const iterator::Iterator<T>& other) const
+iterator::ForwardIterator<T,typename linked_list<T>::Node>& linked_list<T>::Iterator::operator++()
 {
-    return current == other.current;
-}
-
-template <typename T>
-bool linked_list<T>::Iterator::operator!=(const iterator::Iterator<T>& other) const
-{
-    return current != other.current;
-}
-
-template <typename T>
-iterator::ForwardIterator<T>& linked_list<T>::Iterator::operator++()
-{
-    if (current == nullptr) {
+    if (this->current == nullptr) {
         throw std::out_of_range("Attempt to increment an invalid iterator.");
     }
-    current = current->next;
+    this->current = this->current->next;
     return *this;
 }
 
 template <typename T>
-iterator::BidirectionalIterator<T>& linked_list<T>::Iterator::operator--()
+iterator::BidirectionalIterator<T,typename linked_list<T>::Node>& linked_list<T>::Iterator::operator--()
 {
-    if (current == nullptr || current->previous == nullptr) {
+    if (this->current == nullptr || this->current->previous == nullptr) {
         throw std::out_of_range("Attempt to decrement an invalid iterator.");
     }
-    current = current->previous;
+    this->current = this->current->previous;
     return *this;
 }
 
@@ -561,54 +551,66 @@ linked_list<T>::Iterator::~Iterator() = default;
 
 
 template <typename T>
-T& linked_list<T>::ConstIterator::operator*() const
+const T& linked_list<T>::ConstIterator::operator*() const
 {
-    if (current == nullptr) {
+    if (this->current == nullptr) {
         throw std::out_of_range("Attempt to dereference an invalid iterator.");
     }
-    return current->data;
+    return this->current->data;
 }
 
 template <typename T>
-T* linked_list<T>::ConstIterator::operator->() const
+const T* linked_list<T>::ConstIterator::operator->() const
 {
-    if (current == nullptr) {
+    if (this->current == nullptr) {
         throw std::out_of_range("Attempt to access an invalid iterator.");
     }
-    return &(current->data);
+    return &(this->current->data);
 }
 
 template <typename T>
-bool linked_list<T>::ConstIterator::operator==(const iterator::Iterator<T>& other) const
+iterator::ForwardConstIterator<T,typename linked_list<T>::Node>& linked_list<T>::ConstIterator::operator++()
 {
-    return current == other.current;
-}
-
-template <typename T>
-bool linked_list<T>::ConstIterator::operator!=(const iterator::Iterator<T>& other) const
-{
-    return current != other.current;
-}
-
-template <typename T>
-iterator::ForwardIterator<T>& linked_list<T>::ConstIterator::operator++()
-{
-    if (current == nullptr) {
+    if (this->current == nullptr) {
         throw std::out_of_range("Attempt to increment an invalid iterator.");
     }
-    current = current->next;
+    this->current = this->current->next;
     return *this;
 }
 
 template <typename T>
-iterator::BidirectionalIterator<T>& linked_list<T>::ConstIterator::operator--()
+iterator::BidirectionalConstIterator<T,typename linked_list<T>::Node>& linked_list<T>::ConstIterator::operator--()
 {
-    if (current == nullptr || current->previous == nullptr) {
+    if (this->current == nullptr || this->current->previous == nullptr) {
         throw std::out_of_range("Attempt to decrement an invalid iterator.");
     }
-    current = current->previous;
+    this->current = this->current->previous;
     return *this;
 }
 
 template <typename T>
 linked_list<T>::ConstIterator::~ConstIterator() = default;
+
+template <typename T>
+typename linked_list<T>::Iterator linked_list<T>::begin()
+{
+    return Iterator(head_node->next);
+}
+
+template <typename T>
+typename linked_list<T>::Iterator linked_list<T>::end()
+{
+    return Iterator(tail_node);
+}
+
+template <typename T>
+typename linked_list<T>::ConstIterator linked_list<T>::begin() const
+{
+    return ConstIterator(head_node->next);
+}
+
+template <typename T>
+typename linked_list<T>::ConstIterator linked_list<T>::end() const
+{
+    return ConstIterator(tail_node);
+}
