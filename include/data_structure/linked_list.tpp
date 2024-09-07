@@ -21,7 +21,7 @@ linked_list<T>::linked_list(const linked_list& other)
     tail_node->previous = head_node;
     size=0;
 
-    Node<T> * temp = other.head_node;
+    Node * temp = other.head_node;
     while (temp->next!=other.tail_node)
     {
         temp=temp->next;
@@ -35,8 +35,8 @@ linked_list<T>::linked_list(linked_list&& other) noexcept {
     tail_node = other.tail_node;
     size = other.size;
 
-    other.head_node = new Node<T>(nullptr,nullptr);
-    other.tail_node = new Node<T>(nullptr,other.head_node);
+    other.head_node = new Node(nullptr,nullptr);
+    other.tail_node = new Node(nullptr,other.head_node);
     other.head_node->next = other.tail_node;
     other.size = 0;
 }
@@ -68,7 +68,7 @@ linked_list<T> &linked_list<T>::operator=(const linked_list &other)
     if (this != &other)
     {
         clear();
-        Node<T> * temp = other.head_node;
+        Node * temp = other.head_node;
         while (temp->next!=other.tail_node)
         {
             temp=temp->next;
@@ -89,8 +89,8 @@ linked_list<T> &linked_list<T>::operator=(linked_list &&other) noexcept
         tail_node = other.tail_node;
         size = other.size;
 
-        other.head_node = new Node<T>(nullptr,nullptr);
-        other.tail_node = new Node<T>(nullptr,other.head_node);
+        other.head_node = new Node(nullptr,nullptr);
+        other.tail_node = new Node(nullptr,other.head_node);
         other.head_node->next = other.tail_node;
         other.size = 0;
     }
@@ -108,8 +108,8 @@ bool linked_list<T>::operator==(const linked_list &other) const
         return false;
     }
 
-    Node<T> * self_temp = head_node->next;
-    Node<T> * other_temp = other.head_node->next;
+    Node * self_temp = head_node->next;
+    Node * other_temp = other.head_node->next;
     while (self_temp!=tail_node)
     {
         if (self_temp->data != other_temp->data)
@@ -125,7 +125,7 @@ bool linked_list<T>::operator==(const linked_list &other) const
 template <typename T>
 void linked_list<T>::add(T value)
 {
-    tail_node->previous->next = new Node<T>(value, tail_node,tail_node->previous);
+    tail_node->previous->next = new Node(value, tail_node,tail_node->previous);
     tail_node->previous = tail_node->previous->next;
     size++;
 }
@@ -133,13 +133,13 @@ void linked_list<T>::add(T value)
 template <typename T>
 void linked_list<T>::add(const size_t index, T value)
 {
-    Node<T> * next_node = get_node_pointer(index,true);
+    Node * next_node = get_node_pointer(index,true);
     if (next_node == nullptr)
     {
         throw std::out_of_range("index out of range");
     }
 
-    auto * new_node = new Node<T>(value, next_node,next_node->previous);
+    auto * new_node = new Node(value, next_node,next_node->previous);
     new_node->next->previous = new_node;
     new_node->previous->next = new_node;
     size++;
@@ -148,7 +148,7 @@ void linked_list<T>::add(const size_t index, T value)
 template <typename T>
 T &linked_list<T>::get(const size_t index)
 {
-    Node<T> * node = get_node_pointer(index,false);
+    Node * node = get_node_pointer(index,false);
     if (node == nullptr)
     {
         throw std::out_of_range("index out of range");
@@ -159,7 +159,7 @@ T &linked_list<T>::get(const size_t index)
 template <typename T>
 T linked_list<T>::get(const size_t index) const
 {
-    Node<T> * node = get_node_pointer(index,false);
+    Node * node = get_node_pointer(index,false);
     if (node == nullptr)
     {
         throw std::out_of_range("index out of range");
@@ -170,7 +170,7 @@ T linked_list<T>::get(const size_t index) const
 template <typename T>
 void linked_list<T>::set(const size_t index, T value)
 {
-    Node<T> * node = get_node_pointer(index,false);
+    Node * node = get_node_pointer(index,false);
     if (node == nullptr)
     {
         throw std::out_of_range("index out of range");
@@ -181,7 +181,7 @@ void linked_list<T>::set(const size_t index, T value)
 template <typename T>
 void linked_list<T>::remove(size_t index)
 {
-    Node<T> * node = get_node_pointer(index,false);
+    Node * node = get_node_pointer(index,false);
 
     if (node == nullptr)
     {
@@ -197,8 +197,8 @@ void linked_list<T>::remove(size_t index)
 template <typename T>
 void linked_list<T>::remove(T value)
 {
-    Node<T> * temp = head_node->next;
-    Node<T> * deleted_node = nullptr;
+    Node * temp = head_node->next;
+    Node * deleted_node = nullptr;
 
     while (temp!=tail_node)
     {
@@ -221,7 +221,7 @@ void linked_list<T>::remove(T value)
 template <typename T>
 bool linked_list<T>::contains(T value) const
 {
-    Node<T> * temp = head_node->next;
+    Node * temp = head_node->next;
 
     while (temp!=tail_node)
     {
@@ -249,7 +249,7 @@ bool linked_list<T>::is_empty() const
 template <typename T>
 void linked_list<T>::add_first(T value)
 {
-    auto * new_node = new Node<T>(value, head_node->next,head_node);
+    auto * new_node = new Node(value, head_node->next,head_node);
     new_node->next->previous = new_node;
     new_node->previous->next = new_node;
     size++;
@@ -270,7 +270,7 @@ void linked_list<T>::remove_first()
         throw std::out_of_range("Linked List is empty!");
     }
 
-    Node<T> * temp = head_node->next;
+    Node * temp = head_node->next;
     head_node->next = temp->next;
     temp->next->previous = head_node;
     delete temp;
@@ -286,7 +286,7 @@ void linked_list<T>::remove_last()
         throw std::out_of_range("Linked List is empty!");
     }
 
-    Node<T> * temp = tail_node->previous;
+    Node * temp = tail_node->previous;
     tail_node->previous = temp->previous;
     temp->previous->next = tail_node;
     delete temp;
@@ -383,7 +383,7 @@ std::string linked_list<T>::to_string() const
     std::ostringstream json_output;
 
     json_output << "[";  // 开始 JSON 数组
-    Node<T>* current = head_node->next;
+    Node* current = head_node->next;
     bool first = true;
 
     while (current!=tail_node) {
@@ -454,8 +454,8 @@ linked_list<T> linked_list<T>::from_string(const std::string &str)
 template <typename T>
 void linked_list<T>::clear()
 {
-    Node<T> * temp = head_node->next;
-    Node<T> * deleted_node = nullptr;
+    Node * temp = head_node->next;
+    Node * deleted_node = nullptr;
     while (temp!=tail_node)
     {
         temp->next->previous = temp->previous;
@@ -468,7 +468,7 @@ void linked_list<T>::clear()
 }
 
 template <typename T>
-typename linked_list<T>::template Node<T> * linked_list<T>::get_node_pointer(const size_t index, const bool include_tail) const
+typename linked_list<T>::Node * linked_list<T>::get_node_pointer(const size_t index, const bool include_tail) const
 {
     if(include_tail)
     {
@@ -487,7 +487,7 @@ typename linked_list<T>::template Node<T> * linked_list<T>::get_node_pointer(con
         }//In this situation, index equals to size is not valid
     }
 
-    Node<T> * temp = nullptr;
+    Node * temp = nullptr;
     if(index<size/2)
     {
         temp = head_node->next;
@@ -505,3 +505,110 @@ typename linked_list<T>::template Node<T> * linked_list<T>::get_node_pointer(con
     }
     return temp;
 }
+
+template <typename T>
+T& linked_list<T>::Iterator::operator*() const
+{
+    if (current == nullptr) {
+        throw std::out_of_range("Attempt to dereference an invalid iterator.");
+    }
+    return current->data;
+}
+
+template <typename T>
+T* linked_list<T>::Iterator::operator->() const
+{
+    if (current == nullptr) {
+        throw std::out_of_range("Attempt to access an invalid iterator.");
+    }
+    return &(current->data);
+}
+
+template <typename T>
+bool linked_list<T>::Iterator::operator==(const iterator::Iterator<T>& other) const
+{
+    return current == other.current;
+}
+
+template <typename T>
+bool linked_list<T>::Iterator::operator!=(const iterator::Iterator<T>& other) const
+{
+    return current != other.current;
+}
+
+template <typename T>
+iterator::ForwardIterator<T>& linked_list<T>::Iterator::operator++()
+{
+    if (current == nullptr) {
+        throw std::out_of_range("Attempt to increment an invalid iterator.");
+    }
+    current = current->next;
+    return *this;
+}
+
+template <typename T>
+iterator::BidirectionalIterator<T>& linked_list<T>::Iterator::operator--()
+{
+    if (current == nullptr || current->previous == nullptr) {
+        throw std::out_of_range("Attempt to decrement an invalid iterator.");
+    }
+    current = current->previous;
+    return *this;
+}
+
+template <typename T>
+linked_list<T>::Iterator::~Iterator() = default;
+
+
+template <typename T>
+T& linked_list<T>::ConstIterator::operator*() const
+{
+    if (current == nullptr) {
+        throw std::out_of_range("Attempt to dereference an invalid iterator.");
+    }
+    return current->data;
+}
+
+template <typename T>
+T* linked_list<T>::ConstIterator::operator->() const
+{
+    if (current == nullptr) {
+        throw std::out_of_range("Attempt to access an invalid iterator.");
+    }
+    return &(current->data);
+}
+
+template <typename T>
+bool linked_list<T>::ConstIterator::operator==(const iterator::Iterator<T>& other) const
+{
+    return current == other.current;
+}
+
+template <typename T>
+bool linked_list<T>::ConstIterator::operator!=(const iterator::Iterator<T>& other) const
+{
+    return current != other.current;
+}
+
+template <typename T>
+iterator::ForwardIterator<T>& linked_list<T>::ConstIterator::operator++()
+{
+    if (current == nullptr) {
+        throw std::out_of_range("Attempt to increment an invalid iterator.");
+    }
+    current = current->next;
+    return *this;
+}
+
+template <typename T>
+iterator::BidirectionalIterator<T>& linked_list<T>::ConstIterator::operator--()
+{
+    if (current == nullptr || current->previous == nullptr) {
+        throw std::out_of_range("Attempt to decrement an invalid iterator.");
+    }
+    current = current->previous;
+    return *this;
+}
+
+template <typename T>
+linked_list<T>::ConstIterator::~ConstIterator() = default;

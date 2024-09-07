@@ -5,6 +5,12 @@
 #ifndef ITERATOR_H
 #define ITERATOR_H
 
+namespace iterator
+{
+/**
+ * Basic Iterator
+ * @tparam T Type of the data
+ */
 template <typename T>
 class Iterator {
 public:
@@ -40,6 +46,10 @@ public:
     virtual bool operator!=(const Iterator& other) const = 0;
 };
 
+/**
+ * Forward Iterator
+ * @tparam T Type of the data
+ */
 template <typename T>
 class ForwardIterator : public Iterator<T> {
 public:
@@ -52,6 +62,10 @@ public:
     virtual ForwardIterator& operator++() = 0;
 };
 
+/**
+ * Bidirectional Iterator
+ * @tparam T Type of the data
+ */
 template <typename T>
 class BidirectionalIterator : public ForwardIterator<T> {
 public:
@@ -64,6 +78,10 @@ public:
     virtual BidirectionalIterator& operator--() = 0;
 };
 
+/**
+ * Random Access Iterator
+ * @tparam T Type of the data
+ */
 template <typename T>
 class RandomAccessIterator : public BidirectionalIterator<T> {
 public:
@@ -132,7 +150,6 @@ public:
      */
     virtual size_t operator-(const RandomAccessIterator& other) const = 0;
 };
-
-
+}
 
 #endif //ITERATOR_H

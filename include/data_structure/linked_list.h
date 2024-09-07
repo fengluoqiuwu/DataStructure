@@ -5,11 +5,17 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 #include "object.h"
+#include "iterator"
 
+/**
+ * Linked List
+ * @tparam T Type of the data
+ */
 template <typename T>
 class linked_list : public object
 {
 public:
+
     /**
      * Simple constructor, Init it as an empty linked list
      * Complexity: O(1)
@@ -228,16 +234,14 @@ public:
 private:
     /**
      * Linked list node
-     * @tparam D DataType
      */
-    template <typename D>
     class Node
     {
     public:
         /**
          * data of the node
          */
-        D data;
+        T data;
         /**
          * next node pointer
          */
@@ -253,13 +257,13 @@ private:
          * @param next next Node pointer
          * @param previous previous Node pointer
          */
-        Node(D data, Node *next, Node *previous) : data(data), next(next), previous(previous) {}
+        Node(T data, Node *next, Node *previous) : data(data), next(next), previous(previous) {}
 
         /**
          * constructor of only data
          * @param data data inside the node
          */
-        explicit Node(D data) : data(data)
+        explicit Node(T data) : data(data)
         {
             next = nullptr;
             previous = nullptr;
@@ -284,11 +288,11 @@ private:
     /**
      * Linked List Head
      */
-    Node<T> *head_node = new Node<T>(nullptr,nullptr);
+    Node *head_node = new Node(nullptr,nullptr);
     /**
      * Linked List Tail
      */
-    Node<T> *tail_node = new Node<T>(nullptr,nullptr);
+    Node *tail_node = new Node(nullptr,nullptr);
     /**
      * Linked List Length
      */
@@ -307,7 +311,138 @@ private:
      * @param include_tail can it search for tail_node?
      * @return next node
      */
-    Node<T> * get_node_pointer(size_t index, bool include_tail) const;
+    [[nodiscard]] Node * get_node_pointer(size_t index, bool include_tail) const;
+
+public:
+
+
+    friend class Iterator;
+    /**
+     * Linked List iterator, for not const linked list
+     */
+    class Iterator : iterator::BidirectionalIterator<T>
+    {
+    public:
+        /**
+         * This method allows you to access and modify the value at the current position of the iterator.
+         * @return A reference to the value pointed to by the iterator
+         */
+        T& operator*() const override;
+
+        /**
+         * This method provides access to the value pointed to by the iterator, similar to dereferencing the iterator.
+         * @return A pointer to the value pointed to by the iterator.
+         */
+        T* operator->() const override;
+
+        /**
+         * This method checks if two iterators are pointing to the same element.
+         * @param other iterator
+         * @return true if the current iterator is equal to the other iterator (i.e., they point to the same position); otherwise, false.
+         */
+        bool operator==(const iterator::Iterator<T>& other) const override;
+
+        /**
+         * This method checks if two iterators are pointing to different elements.
+         * @param other iterator
+         * @return true if the current iterator is not equal to the other iterator (i.e., they point to different positions); otherwise, false.
+         */
+        bool operator!=(const iterator::Iterator<T>& other) const override;
+
+        /**
+         * This is the pre-increment operator. It advances the iterator by one position and returns a reference to the modified iterator itself.
+         * @return A reference to the updated iterator after it has been incremented.
+         */
+        iterator::ForwardIterator<T>& operator++() override;
+
+        /**
+         * This method moves the iterator backward by one position (pre-decrement) and returns the iterator itself.
+         * @return  A reference to the updated iterator after it has been decremented.
+         */
+        iterator::BidirectionalIterator<T>& operator--() override;
+
+        /**
+         * destructor
+         */
+        ~Iterator() override;
+    private:
+        /**
+         * Iterator current pointing node
+         */
+        Node* current;
+
+    protected:
+        /**
+         * Constructor only can use by LinkedList
+         * @param node current node
+         */
+        explicit Iterator(Node* node) : current(node) {}
+
+    };
+
+    friend class ConstIterator;
+    /**
+     * Linked List iterator, for const linked list
+     */
+    class ConstIterator : iterator::BidirectionalIterator<T>
+    {
+    public:
+        /**
+         * This method allows you to access and modify the value at the current position of the iterator.
+         * @return A reference to the value pointed to by the iterator
+         */
+        T& operator*() const override;
+
+        /**
+         * This method provides access to the value pointed to by the iterator, similar to dereferencing the iterator.
+         * @return A pointer to the value pointed to by the iterator.
+         */
+        T* operator->() const override;
+
+        /**
+         * This method checks if two iterators are pointing to the same element.
+         * @param other iterator
+         * @return true if the current iterator is equal to the other iterator (i.e., they point to the same position); otherwise, false.
+         */
+        bool operator==(const iterator::Iterator<T>& other) const override;
+
+        /**
+         * This method checks if two iterators are pointing to different elements.
+         * @param other iterator
+         * @return true if the current iterator is not equal to the other iterator (i.e., they point to different positions); otherwise, false.
+         */
+        bool operator!=(const iterator::Iterator<T>& other) const override;
+
+        /**
+         * This is the pre-increment operator. It advances the iterator by one position and returns a reference to the modified iterator itself.
+         * @return A reference to the updated iterator after it has been incremented.
+         */
+        iterator::ForwardIterator<T>& operator++() override;
+
+        /**
+         * This method moves the iterator backward by one position (pre-decrement) and returns the iterator itself.
+         * @return  A reference to the updated iterator after it has been decremented.
+         */
+        iterator::BidirectionalIterator<T>& operator--() override;
+
+        /**
+         * destructor
+         */
+        ~ConstIterator() override;
+    private:
+        /**
+         * Iterator current pointing node
+         */
+        const Node* current;
+
+    protected:
+        /**
+         * Constructor only can use by LinkedList
+         * @param node current node
+         */
+        explicit ConstIterator(const Node* node) : current(node) {}
+
+    };
 };
 
 #include "linked_list.tpp"
