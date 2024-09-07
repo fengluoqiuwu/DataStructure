@@ -84,14 +84,36 @@ bool array::operator==(const array& other) const
     return true;
 }
 
+int& array::operator[](const size_t index) {
+    if (index >= size) {
+        throw std::out_of_range("Index out of range");
+    }
+    return data[index];
+}
+
+const int& array::operator[](const size_t index) const {
+    if (index >= size) {
+        throw std::out_of_range("Index out of range");
+    }
+    return data[index];
+}
+
 size_t array::get_size() const
 {
     return this->size;
 }
 
-void array::sort(bool ascending)
+// ReSharper disable once CppMemberFunctionMayBeConst
+void array::sort(const bool ascending)
 {
-
+    if (ascending)
+    {
+        std::sort(data, data + size);
+    }
+    else
+    {
+        std::sort(data, data + size, std::greater<>());
+    }
 }
 
 int array::search(const int key) const

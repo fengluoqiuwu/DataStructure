@@ -62,12 +62,26 @@ public:
     array& operator=(array&& other) noexcept ;
 
     /**
-     * equals
+     * equals operator
      * Complexity: O(n)
      * @param other another Array Object
      * @return self object
      */
     bool operator==(const array& other) const;
+
+    /**
+     * [] operator
+     * @param index getting index
+     * @return reference of data[index]
+     */
+    int& operator[](size_t index);
+
+    /**
+     * [] operator const
+     * @param index getting by index
+     * @return const reference of data[index]
+     */
+    const int& operator[](size_t index) const;
 
     /**
      * get size of array
@@ -81,7 +95,7 @@ public:
      * Complexity: O(?)
      * @param ascending is ascending or not
      */
-    void sort(bool ascending);//TODO,And Remember to Complete Test Function
+    void sort(bool ascending);
 
     /**
      * searching for key in array

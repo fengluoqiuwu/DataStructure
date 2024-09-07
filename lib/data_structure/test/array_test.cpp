@@ -85,6 +85,19 @@ TEST_F(ArrayTest,EqualOperatorTest)
     delete c;
 }
 
+TEST_F(ArrayTest,SubscripOperatorTest)
+{
+    int a[10]={1,2,3,4,5,6,7,8,9,10};
+    array b(a,10);
+    const array c(a,10);
+
+    ASSERT_EQ(1,b[0]);
+    ASSERT_EQ(2,c[1]);
+
+    b[0]=0;
+    ASSERT_EQ(0,b[0]);
+}
+
 TEST_F(ArrayTest,FunctionGetSizeTest)
 {
     int a[10]={1,2,3,4,5,6,7,8,9,10};
