@@ -11,6 +11,11 @@
 #include "object.h"
 
 /**
+ * Basic iterator class
+ */
+#include "iterator.h"
+
+/**
  * Class of integer array
  */
 #include "array.h"
