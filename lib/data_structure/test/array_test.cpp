@@ -177,3 +177,67 @@ TEST_F(ArrayTest,FunctionFromStringAndToStringTest)
 
     ASSERT_EQ(a,b.to_string());
 }
+
+TEST_F(ArrayTest,IteratorTest)
+{
+    int a[10]={1,2,3,4,5,6,7,8,9,10};
+    auto * b=new array(a,10);
+
+    array::Iterator it=b->begin();
+    array::Iterator it2=b->end();
+
+    ASSERT_EQ(*it,1);
+    ++it;
+    ASSERT_EQ(*it,2);
+    it+=1;
+    ASSERT_EQ(*it,3);
+    *it=2;
+    ASSERT_EQ(*it,2);
+    --it2;
+    ASSERT_EQ(*it2,10);
+    it2-=1;
+    ASSERT_EQ(*it2,9);
+
+    auto it_copy=it+1;
+    auto it_copy2=it2-1;
+
+    ASSERT_EQ(**it_copy,4);
+    ASSERT_EQ(**it_copy2,8);
+
+    ASSERT_TRUE(it<it2);
+    ASSERT_TRUE(it2>it);
+    ASSERT_TRUE(it<=it);
+
+    ASSERT_EQ(it2-it,6);
+}
+
+TEST_F(ArrayTest,ConstIteratorTest)
+{
+    int a[10]={1,2,3,4,5,6,7,8,9,10};
+    const auto * b=new array(a,10);
+
+    array::ConstIterator it=b->begin();
+    array::ConstIterator it2=b->end();
+
+    ASSERT_EQ(*it,1);
+    ++it;
+    ASSERT_EQ(*it,2);
+    it+=1;
+    ASSERT_EQ(*it,3);
+    --it2;
+    ASSERT_EQ(*it2,10);
+    it2-=1;
+    ASSERT_EQ(*it2,9);
+
+    auto it_copy=it+1;
+    auto it_copy2=it2-1;
+
+    ASSERT_EQ(**it_copy,4);
+    ASSERT_EQ(**it_copy2,8);
+
+    ASSERT_TRUE(it<it2);
+    ASSERT_TRUE(it2>it);
+    ASSERT_TRUE(it<=it);
+
+    ASSERT_EQ(it2-it,6);
+}

@@ -249,3 +249,445 @@ array array::from_string(const std::string& str)
 
     return {array, arr.size()};
 }
+
+int& array::Iterator::operator*() const
+{
+    if (this->current<outer.data||this->current>=outer.data+outer.size)
+    {
+        throw std::runtime_error("Error: Iterator out of range.");
+    }
+
+    return *(this->current);
+}
+
+int* array::Iterator::operator->() const
+{
+    if (this->current<outer.data||this->current>=outer.data+outer.size)
+    {
+        throw std::runtime_error("Error: Iterator out of range.");
+    }
+
+    return this->current;
+}
+
+iterator::ForwardIterator<int, int>& array::Iterator::operator++()
+{
+    if (this->current<outer.data||this->current>outer.data+outer.size)
+    {
+        throw std::runtime_error("Error: Iterator out of range.");
+    }
+
+    ++(this->current);
+    return *this;
+}
+
+iterator::BidirectionalIterator<int, int>& array::Iterator::operator--()
+{
+    if (this->current<outer.data||this->current>outer.data+outer.size)
+    {
+        throw std::runtime_error("Error: Iterator out of range.");
+    }
+
+    --(this->current);
+    return *this;
+}
+
+array::Iterator::~Iterator() = default;
+
+iterator::RandomAccessIterator<int, int>& array::Iterator::operator+=(size_t n)
+{
+    if (this->current<outer.data||this->current>outer.data+outer.size)
+    {
+        throw std::runtime_error("Error: Iterator out of range.");
+    }
+
+    this->current += n;
+    return *this;
+}
+
+iterator::RandomAccessIterator<int, int>& array::Iterator::operator-=(size_t n)
+{
+    if (this->current<outer.data||this->current>outer.data+outer.size)
+    {
+        throw std::runtime_error("Error: Iterator out of range.");
+    }
+
+    this->current -= n;
+    return *this;
+}
+
+iterator::RandomAccessIterator<int, int>* array::Iterator::operator+(size_t n) const
+{
+    if (this->current<outer.data||this->current>outer.data+outer.size)
+    {
+        throw std::runtime_error("Error: Iterator out of range.");
+    }
+
+    return new Iterator(current+n,outer);
+}
+
+iterator::RandomAccessIterator<int, int>* array::Iterator::operator-(size_t n) const
+{
+    if (this->current<outer.data||this->current>outer.data+outer.size)
+    {
+        throw std::runtime_error("Error: Iterator out of range.");
+    }
+
+    return new Iterator(current-n,outer);
+}
+
+bool array::Iterator::operator<(const RandomAccessIterator<int, int>& other) const
+{
+    const auto& temp_other = dynamic_cast<const Iterator&>(other);
+
+    return *this < temp_other ;
+}
+
+bool array::Iterator::operator<(const Iterator& other) const
+{
+    if (&this->outer!=&other.outer)
+    {
+        throw std::runtime_error("Error: Can not compare between different array.");
+    }
+    if (this->current<outer.data||this->current>outer.data+outer.size)
+    {
+        throw std::runtime_error("Error: Iterator out of range.");
+    }
+    if (other.current<other.outer.data||other.current>=other.outer.data+other.outer.size)
+    {
+        throw std::runtime_error("Error: Input Iterator out of range.");
+    }
+
+    return this->current < other.current;
+}
+
+bool array::Iterator::operator>(const RandomAccessIterator<int, int>& other) const
+{
+    const auto& temp_other = dynamic_cast<const Iterator&>(other);
+
+    return *this > temp_other ;
+}
+
+bool array::Iterator::operator>(const Iterator& other) const
+{
+    if (&this->outer!=&other.outer)
+    {
+        throw std::runtime_error("Error: Can not compare between different array.");
+    }
+    if (this->current<outer.data||this->current>outer.data+outer.size)
+    {
+        throw std::runtime_error("Error: Iterator out of range.");
+    }
+    if (other.current<other.outer.data||other.current>=other.outer.data+other.outer.size)
+    {
+        throw std::runtime_error("Error: Input Iterator out of range.");
+    }
+
+    return this->current > other.current;
+}
+
+bool array::Iterator::operator<=(const RandomAccessIterator<int, int>& other) const
+{
+    const auto& temp_other = dynamic_cast<const Iterator&>(other);
+
+    return *this <= temp_other ;
+}
+
+bool array::Iterator::operator<=(const Iterator& other) const
+{
+    if (&this->outer!=&other.outer)
+    {
+        throw std::runtime_error("Error: Can not compare between different array.");
+    }
+    if (this->current<outer.data||this->current>outer.data+outer.size)
+    {
+        throw std::runtime_error("Error: Iterator out of range.");
+    }
+    if (other.current<other.outer.data||other.current>=other.outer.data+other.outer.size)
+    {
+        throw std::runtime_error("Error: Input Iterator out of range.");
+    }
+
+    return this->current <= other.current;
+}
+
+bool array::Iterator::operator>=(const RandomAccessIterator<int, int>& other) const
+{
+    const auto& temp_other = dynamic_cast<const Iterator&>(other);
+
+    return *this >= temp_other ;
+}
+
+bool array::Iterator::operator>=(const Iterator& other) const
+{
+    if (&this->outer!=&other.outer)
+    {
+        throw std::runtime_error("Error: Can not compare between different array.");
+    }
+    if (this->current<outer.data||this->current>outer.data+outer.size)
+    {
+        throw std::runtime_error("Error: Iterator out of range.");
+    }
+    if (other.current<other.outer.data||other.current>=other.outer.data+other.outer.size)
+    {
+        throw std::runtime_error("Error: Input Iterator out of range.");
+    }
+
+    return this->current >= other.current;
+}
+
+size_t array::Iterator::operator-(const RandomAccessIterator<int, int>& other) const
+{
+    const auto& temp_other = dynamic_cast<const Iterator&>(other);
+
+    return *this - temp_other ;
+}
+
+size_t array::Iterator::operator-(const Iterator& other) const
+{
+    if (&this->outer!=&other.outer)
+    {
+        throw std::runtime_error("Error: Can not minus between different array.");
+    }
+    if (this->current<outer.data||this->current>outer.data+outer.size)
+    {
+        throw std::runtime_error("Error: Iterator out of range.");
+    }
+    if (other.current<other.outer.data||other.current>=other.outer.data+other.outer.size)
+    {
+        throw std::runtime_error("Error: Input Iterator out of range.");
+    }
+
+    return static_cast<size_t>(this->current - other.current);
+}
+
+const int& array::ConstIterator::operator*() const
+{
+    if (this->current<outer.data||this->current>=outer.data+outer.size)
+    {
+        throw std::runtime_error("Error: Iterator out of range.");
+    }
+
+    return *(this->current);
+}
+
+const int* array::ConstIterator::operator->() const
+{
+    if (this->current<outer.data||this->current>=outer.data+outer.size)
+    {
+        throw std::runtime_error("Error: Iterator out of range.");
+    }
+
+    return this->current;
+}
+
+iterator::ForwardConstIterator<int, int>& array::ConstIterator::operator++()
+{
+    if (this->current<outer.data||this->current>outer.data+outer.size)
+    {
+        throw std::runtime_error("Error: Iterator out of range.");
+    }
+
+    ++(this->current);
+    return *this;
+}
+
+iterator::BidirectionalConstIterator<int, int>& array::ConstIterator::operator--()
+{
+    if (this->current<outer.data||this->current>outer.data+outer.size)
+    {
+        throw std::runtime_error("Error: Iterator out of range.");
+    }
+
+    --(this->current);
+    return *this;
+}
+
+array::ConstIterator::~ConstIterator() = default;
+
+iterator::RandomAccessConstIterator<int, int>& array::ConstIterator::operator+=(size_t n)
+{
+    if (this->current<outer.data||this->current>outer.data+outer.size)
+    {
+        throw std::runtime_error("Error: Iterator out of range.");
+    }
+
+    this->current += n;
+    return *this;
+}
+
+iterator::RandomAccessConstIterator<int, int>& array::ConstIterator::operator-=(size_t n)
+{
+    if (this->current<outer.data||this->current>outer.data+outer.size)
+    {
+        throw std::runtime_error("Error: Iterator out of range.");
+    }
+
+    this->current -= n;
+    return *this;
+}
+
+iterator::RandomAccessConstIterator<int, int>* array::ConstIterator::operator+(size_t n) const
+{
+    if (this->current<outer.data||this->current>outer.data+outer.size)
+    {
+        throw std::runtime_error("Error: Iterator out of range.");
+    }
+
+    return new ConstIterator(current+n,outer);
+}
+
+iterator::RandomAccessConstIterator<int, int>* array::ConstIterator::operator-(size_t n) const
+{
+    if (this->current<outer.data||this->current>outer.data+outer.size)
+    {
+        throw std::runtime_error("Error: Iterator out of range.");
+    }
+
+    return new ConstIterator(current-n,outer);
+}
+
+bool array::ConstIterator::operator<(const RandomAccessConstIterator<int, int>& other) const
+{
+    const auto& temp_other = dynamic_cast<const ConstIterator&>(other);
+
+    return *this < temp_other ;
+}
+
+bool array::ConstIterator::operator<(const ConstIterator& other) const
+{
+    if (&this->outer!=&other.outer)
+    {
+        throw std::runtime_error("Error: Can not compare between different array.");
+    }
+    if (this->current<outer.data||this->current>outer.data+outer.size)
+    {
+        throw std::runtime_error("Error: Iterator out of range.");
+    }
+    if (other.current<other.outer.data||other.current>=other.outer.data+other.outer.size)
+    {
+        throw std::runtime_error("Error: Input Iterator out of range.");
+    }
+
+    return this->current < other.current;
+}
+
+bool array::ConstIterator::operator>(const RandomAccessConstIterator<int, int>& other) const
+{
+    const auto& temp_other = dynamic_cast<const ConstIterator&>(other);
+
+    return *this > temp_other ;
+}
+
+inline bool array::ConstIterator::operator>(const ConstIterator& other) const
+{
+    if (&this->outer!=&other.outer)
+    {
+        throw std::runtime_error("Error: Can not compare between different array.");
+    }
+    if (this->current<outer.data||this->current>outer.data+outer.size)
+    {
+        throw std::runtime_error("Error: Iterator out of range.");
+    }
+    if (other.current<other.outer.data||other.current>=other.outer.data+other.outer.size)
+    {
+        throw std::runtime_error("Error: Input Iterator out of range.");
+    }
+
+    return this->current > other.current;
+}
+
+bool array::ConstIterator::operator<=(const RandomAccessConstIterator<int, int>& other) const
+{
+    const auto& temp_other = dynamic_cast<const ConstIterator&>(other);
+
+    return *this <= temp_other ;
+}
+
+inline bool array::ConstIterator::operator<=(const ConstIterator& other) const
+{
+    if (&this->outer!=&other.outer)
+    {
+        throw std::runtime_error("Error: Can not compare between different array.");
+    }
+    if (this->current<outer.data||this->current>outer.data+outer.size)
+    {
+        throw std::runtime_error("Error: Iterator out of range.");
+    }
+    if (other.current<other.outer.data||other.current>=other.outer.data+other.outer.size)
+    {
+        throw std::runtime_error("Error: Input Iterator out of range.");
+    }
+
+    return this->current <= other.current;
+}
+
+bool array::ConstIterator::operator>=(const RandomAccessConstIterator<int, int>& other) const
+{
+    const auto& temp_other = dynamic_cast<const ConstIterator&>(other);
+
+    return *this >= temp_other ;
+}
+
+inline bool array::ConstIterator::operator>=(const ConstIterator& other) const
+{
+    if (&this->outer!=&other.outer)
+    {
+        throw std::runtime_error("Error: Can not compare between different array.");
+    }
+    if (this->current<outer.data||this->current>outer.data+outer.size)
+    {
+        throw std::runtime_error("Error: Iterator out of range.");
+    }
+    if (other.current<other.outer.data||other.current>=other.outer.data+other.outer.size)
+    {
+        throw std::runtime_error("Error: Input Iterator out of range.");
+    }
+
+    return this->current >= other.current;
+}
+
+size_t array::ConstIterator::operator-(const RandomAccessConstIterator<int, int>& other) const
+{
+    const auto& temp_other = dynamic_cast<const ConstIterator&>(other);
+
+    return *this - temp_other;
+}
+
+inline size_t array::ConstIterator::operator-(const ConstIterator& other) const
+{
+    if (&this->outer!=&other.outer)
+    {
+        throw std::runtime_error("Error: Can not compare between different array.");
+    }
+    if (this->current<outer.data||this->current>outer.data+outer.size)
+    {
+        throw std::runtime_error("Error: Iterator out of range.");
+    }
+    if (other.current<other.outer.data||other.current>=other.outer.data+other.outer.size)
+    {
+        throw std::runtime_error("Error: Input Iterator out of range.");
+    }
+
+    return static_cast<size_t>(this->current - other.current);
+}
+
+array::Iterator array::begin()
+{
+    return Iterator(data,*this);
+}
+
+array::Iterator array::end()
+{
+    return Iterator(data+size,*this);
+}
+
+array::ConstIterator array::begin() const
+{
+    return ConstIterator(data,*this);
+}
+
+array::ConstIterator array::end() const
+{
+    return ConstIterator(data+size,*this);
+}

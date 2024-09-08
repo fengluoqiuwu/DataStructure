@@ -7,7 +7,6 @@
 #include <iterator.h>
 
 #include "object.h"
-#include "iterator"
 
 /**
  * Linked List
@@ -356,12 +355,18 @@ public:
     private:
         friend class linked_list;
 
+        /**
+         * reference of linked list
+         */
+        linked_list& outer;
+
     protected:
         /**
          * Constructor only can use by LinkedList
          * @param node current node
+         * @param outer reference of linked list
          */
-        explicit Iterator(Node *node)
+        explicit Iterator(Node *node,linked_list& outer): outer(outer)
         {
             this->current = node;
         }
@@ -407,21 +412,45 @@ public:
 
         friend class linked_list;
 
+        /**
+         * reference of linked list
+         */
+        const linked_list& outer;
+
     protected:
         /**
          * Constructor only can use by LinkedList
          * @param node current node
+         * @param outer reference of linked list
          */
-        explicit ConstIterator(Node *node)
+        explicit ConstIterator(Node *node,const linked_list& outer): outer(outer)
         {
             this->current = node;
         }
     };
 
+    /**
+     * get begin iterator,which is pointing to index 0
+     * @return begin iterator
+     */
     Iterator begin();
+
+    /**
+     * get end iterator,which is pointing to index size
+     * @return end iterator
+     */
     Iterator end();
 
+    /**
+     * get const begin iterator,which is pointing to index 0
+     * @return const begin iterator
+     */
     ConstIterator begin() const;
+
+    /**
+     * get const end iterator,which is pointing to index size
+     * @return const end iterator
+     */
     ConstIterator end() const;
 };
 
