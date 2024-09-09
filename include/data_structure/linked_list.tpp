@@ -157,7 +157,7 @@ T &linked_list<T>::get(const size_t index)
 }
 
 template <typename T>
-T linked_list<T>::get(const size_t index) const
+const T &linked_list<T>::get(const size_t index) const
 {
     Node * node = get_node_pointer(index,false);
     if (node == nullptr)
@@ -306,7 +306,7 @@ T &linked_list<T>::get_first()
 }
 
 template <typename T>
-T linked_list<T>::get_first() const
+const T &linked_list<T>::get_first() const
 {
     if (is_empty())
     {
@@ -330,7 +330,7 @@ T &linked_list<T>::get_last()
 }
 
 template <typename T>
-T linked_list<T>::get_last() const
+const T &linked_list<T>::get_last() const
 {
     if (is_empty())
     {

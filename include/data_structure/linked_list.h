@@ -102,7 +102,7 @@ public:
      * @param index getting index
      * @return data at given index,you can change it by overwrite operator =
      */
-    T get(size_t index) const;
+    const T &get(size_t index) const;
 
     /**
      * set data in given index to input value
@@ -186,7 +186,7 @@ public:
      * Complexity: O(1)
      * @return first data object
      */
-    T get_first() const;
+    const T &get_first() const;
 
     /**
      * peek last object data, you can rewrite the value
@@ -200,7 +200,7 @@ public:
      * Complexity: O(1)
      * @return last data object
      */
-    T get_last() const;
+    const T &get_last() const;
 
     /**
      * get copy of first data and remove it from linked_list
@@ -231,6 +231,12 @@ public:
      * @return linked_list Object of string
      */
     [[nodiscard]] static linked_list<T> from_string(const std::string &str);
+
+    /**
+     * clear all data
+     * Complexity: O(n)
+     */
+    void clear();
 
 private:
     /**
@@ -300,12 +306,6 @@ private:
     size_t size = 0;
 
     /**
-     * clear all data
-     * Complexity: O(n)
-     */
-    void clear();
-
-    /**
      * This function will return the Node has input index in previous linked_list.
      * Complexity: O(n)
      * @param index finding index
@@ -326,24 +326,28 @@ public:
 
         /**
          * This method allows you to access and modify the value at the current position of the iterator.
+         * Complexity: O(1)
          * @return A reference to the value pointed to by the iterator
          */
         T& operator*() const override;
 
         /**
          * This method provides access to the value pointed to by the iterator, similar to dereferencing the iterator.
+         * Complexity: O(1)
          * @return A pointer to the value pointed to by the iterator.
          */
         T* operator->() const override;
 
         /**
          * This is the pre-increment operator. It advances the iterator by one position and returns a reference to the modified iterator itself.
+         * Complexity: O(1)
          * @return A reference to the updated iterator after it has been incremented.
          */
         iterator::ForwardIterator<T,Node>& operator++() override;
 
         /**
          * This method moves the iterator backward by one position (pre-decrement) and returns the iterator itself.
+         * Complexity: O(1)
          * @return  A reference to the updated iterator after it has been decremented.
          */
         iterator::BidirectionalIterator<T,Node>& operator--() override;
@@ -363,6 +367,7 @@ public:
     protected:
         /**
          * Constructor only can use by LinkedList
+         * Complexity: O(1)
          * @param node current node
          * @param outer reference of linked list
          */
@@ -382,30 +387,35 @@ public:
 
         /**
          * This method allows you to access and modify the value at the current position of the iterator.
+         * Complexity: O(1)
          * @return A reference to the value pointed to by the iterator
          */
         const T& operator*() const override;
 
         /**
          * This method provides access to the value pointed to by the iterator, similar to dereferencing the iterator.
+         * Complexity: O(1)
          * @return A pointer to the value pointed to by the iterator.
          */
         const T* operator->() const override;
 
         /**
          * This is the pre-increment operator. It advances the iterator by one position and returns a reference to the modified iterator itself.
+         * Complexity: O(1)
          * @return A reference to the updated iterator after it has been incremented.
          */
         iterator::ForwardConstIterator<T,Node>& operator++() override;
 
         /**
          * This method moves the iterator backward by one position (pre-decrement) and returns the iterator itself.
+         * Complexity: O(1)
          * @return  A reference to the updated iterator after it has been decremented.
          */
         iterator::BidirectionalConstIterator<T,Node>& operator--() override;
 
         /**
          * destructor
+         * Complexity: O(1)
          */
         ~ConstIterator() override;
     private:
@@ -420,6 +430,7 @@ public:
     protected:
         /**
          * Constructor only can use by LinkedList
+         * Complexity: O(1)
          * @param node current node
          * @param outer reference of linked list
          */
@@ -431,24 +442,28 @@ public:
 
     /**
      * get begin iterator,which is pointing to index 0
+     * Complexity: O(1)
      * @return begin iterator
      */
     Iterator begin();
 
     /**
      * get end iterator,which is pointing to index size
+     * Complexity: O(1)
      * @return end iterator
      */
     Iterator end();
 
     /**
      * get const begin iterator,which is pointing to index 0
+     * Complexity: O(1)
      * @return const begin iterator
      */
     ConstIterator begin() const;
 
     /**
      * get const end iterator,which is pointing to index size
+     * Complexity: O(1)
      * @return const end iterator
      */
     ConstIterator end() const;

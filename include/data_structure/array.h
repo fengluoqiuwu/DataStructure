@@ -180,35 +180,41 @@ public:
 
         /**
          * This method allows you to access and modify the value at the current position of the iterator.
+         * Complexity: O(1)
          * @return A reference to the value pointed to by the iterator
          */
         int& operator*() const override;
 
         /**
          * This method provides access to the value pointed to by the iterator, similar to dereferencing the iterator.
+         * Complexity: O(1)
          * @return A pointer to the value pointed to by the iterator.
          */
         int* operator->() const override;
 
         /**
          * This is the pre-increment operator. It advances the iterator by one position and returns a reference to the modified iterator itself.
+         * Complexity: O(1)
          * @return A reference to the updated iterator after it has been incremented.
          */
         iterator::ForwardIterator<int,int>& operator++() override;
 
         /**
          * This method moves the iterator backward by one position (pre-decrement) and returns the iterator itself.
+         * Complexity: O(1)
          * @return  A reference to the updated iterator after it has been decremented.
          */
         iterator::BidirectionalIterator<int,int>& operator--() override;
 
         /**
          * destructor
+         * Complexity: O(1)
          */
         ~Iterator() override;
 
         /**
          * This method advances the iterator by 'n' positions and returns the iterator itself.
+         * Complexity: O(1)
          * @param n moving distance
          * @return A reference to the updated iterator after advancing it by 'n' positions.
          */
@@ -216,6 +222,7 @@ public:
 
         /**
          * This method moves the iterator backward by 'n' positions and returns the iterator itself.
+         * Complexity: O(1)
          * @param n moving distance
          * @return A reference to the updated iterator after moving it back by 'n' positions.
          */
@@ -223,6 +230,7 @@ public:
 
         /**
          * This method creates a copy of the iterator advanced by 'n' positions.
+         * Complexity: O(1)
          * @param n moving distance
          * @return An iterator pointing to the position 'n' steps ahead of the current iterator.
          */
@@ -230,6 +238,7 @@ public:
 
         /**
          * This method creates a copy of the iterator moved back by 'n' positions.
+         * Complexity: O(1)
          * @param n moving distance
          * @return An iterator pointing to the position 'n' steps behind the current iterator.
          */
@@ -237,6 +246,7 @@ public:
 
         /**
          * This method compares if the current iterator is before the other iterator.
+         * Complexity: O(1)
          * @param other other iterator
          * @return true if the current iterator is less than the other iterator; otherwise, false.
          */
@@ -245,6 +255,7 @@ public:
 
         /**
          * This method compares if the current iterator is after the other iterator.
+         * Complexity: O(1)
          * @param other other iterator
          * @return true if the current iterator is greater than the other iterator; otherwise, false.
          */
@@ -253,6 +264,7 @@ public:
 
         /**
          * This method checks if the current iterator is before or at the same position as the other iterator.
+         * Complexity: O(1)
          * @param other other iterator
          * @return true if the current iterator is less than or equal to the other iterator; otherwise, false.
          */
@@ -261,6 +273,7 @@ public:
 
         /**
          * This method checks if the current iterator is after or at the same position as the other iterator.
+         * Complexity: O(1)
          * @param other other iterator
          * @return true if the current iterator is greater than or equal to the other iterator; otherwise, false.
          */
@@ -269,6 +282,7 @@ public:
 
         /**
          * This method calculates the distance between the current iterator and the other iterator.
+         * Complexity: O(1)
          * @param other other iterator
          * @return The number of positions between the current iterator and the other iterator.
          */
@@ -286,7 +300,9 @@ public:
     protected:
         /**
          * Constructor only can use by array
+         * Complexity: O(1)
          * @param node current node
+         * @param outer array reference
          */
         explicit Iterator(int *node,array& outer) : outer(outer)
         {
@@ -304,35 +320,41 @@ public:
 
         /**
          * This method allows you to access and modify the value at the current position of the iterator.
+         * Complexity: O(1)
          * @return A reference to the value pointed to by the iterator
          */
         const int& operator*() const override;
 
         /**
          * This method provides access to the value pointed to by the iterator, similar to dereferencing the iterator.
+         * Complexity: O(1)
          * @return A pointer to the value pointed to by the iterator.
          */
         const int* operator->() const override;
 
         /**
          * This is the pre-increment operator. It advances the iterator by one position and returns a reference to the modified iterator itself.
+         * Complexity: O(1)
          * @return A reference to the updated iterator after it has been incremented.
          */
         iterator::ForwardConstIterator<int,int>& operator++() override;
 
         /**
          * This method moves the iterator backward by one position (pre-decrement) and returns the iterator itself.
+         * Complexity: O(1)
          * @return  A reference to the updated iterator after it has been decremented.
          */
         iterator::BidirectionalConstIterator<int,int>& operator--() override;
 
         /**
          * destructor
+         * Complexity: O(1)
          */
         ~ConstIterator() override;
 
         /**
          * This method advances the iterator by 'n' positions and returns the iterator itself.
+         * Complexity: O(1)
          * @param n moving distance
          * @return A reference to the updated iterator after advancing it by 'n' positions.
          */
@@ -340,6 +362,7 @@ public:
 
         /**
          * This method moves the iterator backward by 'n' positions and returns the iterator itself.
+         * Complexity: O(1)
          * @param n moving distance
          * @return A reference to the updated iterator after moving it back by 'n' positions.
          */
@@ -347,6 +370,7 @@ public:
 
         /**
          * This method creates a copy of the iterator advanced by 'n' positions.
+         * Complexity: O(1)
          * @param n moving distance
          * @return An iterator pointing to the position 'n' steps ahead of the current iterator.
          */
@@ -354,6 +378,7 @@ public:
 
         /**
          * This method creates a copy of the iterator moved back by 'n' positions.
+         * Complexity: O(1)
          * @param n moving distance
          * @return An iterator pointing to the position 'n' steps behind the current iterator.
          */
@@ -361,6 +386,7 @@ public:
 
         /**
          * This method compares if the current iterator is before the other iterator.
+         * Complexity: O(1)
          * @param other other iterator
          * @return true if the current iterator is less than the other iterator; otherwise, false.
          */
@@ -369,6 +395,7 @@ public:
 
         /**
          * This method compares if the current iterator is after the other iterator.
+         * Complexity: O(1)
          * @param other other iterator
          * @return true if the current iterator is greater than the other iterator; otherwise, false.
          */
@@ -377,6 +404,7 @@ public:
 
         /**
          * This method checks if the current iterator is before or at the same position as the other iterator.
+         * Complexity: O(1)
          * @param other other iterator
          * @return true if the current iterator is less than or equal to the other iterator; otherwise, false.
          */
@@ -385,6 +413,7 @@ public:
 
         /**
          * This method checks if the current iterator is after or at the same position as the other iterator.
+         * Complexity: O(1)
          * @param other other iterator
          * @return true if the current iterator is greater than or equal to the other iterator; otherwise, false.
          */
@@ -393,6 +422,7 @@ public:
 
         /**
          * This method calculates the distance between the current iterator and the other iterator.
+         * Complexity: O(1)
          * @param other other iterator
          * @return The number of positions between the current iterator and the other iterator.
          */
@@ -410,6 +440,7 @@ public:
     protected:
         /**
          * Constructor only can use by array
+         * Complexity: O(1)
          * @param node current node
          * @param outer reference of array
          */
@@ -421,24 +452,28 @@ public:
 
     /**
      * get begin iterator,which is pointing to index 0
+     * Complexity: O(1)
      * @return begin iterator
      */
     Iterator begin();
 
     /**
      * get end iterator,which is pointing to index size
+     * Complexity: O(1)
      * @return end iterator
      */
     Iterator end();
 
     /**
      * get const begin iterator,which is pointing to index 0
+     * Complexity: O(1)
      * @return const begin iterator
      */
     [[nodiscard]] ConstIterator begin() const;
 
     /**
      * get const end iterator,which is pointing to index size
+     * Complexity: O(1)
      * @return const end iterator
      */
     [[nodiscard]] ConstIterator end() const;

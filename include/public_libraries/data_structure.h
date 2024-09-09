@@ -25,4 +25,18 @@
  */
 #include "linked_list.h"
 
+/**
+ * Class of queue
+ */
+#include "queue.h"
+
+/**
+ * Class of deque
+ */
+#include "deque.h"
+
+/**
+ * Class of stack
+ */
+
 #endif //DATA_STRUCTURE_H
