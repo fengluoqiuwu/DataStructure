@@ -108,12 +108,12 @@ public:
      * @return front value
      */
     T &back()
-       {
-        if (linked_list<T>::is_empty()) {
-         throw std::out_of_range("Queue is empty");
-        }
-        return linked_list<T>::get_last();
-       }
+    {
+     if (linked_list<T>::is_empty()) {
+      throw std::out_of_range("Queue is empty");
+     }
+     return linked_list<T>::get_last();
+    }
 
     /**
      * Peek the front back of the queue without removing it, const
@@ -121,12 +121,12 @@ public:
      * @return front value
      */
     const T &back() const
-       {
-        if (linked_list<T>::is_empty()) {
-         throw std::out_of_range("Queue is empty");
-        }
-        return linked_list<T>::get_last();
-       }
+    {
+     if (linked_list<T>::is_empty()) {
+      throw std::out_of_range("Queue is empty");
+     }
+     return linked_list<T>::get_last();
+    }
 
     /**
      * Check if the queue is empty
@@ -141,6 +141,12 @@ public:
      * @return size of the queue
      */
     using linked_list<T>::get_size;
+
+    /**
+     * Clear the queue
+     * Complexity: O(n)
+     */
+    using linked_list<T>::clear;
 };
 
 

@@ -115,6 +115,12 @@ public:
      * @return size of the stack
      */
     using linked_list<T>::get_size;
+
+    /**
+     * Clear the stack
+     * Complexity: O(n)
+     */
+    using linked_list<T>::clear;
 };
 
 
