@@ -5,6 +5,7 @@
 #ifndef DEQUE_H
 #define DEQUE_H
 
+#include <stdexcept>
 #include "linked_list.h"
 
 /**

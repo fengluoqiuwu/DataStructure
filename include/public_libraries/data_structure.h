@@ -16,27 +16,8 @@
 #include "iterator.h"
 
 /**
- * Class of integer array
+ * Linear Data structure class
  */
-#include "array.h"
-
-/**
- * Class of linked list
- */
-#include "linked_list.h"
-
-/**
- * Class of queue
- */
-#include "queue.h"
-
-/**
- * Class of deque
- */
-#include "deque.h"
-
-/**
- * Class of stack
- */
+#include "linear.h"
 
 #endif //DATA_STRUCTURE_H

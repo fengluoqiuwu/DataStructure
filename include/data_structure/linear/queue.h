@@ -5,6 +5,7 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
+#include <stdexcept>
 #include "linked_list.h"
 
 /**

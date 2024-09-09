@@ -478,4 +478,6 @@ public:
      */
     [[nodiscard]] ConstIterator end() const;
 };
+
+
 #endif //ARRAY_H

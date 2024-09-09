@@ -5,7 +5,8 @@
 #ifndef STACK_H
 #define STACK_H
 
-#include "linked_list.h"  // 假设链表类在这个头文件中定义
+#include <stdexcept>
+#include "linked_list.h"
 
 /**
  * Stack using linked list as the underlying data structure

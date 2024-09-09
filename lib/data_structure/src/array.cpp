@@ -4,8 +4,10 @@
 
 #include <sstream>
 #include <vector>
+#include <algorithm>
 
-#include "data_structure.h"
+#include "array.h"
+#include "iterator.h"
 
 array::array(const size_t size)
 {
@@ -252,7 +254,7 @@ array array::from_string(const std::string& str)
 
 int& array::Iterator::operator*() const
 {
-    if (this->current<outer.data||this->current>=outer.data+outer.size)
+    if (this->current<outer.data||this->current >= outer.data+outer.size)
     {
         throw std::runtime_error("Error: Iterator out of range.");
     }

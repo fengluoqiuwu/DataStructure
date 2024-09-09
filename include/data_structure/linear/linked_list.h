@@ -469,6 +469,7 @@ public:
     ConstIterator end() const;
 };
 
+
 #include "linked_list.tpp"
 
 #endif //LINKED_LIST_H
