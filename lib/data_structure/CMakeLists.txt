@@ -3,7 +3,10 @@ cmake_minimum_required(VERSION 3.29)
 project(DataStructure)
 
 # 定义路径
-file(GLOB SRC src/*.cpp)
+file(GLOB SRC
+        src/linear/*.cpp
+        src/tree/*.cpp
+)
 
 # 定义库
 add_library(DataStructure STATIC ${SRC})
@@ -14,6 +17,7 @@ target_include_directories(DataStructure
         ${CMAKE_SOURCE_DIR}/include/public_libraries
         ${CMAKE_SOURCE_DIR}/include/data_structure
         ${CMAKE_SOURCE_DIR}/include/data_structure/linear
+        ${CMAKE_SOURCE_DIR}/include/data_structure/tree
 )
 
 target_link_libraries(DataStructure PRIVATE nlohmann_json::nlohmann_json)
@@ -24,6 +28,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     enable_testing()
     file(GLOB TEST_SRC
             test/linear/*.cpp
+            test/tree/*.cpp
     )
     add_executable(DataStructureTest ${TEST_SRC})
     target_link_libraries(DataStructureTest PRIVATE DataStructure nlohmann_json::nlohmann_json gtest gtest_main)

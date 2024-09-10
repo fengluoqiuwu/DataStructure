@@ -13,7 +13,7 @@
  * @tparam T Type of the data
  */
 template <typename T>
-class linked_list : public object
+class linked_list : public object// TODO,add sublist()
 {
 public:
 
@@ -364,7 +364,6 @@ public:
          */
         linked_list& outer;
 
-    protected:
         /**
          * Constructor only can use by LinkedList
          * Complexity: O(1)
@@ -427,7 +426,6 @@ public:
          */
         const linked_list& outer;
 
-    protected:
         /**
          * Constructor only can use by LinkedList
          * Complexity: O(1)
