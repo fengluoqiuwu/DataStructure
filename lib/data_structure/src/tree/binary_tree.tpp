@@ -585,7 +585,7 @@ typename binary_tree<T>::tree_node* binary_tree<T>::ConstIterator::get_node() co
 }
 
 template <typename T>
-bool binary_tree<T>::searchRec(tree_node* node, T& value)
+bool binary_tree<T>::searchRec(tree_node* node, const T& value)
 {
     if (node == nullptr)
     {
@@ -660,7 +660,7 @@ binary_tree<T>::binary_tree(binary_tree&& other) noexcept
 template <typename T>
 binary_tree<T>::~binary_tree()
 {
-    clear([](const T&) {});
+    clear();
     root = nullptr;
 }
 
@@ -668,7 +668,7 @@ template <typename T>
 binary_tree<T>& binary_tree<T>::operator=(const binary_tree& other)
 {
     if (this == &other) return *this;
-    clear([](const T&) {});
+    clear();
     copyRec(nullptr,root,other.root);
     return *this;
 }
@@ -677,7 +677,7 @@ template <typename T>
 binary_tree<T>& binary_tree<T>::operator=(binary_tree&& other) noexcept
 {
     if (this == &other) return *this;
-    clear([](const T&) {});
+    clear();
     root = other.root;
     other.root = nullptr;
     return *this;
@@ -737,7 +737,7 @@ size_t binary_tree<T>::get_depth() const
 template <typename T>
 size_t binary_tree<T>::get_size() const
 {
-    return size_Rec(root);
+    return sizeRec(root);
 }
 
 template <typename T>
@@ -899,7 +899,7 @@ size_t binary_tree<T>::depthRec(tree_node* node)
         return 0;
     }
 
-    return 1 + min(depthRec(node->left), depthRec(node->right));
+    return 1 + std::max(depthRec(node->left), depthRec(node->right));
 }
 
 template <typename T>

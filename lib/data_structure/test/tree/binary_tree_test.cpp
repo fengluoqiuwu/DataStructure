@@ -134,22 +134,44 @@ TEST_F(BinaryTreeTest,OperatorEqualTest)
 
 TEST_F(BinaryTreeTest,FunctionSearchTest)
 {
-
+    ASSERT_TRUE(test_tree->search(1));
+    ASSERT_FALSE(test_tree->search(0));
 }
 
-TEST_F(BinaryTreeTest,FunctionInorderTest){}
+TEST_F(BinaryTreeTest,FunctionOrderTest)
+{
+    ASSERT_EQ(test_tree->to_string(TreeData::PREORDER),"1 2 3 4 6 5 8 7");
 
-TEST_F(BinaryTreeTest,FunctionPreorderTest){}
+    ASSERT_EQ(test_tree->to_string(TreeData::INORDER),"4 3 2 5 6 1 7 8");
 
-TEST_F(BinaryTreeTest,FunctionPostorderTest){}
+    ASSERT_EQ(test_tree->to_string(TreeData::POSTORDER),"4 3 6 5 2 8 7 1");
+}
 
-TEST_F(BinaryTreeTest,FunctionClearTest){}
+TEST_F(BinaryTreeTest,FunctionClearTest)
+{
+    test_tree->clear();
 
-TEST_F(BinaryTreeTest,FunctionIsEmptyTest){}
+    ASSERT_TRUE(test_tree->is_empty());
+}
 
-TEST_F(BinaryTreeTest,FunctionGetDepthTest){}
+TEST_F(BinaryTreeTest,FunctionIsEmptyTest)
+{
+    const auto tree = new binary_tree<int>();
 
-TEST_F(BinaryTreeTest,FunctionGetSizeTest){}
+    ASSERT_TRUE(tree->is_empty());
+
+    delete tree;
+}
+
+TEST_F(BinaryTreeTest,FunctionGetDepthTest)
+{
+    ASSERT_EQ(test_tree->get_depth(),4);
+}
+
+TEST_F(BinaryTreeTest,FunctionGetSizeTest)
+{
+    ASSERT_EQ(test_tree->get_size(),8);
+}
 
 TEST_F(BinaryTreeTest,IteratorTest){}
 

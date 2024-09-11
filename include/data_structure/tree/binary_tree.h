@@ -53,7 +53,7 @@ protected:
      * @param value The value to search for.
      * @return True if the value is found, false otherwise.
      */
-    static bool searchRec(tree_node* node, T& value);
+    static bool searchRec(tree_node* node, const T& value);
 
 public:
     /**
@@ -188,6 +188,7 @@ public:
      * @param doSomething A function to apply to each node's data during traversal.
      */
     void clear(std::function<void(const T&)> doSomething);
+    void clear(){clear([](const T&) {});}
 
     /**
      * @brief Checks if the tree is empty.
