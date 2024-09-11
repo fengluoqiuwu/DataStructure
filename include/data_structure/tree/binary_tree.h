@@ -316,8 +316,9 @@ public:
      *
      * This iterator provides bidirectional traversal capabilities for the binary tree.
      */
-    class Iterator : iterator::BidirectionalIterator<T, tree_node> {
+    class Iterator{
     public:
+        static constexpr iterator::type type=iterator::BIDIRECTIONAL;
 
         /**
          * @brief Checks if the iterator has a left child.
@@ -408,14 +409,14 @@ public:
          *
          * @return Reference to the data in the current node.
          */
-        T& operator*() const override;
+        T& operator*() const;
 
         /**
          * @brief Accesses the node's data using arrow operator.
          *
          * @return Pointer to the data in the current node.
          */
-        T* operator->() const override;
+        T* operator->() const;
 
         /**
          * Equal operator
@@ -442,21 +443,20 @@ public:
          *
          * @return Reference to this iterator.
          */
-        iterator::ForwardIterator<T, tree_node>& operator++() override;
+        Iterator& operator++();
 
         /**
          * @brief Moves the iterator to the previous node in the traversal.
          *
          * @return Reference to this iterator.
          */
-        iterator::BidirectionalIterator<T, tree_node>& operator--() override;
+        Iterator& operator--();
 
     private:
         friend class binary_tree;
 
-        using iterator::BidirectionalIterator<T, tree_node>::current;
-
-        binary_tree& outer;
+        const binary_tree& outer; /** reference of linked list */
+        tree_node * current;      /** current pointer*/
 
         /**
          * @brief Gets the node pointed to by the iterator.
@@ -471,7 +471,7 @@ public:
          * @param node current node
          * @param outer reference of binary tree
          */
-        explicit Iterator(tree_node *node,binary_tree& outer): outer(outer)
+        explicit Iterator(tree_node *node,const binary_tree& outer): outer(outer)
         {
          this->current = node;
         }
@@ -484,8 +484,9 @@ public:
      * This iterator provides bidirectional traversal capabilities for the binary tree,
      * with read-only access to the data.
      */
-    class ConstIterator : iterator::BidirectionalConstIterator<T, tree_node> {
+    class ConstIterator{
     public:
+        static constexpr iterator::type type=iterator::BIDIRECTIONAL;
 
         /**
          * @brief Checks if the iterator has a left child.
@@ -563,14 +564,14 @@ public:
          *
          * @return Const reference to the data in the current node.
          */
-        const T& operator*() const override;
+        const T& operator*() const;
 
         /**
          * @brief Accesses the node's data using arrow operator.
          *
          * @return Const pointer to the data in the current node.
          */
-        const T* operator->() const override;
+        const T* operator->() const;
 
         /**
          * Equal operator
@@ -597,21 +598,20 @@ public:
          *
          * @return Reference to this const iterator.
          */
-        iterator::ForwardConstIterator<T, tree_node>& operator++() override;
+        ConstIterator& operator++();
 
         /**
          * @brief Moves the iterator to the previous node in the traversal.
          *
          * @return Reference to this const iterator.
          */
-        iterator::BidirectionalConstIterator<T, tree_node>& operator--() override;
+        ConstIterator& operator--();
 
     private:
         friend class binary_tree;
 
-        using iterator::BidirectionalConstIterator<T, tree_node>::current;
-
-        const binary_tree& outer;
+        const binary_tree& outer;   /** reference of linked list */
+        const tree_node * current;  /** current pointer*/
 
         /**
          * @brief Gets the node pointed to by the iterator.
@@ -626,9 +626,9 @@ public:
          * @param node current node
          * @param outer reference of binary tree
          */
-        explicit ConstIterator(tree_node *node,const binary_tree& outer): outer(outer)
+        explicit ConstIterator(const tree_node *node,const binary_tree& outer): outer(outer)
         {
-         this->current = node;
+             current = node;
         }
     };
 

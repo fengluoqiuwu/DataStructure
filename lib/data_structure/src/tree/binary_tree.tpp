@@ -242,7 +242,7 @@ T* binary_tree<T>::Iterator::operator->() const
 }
 
 template <typename T>
-iterator::ForwardIterator<T, typename binary_tree<T>::tree_node>& binary_tree<T>::Iterator::operator++()
+typename binary_tree<T>::Iterator& binary_tree<T>::Iterator::operator++()
 {
     if(current == nullptr)
     {
@@ -281,7 +281,7 @@ iterator::ForwardIterator<T, typename binary_tree<T>::tree_node>& binary_tree<T>
 }
 
 template <typename T>
-iterator::BidirectionalIterator<T, typename binary_tree<T>::tree_node>& binary_tree<T>::Iterator::operator--()
+typename binary_tree<T>::Iterator& binary_tree<T>::Iterator::operator--()
 {
     if (current==nullptr)
     {
@@ -521,7 +521,7 @@ const T* binary_tree<T>::ConstIterator::operator->() const
 }
 
 template <typename T>
-iterator::ForwardConstIterator<T, typename binary_tree<T>::tree_node>& binary_tree<T>::ConstIterator::operator++()
+typename binary_tree<T>::ConstIterator& binary_tree<T>::ConstIterator::operator++()
 {
     if(current == nullptr)
     {
@@ -561,7 +561,7 @@ iterator::ForwardConstIterator<T, typename binary_tree<T>::tree_node>& binary_tr
 }
 
 template <typename T>
-iterator::BidirectionalConstIterator<T, typename binary_tree<T>::tree_node>& binary_tree<T>::ConstIterator::operator--()
+typename binary_tree<T>::ConstIterator& binary_tree<T>::ConstIterator::operator--()
 {
     if (current==nullptr)
     {

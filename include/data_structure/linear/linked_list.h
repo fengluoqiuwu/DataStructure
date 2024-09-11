@@ -465,7 +465,7 @@ public:
         friend class linked_list;
 
         const linked_list& outer;     /** reference of linked list */
-        const Node * current;   /** current pointer*/
+        const Node * current;         /** current pointer*/
 
         /**
          * Constructor only can use by LinkedList
