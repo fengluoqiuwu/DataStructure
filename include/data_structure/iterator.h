@@ -7,6 +7,14 @@
 
 namespace iterator
 {
+enum type
+{
+    BASIC,
+    FORWARD,
+    BIDIRECTIONAL,
+    RANDOM_ACCESS
+};
+
 /**
  * Basic Iterator
  * @tparam T Type of the data

@@ -11,11 +11,6 @@
 #include "object.h"
 
 /**
- * Basic iterator class
- */
-#include "iterator.h"
-
-/**
  * Linear Data structure class
  */
 #include "linear.h"

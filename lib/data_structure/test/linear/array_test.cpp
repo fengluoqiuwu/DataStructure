@@ -201,8 +201,8 @@ TEST_F(ArrayTest,IteratorTest)
     auto it_copy=it+1;
     auto it_copy2=it2-1;
 
-    ASSERT_EQ(**it_copy,4);
-    ASSERT_EQ(**it_copy2,8);
+    ASSERT_EQ(*it_copy,4);
+    ASSERT_EQ(*it_copy2,8);
 
     ASSERT_TRUE(it<it2);
     ASSERT_TRUE(it2>it);
@@ -232,8 +232,8 @@ TEST_F(ArrayTest,ConstIteratorTest)
     auto it_copy=it+1;
     auto it_copy2=it2-1;
 
-    ASSERT_EQ(**it_copy,4);
-    ASSERT_EQ(**it_copy2,8);
+    ASSERT_EQ(*it_copy,4);
+    ASSERT_EQ(*it_copy2,8);
 
     ASSERT_TRUE(it<it2);
     ASSERT_TRUE(it2>it);

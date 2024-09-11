@@ -174,23 +174,24 @@ public:
     /**
      * Array iterator, for not const linked list
      */
-    class Iterator : iterator::RandomAccessIterator<int,int>
+    class Iterator
     {
     public:
+        static constexpr iterator::type type=iterator::RANDOM_ACCESS;
 
         /**
          * This method allows you to access and modify the value at the current position of the iterator.
          * Complexity: O(1)
          * @return A reference to the value pointed to by the iterator
          */
-        int& operator*() const override;
+        int& operator*() const;
 
         /**
          * This method provides access to the value pointed to by the iterator, similar to dereferencing the iterator.
          * Complexity: O(1)
          * @return A pointer to the value pointed to by the iterator.
          */
-        int* operator->() const override;
+        int* operator->() const;
 
         /**
          * Equal operator
@@ -219,20 +220,20 @@ public:
          * Complexity: O(1)
          * @return A reference to the updated iterator after it has been incremented.
          */
-        iterator::ForwardIterator<int,int>& operator++() override;
+        Iterator& operator++();
 
         /**
          * This method moves the iterator backward by one position (pre-decrement) and returns the iterator itself.
          * Complexity: O(1)
          * @return  A reference to the updated iterator after it has been decremented.
          */
-        iterator::BidirectionalIterator<int,int>& operator--() override;
+        Iterator& operator--();
 
         /**
          * destructor
          * Complexity: O(1)
          */
-        ~Iterator() override;
+        ~Iterator();
 
         /**
          * This method advances the iterator by 'n' positions and returns the iterator itself.
@@ -240,7 +241,7 @@ public:
          * @param n moving distance
          * @return A reference to the updated iterator after advancing it by 'n' positions.
          */
-        RandomAccessIterator<int, int>& operator+=(size_t n) override;
+        Iterator& operator+=(size_t n);
 
         /**
          * This method moves the iterator backward by 'n' positions and returns the iterator itself.
@@ -248,7 +249,7 @@ public:
          * @param n moving distance
          * @return A reference to the updated iterator after moving it back by 'n' positions.
          */
-        RandomAccessIterator<int, int>& operator-=(size_t n) override;
+        Iterator& operator-=(size_t n);
 
         /**
          * This method creates a copy of the iterator advanced by 'n' positions.
@@ -256,7 +257,7 @@ public:
          * @param n moving distance
          * @return An iterator pointing to the position 'n' steps ahead of the current iterator.
          */
-        RandomAccessIterator<int, int>* operator+(size_t n) const override;
+        Iterator operator+(size_t n) const;
 
         /**
          * This method creates a copy of the iterator moved back by 'n' positions.
@@ -264,7 +265,7 @@ public:
          * @param n moving distance
          * @return An iterator pointing to the position 'n' steps behind the current iterator.
          */
-        RandomAccessIterator<int, int>* operator-(size_t n) const override;
+        Iterator operator-(size_t n) const;
 
         /**
          * This method compares if the current iterator is before the other iterator.
@@ -272,7 +273,6 @@ public:
          * @param other other iterator
          * @return true if the current iterator is less than the other iterator; otherwise, false.
          */
-        bool operator<(const RandomAccessIterator<int, int>& other) const override;
         bool operator<(const Iterator& other) const;
 
         /**
@@ -281,7 +281,6 @@ public:
          * @param other other iterator
          * @return true if the current iterator is greater than the other iterator; otherwise, false.
          */
-        bool operator>(const RandomAccessIterator<int, int>& other) const override;
         bool operator>(const Iterator& other) const;
 
         /**
@@ -290,7 +289,6 @@ public:
          * @param other other iterator
          * @return true if the current iterator is less than or equal to the other iterator; otherwise, false.
          */
-        bool operator<=(const RandomAccessIterator<int, int>& other) const override;
         bool operator<=(const Iterator& other) const;
 
         /**
@@ -299,7 +297,6 @@ public:
          * @param other other iterator
          * @return true if the current iterator is greater than or equal to the other iterator; otherwise, false.
          */
-        bool operator>=(const RandomAccessIterator<int, int>& other) const override;
         bool operator>=(const Iterator& other) const;
 
         /**
@@ -308,16 +305,13 @@ public:
          * @param other other iterator
          * @return The number of positions between the current iterator and the other iterator.
          */
-        size_t operator-(const RandomAccessIterator<int, int>& other) const override;
         size_t operator-(const Iterator& other) const;
 
     private:
         friend class array;
 
-        /**
-         * reference of array
-         */
-        array& outer;
+        const array& outer; /** reference of linked list */
+        int* current;       /** current pointer*/
 
     protected:
         /**
@@ -326,7 +320,7 @@ public:
          * @param node current node
          * @param outer array reference
          */
-        explicit Iterator(int *node,array& outer) : outer(outer)
+        explicit Iterator(int *node,const array& outer) : outer(outer)
         {
             this->current = node;
         }
@@ -336,23 +330,24 @@ public:
     /**
      * Array iterator, for const linked list
      */
-    class ConstIterator : iterator::RandomAccessConstIterator<int,int>
+    class ConstIterator
     {
     public:
+        static constexpr iterator::type type=iterator::RANDOM_ACCESS;
 
         /**
          * This method allows you to access and modify the value at the current position of the iterator.
          * Complexity: O(1)
          * @return A reference to the value pointed to by the iterator
          */
-        const int& operator*() const override;
+        const int& operator*() const;
 
         /**
          * This method provides access to the value pointed to by the iterator, similar to dereferencing the iterator.
          * Complexity: O(1)
          * @return A pointer to the value pointed to by the iterator.
          */
-        const int* operator->() const override;
+        const int* operator->() const;
 
         /**
          * Equal operator
@@ -381,20 +376,20 @@ public:
          * Complexity: O(1)
          * @return A reference to the updated iterator after it has been incremented.
          */
-        iterator::ForwardConstIterator<int,int>& operator++() override;
+        ConstIterator& operator++();
 
         /**
          * This method moves the iterator backward by one position (pre-decrement) and returns the iterator itself.
          * Complexity: O(1)
          * @return  A reference to the updated iterator after it has been decremented.
          */
-        iterator::BidirectionalConstIterator<int,int>& operator--() override;
+        ConstIterator& operator--();
 
         /**
          * destructor
          * Complexity: O(1)
          */
-        ~ConstIterator() override;
+        ~ConstIterator();
 
         /**
          * This method advances the iterator by 'n' positions and returns the iterator itself.
@@ -402,7 +397,7 @@ public:
          * @param n moving distance
          * @return A reference to the updated iterator after advancing it by 'n' positions.
          */
-        RandomAccessConstIterator& operator+=(size_t n) override;
+        ConstIterator& operator+=(size_t n);
 
         /**
          * This method moves the iterator backward by 'n' positions and returns the iterator itself.
@@ -410,7 +405,7 @@ public:
          * @param n moving distance
          * @return A reference to the updated iterator after moving it back by 'n' positions.
          */
-        RandomAccessConstIterator& operator-=(size_t n) override;
+        ConstIterator& operator-=(size_t n);
 
         /**
          * This method creates a copy of the iterator advanced by 'n' positions.
@@ -418,7 +413,7 @@ public:
          * @param n moving distance
          * @return An iterator pointing to the position 'n' steps ahead of the current iterator.
          */
-        RandomAccessConstIterator* operator+(size_t n) const override;
+        ConstIterator operator+(size_t n) const;
 
         /**
          * This method creates a copy of the iterator moved back by 'n' positions.
@@ -426,7 +421,7 @@ public:
          * @param n moving distance
          * @return An iterator pointing to the position 'n' steps behind the current iterator.
          */
-        RandomAccessConstIterator* operator-(size_t n) const override;
+        ConstIterator operator-(size_t n) const;
 
         /**
          * This method compares if the current iterator is before the other iterator.
@@ -434,7 +429,6 @@ public:
          * @param other other iterator
          * @return true if the current iterator is less than the other iterator; otherwise, false.
          */
-        bool operator<(const RandomAccessConstIterator& other) const override;
         bool operator<(const ConstIterator& other) const;
 
         /**
@@ -443,7 +437,6 @@ public:
          * @param other other iterator
          * @return true if the current iterator is greater than the other iterator; otherwise, false.
          */
-        bool operator>(const RandomAccessConstIterator& other) const override;
         bool operator>(const ConstIterator& other) const;
 
         /**
@@ -452,7 +445,6 @@ public:
          * @param other other iterator
          * @return true if the current iterator is less than or equal to the other iterator; otherwise, false.
          */
-        bool operator<=(const RandomAccessConstIterator& other) const override;
         bool operator<=(const ConstIterator& other) const;
 
         /**
@@ -461,7 +453,6 @@ public:
          * @param other other iterator
          * @return true if the current iterator is greater than or equal to the other iterator; otherwise, false.
          */
-        bool operator>=(const RandomAccessConstIterator& other) const override;
         bool operator>=(const ConstIterator& other) const;
 
         /**
@@ -470,16 +461,13 @@ public:
          * @param other other iterator
          * @return The number of positions between the current iterator and the other iterator.
          */
-        size_t operator-(const RandomAccessConstIterator& other) const override;
         size_t operator-(const ConstIterator& other) const;
     private:
 
         friend class array;
 
-        /**
-         * reference of array
-         */
-        const array& outer;
+        const array& outer; /** reference of linked list */
+        const int* current; /** current pointer*/
 
     protected:
         /**
@@ -488,7 +476,7 @@ public:
          * @param node current node
          * @param outer reference of array
          */
-        explicit ConstIterator(int *node, const array& outer): outer(outer)
+        explicit ConstIterator(const int *node, const array& outer): outer(outer)
         {
             this->current = node;
         }

@@ -320,23 +320,24 @@ public:
     /**
      * Linked List iterator, for not const linked list
      */
-    class Iterator : iterator::BidirectionalIterator<T,Node>
+    class Iterator
     {
     public:
+        static constexpr iterator::type type=iterator::BIDIRECTIONAL;
 
         /**
          * This method allows you to access and modify the value at the current position of the iterator.
          * Complexity: O(1)
          * @return A reference to the value pointed to by the iterator
          */
-        T& operator*() const override;
+        T& operator*() const;
 
         /**
          * This method provides access to the value pointed to by the iterator, similar to dereferencing the iterator.
          * Complexity: O(1)
          * @return A pointer to the value pointed to by the iterator.
          */
-        T* operator->() const override;
+        T* operator->() const;
 
         /**
          * Equal operator
@@ -365,26 +366,24 @@ public:
          * Complexity: O(1)
          * @return A reference to the updated iterator after it has been incremented.
          */
-        iterator::ForwardIterator<T,Node>& operator++() override;
+        Iterator& operator++();
 
         /**
          * This method moves the iterator backward by one position (pre-decrement) and returns the iterator itself.
          * Complexity: O(1)
          * @return  A reference to the updated iterator after it has been decremented.
          */
-        iterator::BidirectionalIterator<T,Node>& operator--() override;
+        Iterator& operator--();
 
         /**
          * destructor
          */
-        ~Iterator() override;
+        ~Iterator();
     private:
         friend class linked_list;
 
-        /**
-         * reference of linked list
-         */
-        linked_list& outer;
+        const linked_list& outer; /** reference of linked list */
+        Node * current;     /** current pointer*/
 
         /**
          * Constructor only can use by LinkedList
@@ -392,7 +391,7 @@ public:
          * @param node current node
          * @param outer reference of linked list
          */
-        explicit Iterator(Node *node,linked_list& outer): outer(outer)
+        explicit Iterator(Node *node,const linked_list& outer): outer(outer)
         {
             this->current = node;
         }
@@ -402,7 +401,7 @@ public:
     /**
      * Linked List iterator, for const linked list
      */
-    class ConstIterator : iterator::BidirectionalConstIterator<T,Node>
+    class ConstIterator
     {
     public:
 
@@ -411,14 +410,14 @@ public:
          * Complexity: O(1)
          * @return A reference to the value pointed to by the iterator
          */
-        const T& operator*() const override;
+        const T& operator*() const;
 
         /**
          * This method provides access to the value pointed to by the iterator, similar to dereferencing the iterator.
          * Complexity: O(1)
          * @return A pointer to the value pointed to by the iterator.
          */
-        const T* operator->() const override;
+        const T* operator->() const;
 
         /**
          * Equal operator
@@ -447,28 +446,26 @@ public:
          * Complexity: O(1)
          * @return A reference to the updated iterator after it has been incremented.
          */
-        iterator::ForwardConstIterator<T,Node>& operator++() override;
+        ConstIterator& operator++();
 
         /**
          * This method moves the iterator backward by one position (pre-decrement) and returns the iterator itself.
          * Complexity: O(1)
          * @return  A reference to the updated iterator after it has been decremented.
          */
-        iterator::BidirectionalConstIterator<T,Node>& operator--() override;
+        ConstIterator& operator--();
 
         /**
          * destructor
          * Complexity: O(1)
          */
-        ~ConstIterator() override;
+        ~ConstIterator();
     private:
 
         friend class linked_list;
 
-        /**
-         * reference of linked list
-         */
-        const linked_list& outer;
+        const linked_list& outer;     /** reference of linked list */
+        const Node * current;   /** current pointer*/
 
         /**
          * Constructor only can use by LinkedList

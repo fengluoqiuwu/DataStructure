@@ -7,7 +7,6 @@
 #include <algorithm>
 
 #include "array.h"
-#include "iterator.h"
 
 array::array(const size_t size)
 {
@@ -272,7 +271,7 @@ int* array::Iterator::operator->() const
     return this->current;
 }
 
-iterator::ForwardIterator<int, int>& array::Iterator::operator++()
+array::Iterator& array::Iterator::operator++()
 {
     if (this->current<outer.data||this->current>outer.data+outer.size)
     {
@@ -283,7 +282,7 @@ iterator::ForwardIterator<int, int>& array::Iterator::operator++()
     return *this;
 }
 
-iterator::BidirectionalIterator<int, int>& array::Iterator::operator--()
+array::Iterator& array::Iterator::operator--()
 {
     if (this->current<outer.data||this->current>outer.data+outer.size)
     {
@@ -296,7 +295,7 @@ iterator::BidirectionalIterator<int, int>& array::Iterator::operator--()
 
 array::Iterator::~Iterator() = default;
 
-iterator::RandomAccessIterator<int, int>& array::Iterator::operator+=(size_t n)
+array::Iterator& array::Iterator::operator+=(size_t n)
 {
     if (this->current<outer.data||this->current>outer.data+outer.size)
     {
@@ -307,7 +306,7 @@ iterator::RandomAccessIterator<int, int>& array::Iterator::operator+=(size_t n)
     return *this;
 }
 
-iterator::RandomAccessIterator<int, int>& array::Iterator::operator-=(size_t n)
+array::Iterator& array::Iterator::operator-=(const size_t n)
 {
     if (this->current<outer.data||this->current>outer.data+outer.size)
     {
@@ -318,31 +317,24 @@ iterator::RandomAccessIterator<int, int>& array::Iterator::operator-=(size_t n)
     return *this;
 }
 
-iterator::RandomAccessIterator<int, int>* array::Iterator::operator+(size_t n) const
+array::Iterator array::Iterator::operator+(const size_t n) const
 {
     if (this->current<outer.data||this->current>outer.data+outer.size)
     {
         throw std::runtime_error("Error: Iterator out of range.");
     }
 
-    return new Iterator(current+n,outer);
+    return Iterator(current+n,outer);
 }
 
-iterator::RandomAccessIterator<int, int>* array::Iterator::operator-(size_t n) const
+array::Iterator array::Iterator::operator-(size_t n) const
 {
     if (this->current<outer.data||this->current>outer.data+outer.size)
     {
         throw std::runtime_error("Error: Iterator out of range.");
     }
 
-    return new Iterator(current-n,outer);
-}
-
-bool array::Iterator::operator<(const RandomAccessIterator<int, int>& other) const
-{
-    const auto& temp_other = dynamic_cast<const Iterator&>(other);
-
-    return *this < temp_other ;
+    return Iterator(current-n,outer);
 }
 
 bool array::Iterator::operator<(const Iterator& other) const
@@ -363,13 +355,6 @@ bool array::Iterator::operator<(const Iterator& other) const
     return this->current < other.current;
 }
 
-bool array::Iterator::operator>(const RandomAccessIterator<int, int>& other) const
-{
-    const auto& temp_other = dynamic_cast<const Iterator&>(other);
-
-    return *this > temp_other ;
-}
-
 bool array::Iterator::operator>(const Iterator& other) const
 {
     if (&this->outer!=&other.outer)
@@ -386,13 +371,6 @@ bool array::Iterator::operator>(const Iterator& other) const
     }
 
     return this->current > other.current;
-}
-
-bool array::Iterator::operator<=(const RandomAccessIterator<int, int>& other) const
-{
-    const auto& temp_other = dynamic_cast<const Iterator&>(other);
-
-    return *this <= temp_other ;
 }
 
 bool array::Iterator::operator<=(const Iterator& other) const
@@ -413,13 +391,6 @@ bool array::Iterator::operator<=(const Iterator& other) const
     return this->current <= other.current;
 }
 
-bool array::Iterator::operator>=(const RandomAccessIterator<int, int>& other) const
-{
-    const auto& temp_other = dynamic_cast<const Iterator&>(other);
-
-    return *this >= temp_other ;
-}
-
 bool array::Iterator::operator>=(const Iterator& other) const
 {
     if (&this->outer!=&other.outer)
@@ -436,13 +407,6 @@ bool array::Iterator::operator>=(const Iterator& other) const
     }
 
     return this->current >= other.current;
-}
-
-size_t array::Iterator::operator-(const RandomAccessIterator<int, int>& other) const
-{
-    const auto& temp_other = dynamic_cast<const Iterator&>(other);
-
-    return *this - temp_other ;
 }
 
 size_t array::Iterator::operator-(const Iterator& other) const
@@ -483,7 +447,7 @@ const int* array::ConstIterator::operator->() const
     return this->current;
 }
 
-iterator::ForwardConstIterator<int, int>& array::ConstIterator::operator++()
+array::ConstIterator& array::ConstIterator::operator++()
 {
     if (this->current<outer.data||this->current>outer.data+outer.size)
     {
@@ -494,7 +458,7 @@ iterator::ForwardConstIterator<int, int>& array::ConstIterator::operator++()
     return *this;
 }
 
-iterator::BidirectionalConstIterator<int, int>& array::ConstIterator::operator--()
+array::ConstIterator& array::ConstIterator::operator--()
 {
     if (this->current<outer.data||this->current>outer.data+outer.size)
     {
@@ -507,7 +471,7 @@ iterator::BidirectionalConstIterator<int, int>& array::ConstIterator::operator--
 
 array::ConstIterator::~ConstIterator() = default;
 
-iterator::RandomAccessConstIterator<int, int>& array::ConstIterator::operator+=(size_t n)
+array::ConstIterator& array::ConstIterator::operator+=(size_t n)
 {
     if (this->current<outer.data||this->current>outer.data+outer.size)
     {
@@ -518,7 +482,7 @@ iterator::RandomAccessConstIterator<int, int>& array::ConstIterator::operator+=(
     return *this;
 }
 
-iterator::RandomAccessConstIterator<int, int>& array::ConstIterator::operator-=(size_t n)
+array::ConstIterator& array::ConstIterator::operator-=(size_t n)
 {
     if (this->current<outer.data||this->current>outer.data+outer.size)
     {
@@ -529,31 +493,24 @@ iterator::RandomAccessConstIterator<int, int>& array::ConstIterator::operator-=(
     return *this;
 }
 
-iterator::RandomAccessConstIterator<int, int>* array::ConstIterator::operator+(size_t n) const
+array::ConstIterator array::ConstIterator::operator+(const size_t n) const
 {
     if (this->current<outer.data||this->current>outer.data+outer.size)
     {
         throw std::runtime_error("Error: Iterator out of range.");
     }
 
-    return new ConstIterator(current+n,outer);
+    return ConstIterator(current+n,outer);
 }
 
-iterator::RandomAccessConstIterator<int, int>* array::ConstIterator::operator-(size_t n) const
+array::ConstIterator array::ConstIterator::operator-(const size_t n) const
 {
     if (this->current<outer.data||this->current>outer.data+outer.size)
     {
         throw std::runtime_error("Error: Iterator out of range.");
     }
 
-    return new ConstIterator(current-n,outer);
-}
-
-bool array::ConstIterator::operator<(const RandomAccessConstIterator<int, int>& other) const
-{
-    const auto& temp_other = dynamic_cast<const ConstIterator&>(other);
-
-    return *this < temp_other ;
+    return ConstIterator(current-n,outer);
 }
 
 bool array::ConstIterator::operator<(const ConstIterator& other) const
@@ -574,14 +531,7 @@ bool array::ConstIterator::operator<(const ConstIterator& other) const
     return this->current < other.current;
 }
 
-bool array::ConstIterator::operator>(const RandomAccessConstIterator<int, int>& other) const
-{
-    const auto& temp_other = dynamic_cast<const ConstIterator&>(other);
-
-    return *this > temp_other ;
-}
-
-inline bool array::ConstIterator::operator>(const ConstIterator& other) const
+bool array::ConstIterator::operator>(const ConstIterator& other) const
 {
     if (&this->outer!=&other.outer)
     {
@@ -599,14 +549,7 @@ inline bool array::ConstIterator::operator>(const ConstIterator& other) const
     return this->current > other.current;
 }
 
-bool array::ConstIterator::operator<=(const RandomAccessConstIterator<int, int>& other) const
-{
-    const auto& temp_other = dynamic_cast<const ConstIterator&>(other);
-
-    return *this <= temp_other ;
-}
-
-inline bool array::ConstIterator::operator<=(const ConstIterator& other) const
+bool array::ConstIterator::operator<=(const ConstIterator& other) const
 {
     if (&this->outer!=&other.outer)
     {
@@ -624,14 +567,7 @@ inline bool array::ConstIterator::operator<=(const ConstIterator& other) const
     return this->current <= other.current;
 }
 
-bool array::ConstIterator::operator>=(const RandomAccessConstIterator<int, int>& other) const
-{
-    const auto& temp_other = dynamic_cast<const ConstIterator&>(other);
-
-    return *this >= temp_other ;
-}
-
-inline bool array::ConstIterator::operator>=(const ConstIterator& other) const
+bool array::ConstIterator::operator>=(const ConstIterator& other) const
 {
     if (&this->outer!=&other.outer)
     {
@@ -649,14 +585,7 @@ inline bool array::ConstIterator::operator>=(const ConstIterator& other) const
     return this->current >= other.current;
 }
 
-size_t array::ConstIterator::operator-(const RandomAccessConstIterator<int, int>& other) const
-{
-    const auto& temp_other = dynamic_cast<const ConstIterator&>(other);
-
-    return *this - temp_other;
-}
-
-inline size_t array::ConstIterator::operator-(const ConstIterator& other) const
+size_t array::ConstIterator::operator-(const ConstIterator& other) const
 {
     if (&this->outer!=&other.outer)
     {

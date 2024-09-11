@@ -307,7 +307,7 @@ TEST_F(LinkedListTest,FunctionToStringAndFromStringTest)
 TEST_F(LinkedListTest,IteratorTest)
 {
     int a[10] = {1,2,3,4,5,6,7,8,9,10};
-    auto* list = new linked_list<int>(a,10);
+    auto* list = new linked_list(a,10);
 
     linked_list<int>::Iterator it = list->begin();
     linked_list<int>::Iterator it2 = list->end();
@@ -331,7 +331,7 @@ TEST_F(LinkedListTest,IteratorTest)
     test* t = new test[5];
     t[0].data = 1;t[1].data = 2;t[2].data = 3;t[3].data = 4;t[4].data = 5;
 
-    auto* list1 = new linked_list<test>(t,5);
+    auto* list1 = new linked_list(t,5);
 
     ASSERT_EQ(list1->begin()->data,1);
 
@@ -341,7 +341,7 @@ TEST_F(LinkedListTest,IteratorTest)
 TEST_F(LinkedListTest,ConstIteratorTest)
 {
     int a[10] = {1,2,3,4,5,6,7,8,9,10};
-    const auto* list = new linked_list<int>(a,10);
+    const auto* list = new linked_list(a,10);
 
     linked_list<int>::ConstIterator it = list->begin();
     linked_list<int>::ConstIterator it2 = list->end();
@@ -363,7 +363,7 @@ TEST_F(LinkedListTest,ConstIteratorTest)
     test* t = new test[5];
     t[0].data = 1;t[1].data = 2;t[2].data = 3;t[3].data = 4;t[4].data = 5;
 
-    auto* list1 = new linked_list<test>(t,5);
+    auto* list1 = new linked_list(t,5);
 
     ASSERT_EQ(list1->begin()->data,1);
 

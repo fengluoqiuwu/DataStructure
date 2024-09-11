@@ -527,7 +527,7 @@ T* linked_list<T>::Iterator::operator->() const
 }
 
 template <typename T>
-iterator::ForwardIterator<T,typename linked_list<T>::Node>& linked_list<T>::Iterator::operator++()
+typename linked_list<T>::Iterator& linked_list<T>::Iterator::operator++()
 {
     if (this->current == nullptr||this->current==outer.head_node) {
         throw std::out_of_range("Attempt to increment an invalid iterator.");
@@ -537,7 +537,7 @@ iterator::ForwardIterator<T,typename linked_list<T>::Node>& linked_list<T>::Iter
 }
 
 template <typename T>
-iterator::BidirectionalIterator<T,typename linked_list<T>::Node>& linked_list<T>::Iterator::operator--()
+typename linked_list<T>::Iterator& linked_list<T>::Iterator::operator--()
 {
     if (this->current == nullptr||this->current==outer.head_node || this->current->previous == nullptr) {
         throw std::out_of_range("Attempt to decrement an invalid iterator.");
@@ -569,7 +569,7 @@ const T* linked_list<T>::ConstIterator::operator->() const
 }
 
 template <typename T>
-iterator::ForwardConstIterator<T,typename linked_list<T>::Node>& linked_list<T>::ConstIterator::operator++()
+typename linked_list<T>::ConstIterator& linked_list<T>::ConstIterator::operator++()
 {
     if (this->current == nullptr||this->current==outer.head_node) {
         throw std::out_of_range("Attempt to increment an invalid iterator.");
@@ -579,7 +579,7 @@ iterator::ForwardConstIterator<T,typename linked_list<T>::Node>& linked_list<T>:
 }
 
 template <typename T>
-iterator::BidirectionalConstIterator<T,typename linked_list<T>::Node>& linked_list<T>::ConstIterator::operator--()
+typename linked_list<T>::ConstIterator& linked_list<T>::ConstIterator::operator--()
 {
     if (this->current == nullptr||this->current==outer.head_node || this->current->previous == nullptr) {
         throw std::out_of_range("Attempt to decrement an invalid iterator.");
