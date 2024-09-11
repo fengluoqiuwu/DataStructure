@@ -172,8 +172,10 @@ public:
 
     /**
      * @brief Clears the tree, releasing all resources.
+     *
+     * @param doSomething A function to apply to each node's data during traversal.
      */
-    void clear() const;
+    void clear(std::function<void(const T&)> doSomething);
 
     /**
      * @brief Checks if the tree is empty.
@@ -248,14 +250,14 @@ private:
      * @param label end label, witch means it is nullptr
      */
     template<typename D>
-    static void buildRec(tree_node*&parent, tree_node*& node,D& begin,D& end,T& label);
+    static void buildRec(tree_node* parent, tree_node*& node, D& begin, D& end, const T& label);
 
     /**
      * @brief Recursively compares this tree with another tree for equality.
      *
      * @param node The node to start comparison from.
      * @param other_node Other node to compare with.
-     * @return Are they equal or not.
+     * @return Are they equal or not?
      */
     static bool equalRec(tree_node* node, tree_node* other_node);
 
@@ -593,5 +595,7 @@ public:
      */
     ConstIterator end() const;
 };
+
+#include "binary_tree.tpp"
 
 #endif //BINARY_TREE_H

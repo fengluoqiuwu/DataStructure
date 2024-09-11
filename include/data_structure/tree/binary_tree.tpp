@@ -1,8 +1,7 @@
 //
 // Created by Eden_ on 2024/9/9.
 //
-
-#include "binary_tree.h"
+#pragma once
 
 template <typename T>
 bool binary_tree<T>::Iterator::has_left() const
@@ -510,10 +509,10 @@ binary_tree<T>::binary_tree(const T* initialize_list, const size_t& size, const 
         return;
     }
 
-    T* begin=initialize_list;
-    T* end=initialize_list+size;
+    const T* begin=initialize_list;
+    const T* end=initialize_list+size;
 
-    buildRec<T*>(nullptr, root,begin,end, label);
+    buildRec<const T*>(nullptr, root,begin,end, label);
 }
 
 template <typename T>
@@ -550,7 +549,7 @@ binary_tree<T>::binary_tree(binary_tree&& other) noexcept
 template <typename T>
 binary_tree<T>::~binary_tree()
 {
-    clear();
+    clear([](const T&) {});
 }
 
 template <typename T>
@@ -606,30 +605,9 @@ void binary_tree<T>::postorder(std::function<void(const T&)> doSomething) const
 }
 
 template <typename T>
-template <typename D>
-void binary_tree<T>::buildRec(tree_node*&parent, tree_node*& node, D& begin, D& end, T& label)
+void binary_tree<T>::clear(std::function<void(const T&)> doSomething)
 {
-    if(begin!=end)
-    {
-        if(*begin!=label)
-        {
-            node = new tree_node(*begin,nullptr,nullptr,parent);
-            ++begin;
-            buildRec(node,node->left,begin,end,label);
-            buildRec(node,node->right,begin,end,label);
-        }
-        else
-        {
-            ++begin;
-        }
-    }
-}
-
-template <typename T>
-void binary_tree<T>::clear() const
-{
-    destroyRec(root);
-    delete root;
+    destroyRec(root,doSomething);
     root = nullptr;
 }
 
@@ -707,9 +685,29 @@ void binary_tree<T>::postorderRec(tree_node* node, std::function<void(const T&)>
         return;
     }
 
-    preorderRec(node->left,doSomething);
+    postorderRec(node->left,doSomething);
     postorderRec(node->right,doSomething);
     doSomething(node->data);
+}
+
+template <typename T>
+template <typename D>
+void binary_tree<T>::buildRec(tree_node* parent, tree_node*& node, D& begin, D& end, const T& label)
+{
+    if(begin!=end)
+    {
+        if(*begin!=label)
+        {
+            node = new tree_node(*begin,nullptr,nullptr,parent);
+            ++begin;
+            buildRec(node,node->left,begin,end,label);
+            buildRec(node,node->right,begin,end,label);
+        }
+        else
+        {
+            ++begin;
+        }
+    }
 }
 
 template <typename T>

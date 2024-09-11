@@ -20,4 +20,9 @@
  */
 #include "linear.h"
 
+/**
+ * Tree Data structure class
+ */
+#include "tree.h"
+
 #endif //DATA_STRUCTURE_H
