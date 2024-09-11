@@ -8,7 +8,7 @@
 class BinaryTreeTest : public ::testing::Test {
 protected:
     binary_tree<int>* test_tree=nullptr;
-    const int a[17]={1,2,3,4,0,0,0,5,0,6,0,0,7,0,8,0,0};
+    int a[17]={1,2,3,4,0,0,0,5,0,6,0,0,7,0,8,0,0};
 
     void SetUp() override {
         test_tree=new binary_tree<int>(a,17,0);
@@ -38,24 +38,104 @@ TEST_F(BinaryTreeTest,ConstructorDefaultTest)
 
 TEST_F(BinaryTreeTest,ConstructorWithASingleValueTest)
 {
+    const auto tree = new binary_tree<int>(1);
 
+    ASSERT_TRUE(*tree->begin()==1);
+    binary_tree<int>::Iterator it=tree->begin();++it;
+    ASSERT_TRUE(it==tree->end());
+
+    delete tree;
 }
 
-TEST_F(BinaryTreeTest,ConstructorWithAPreorderArrayTest){}
+TEST_F(BinaryTreeTest,ConstructorWithAPreorderArrayTest)
+{
+    ASSERT_EQ(test_tree->to_string(TreeData::PREORDER),"1 2 3 4 6 5 8 7");
 
-TEST_F(BinaryTreeTest,ConstructorWithAPreorderLinkedListTest){}
+    ASSERT_EQ(test_tree->to_string(TreeData::INORDER),"4 3 2 5 6 1 7 8");
 
-TEST_F(BinaryTreeTest,ConstructorCopyTest){}
+    ASSERT_EQ(test_tree->to_string(TreeData::POSTORDER),"4 3 6 5 2 8 7 1");
+}
 
-TEST_F(BinaryTreeTest,ConstructorMoveTest){}
+TEST_F(BinaryTreeTest,ConstructorWithAPreorderLinkedListTest)
+{
+    const auto init_list = new linked_list<int>(a,17);
+    const auto tree = new binary_tree<int>(*init_list,0);
 
-TEST_F(BinaryTreeTest,OperatorCopyTest){}
+    ASSERT_EQ(tree->to_string(TreeData::PREORDER),"1 2 3 4 6 5 8 7");
 
-TEST_F(BinaryTreeTest,OperatorMoveTest){}
+    ASSERT_EQ(tree->to_string(TreeData::INORDER),"4 3 2 5 6 1 7 8");
 
-TEST_F(BinaryTreeTest,OperatorEqualTest){}
+    ASSERT_EQ(tree->to_string(TreeData::POSTORDER),"4 3 6 5 2 8 7 1");
 
-TEST_F(BinaryTreeTest,FunctionSearchTest){}
+    delete init_list;
+    delete tree;
+}
+
+TEST_F(BinaryTreeTest,ConstructorCopyTest)
+{
+    const auto tree = new binary_tree<int>(*test_tree);
+
+    ASSERT_EQ(tree->to_string(TreeData::PREORDER),"1 2 3 4 6 5 8 7");
+
+    ASSERT_EQ(tree->to_string(TreeData::INORDER),"4 3 2 5 6 1 7 8");
+
+    ASSERT_EQ(tree->to_string(TreeData::POSTORDER),"4 3 6 5 2 8 7 1");
+
+    delete tree;
+}
+
+TEST_F(BinaryTreeTest,ConstructorMoveTest)
+{
+    const auto tree = new binary_tree<int>(std::move(*test_tree));
+
+    ASSERT_EQ(tree->to_string(TreeData::PREORDER),"1 2 3 4 6 5 8 7");
+
+    ASSERT_EQ(tree->to_string(TreeData::INORDER),"4 3 2 5 6 1 7 8");
+
+    ASSERT_EQ(tree->to_string(TreeData::POSTORDER),"4 3 6 5 2 8 7 1");
+
+    ASSERT_TRUE(test_tree->is_empty());
+
+    delete tree;
+}
+
+TEST_F(BinaryTreeTest,OperatorCopyTest)
+{
+    auto tree = *test_tree;
+    tree = *test_tree;
+
+    ASSERT_EQ(tree.to_string(TreeData::PREORDER),"1 2 3 4 6 5 8 7");
+
+    ASSERT_EQ(tree.to_string(TreeData::INORDER),"4 3 2 5 6 1 7 8");
+
+    ASSERT_EQ(tree.to_string(TreeData::POSTORDER),"4 3 6 5 2 8 7 1");
+}
+
+TEST_F(BinaryTreeTest,OperatorMoveTest)
+{
+    auto tree = *test_tree;
+    tree = std::move(*test_tree);
+
+    ASSERT_EQ(tree.to_string(TreeData::PREORDER),"1 2 3 4 6 5 8 7");
+
+    ASSERT_EQ(tree.to_string(TreeData::INORDER),"4 3 2 5 6 1 7 8");
+
+    ASSERT_EQ(tree.to_string(TreeData::POSTORDER),"4 3 6 5 2 8 7 1");
+}
+
+TEST_F(BinaryTreeTest,OperatorEqualTest)
+{
+    const auto tree = new binary_tree<int>(*test_tree);
+
+    ASSERT_TRUE(*tree==*test_tree);
+
+    delete tree;
+}
+
+TEST_F(BinaryTreeTest,FunctionSearchTest)
+{
+
+}
 
 TEST_F(BinaryTreeTest,FunctionInorderTest){}
 

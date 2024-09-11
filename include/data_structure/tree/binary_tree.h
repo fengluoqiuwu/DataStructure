@@ -303,7 +303,7 @@ private:
      * @param node The node to start copying from.
      * @param other_node The tree to be copied.
      */
-    static void copyRec(const tree_node* parent, tree_node*& node,const tree_node* other_node);
+    static void copyRec(tree_node* parent, tree_node*& node,const tree_node* other_node);
 
     tree_node* root; ///< Pointer to the root node of the tree.
 

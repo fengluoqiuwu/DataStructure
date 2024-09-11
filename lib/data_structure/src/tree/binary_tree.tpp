@@ -640,14 +640,13 @@ binary_tree<T>::binary_tree(const linked_list<T>& initialize_list, const T& labe
     auto begin=initialize_list.begin();
     auto end=initialize_list.end();
 
-    buildRec<linked_list<T>::ConstIterator>(nullptr, root,begin,end,label);
+    buildRec<typename linked_list<T>::ConstIterator>(nullptr, root,begin,end,label);
 }
 
 template <typename T>
 binary_tree<T>::binary_tree(const binary_tree& other)
 {
-    root = new tree_node();
-
+    root = nullptr;
     copyRec(nullptr,root,other.root);
 }
 
@@ -662,14 +661,14 @@ template <typename T>
 binary_tree<T>::~binary_tree()
 {
     clear([](const T&) {});
+    root = nullptr;
 }
 
 template <typename T>
 binary_tree<T>& binary_tree<T>::operator=(const binary_tree& other)
 {
     if (this == &other) return *this;
-    clear();
-    root = new tree_node();
+    clear([](const T&) {});
     copyRec(nullptr,root,other.root);
     return *this;
 }
@@ -678,7 +677,7 @@ template <typename T>
 binary_tree<T>& binary_tree<T>::operator=(binary_tree&& other) noexcept
 {
     if (this == &other) return *this;
-    clear();
+    clear([](const T&) {});
     root = other.root;
     other.root = nullptr;
     return *this;
@@ -904,7 +903,7 @@ size_t binary_tree<T>::depthRec(tree_node* node)
 }
 
 template <typename T>
-void binary_tree<T>::copyRec(const tree_node* parent,tree_node*& node,const tree_node* other_node)
+void binary_tree<T>::copyRec(tree_node* parent,tree_node*& node,const tree_node* other_node)
 {
     if (node != nullptr)
     {
