@@ -226,7 +226,7 @@ private:
      *
      * @param root The root of binary tree.
      */
-    explicit binary_tree(const tree_node& root);
+    explicit binary_tree(tree_node& root);
 
     /**
      * @brief Recursively destroys the tree.
@@ -356,39 +356,45 @@ public:
 
         /**
          * @brief Moves the iterator to the left child.
+         *
+         * @return self
          */
-        void left();
+        Iterator& left();
 
         /**
          * @brief Moves the iterator to the right child.
+         *
+         * @return self
          */
-        void right();
+        Iterator& right();
 
         /**
          * @brief Moves the iterator to the parent node.
+         *
+         * @return self
          */
-        void parent();
+        Iterator& parent();
 
         /**
          * @brief Sets the value of the left child.
          *
          * @param value The new value for the left child.
          */
-        void set_left(T& value) const;
+        void set_left(const T& value) const;
 
         /**
          * @brief Sets the value of the right child.
          *
          * @param value The new value for the right child.
          */
-        void set_right(T& value) const;
+        void set_right(const T& value) const;
 
         /**
          * @brief Cuts the subtree rooted at the current node.
          *
          * @return The binary tree with the subtree removed.
          */
-        binary_tree cut_subtree() const;
+        binary_tree cut_subtree();
 
         /**
          * @brief Copies the subtree rooted at the current node.
@@ -519,31 +525,31 @@ public:
         /**
          * @brief Moves the iterator to the left child.
          */
-        void left();
+        ConstIterator& left();
 
         /**
          * @brief Moves the iterator to the right child.
          */
-        void right();
+        ConstIterator& right();
 
         /**
          * @brief Moves the iterator to the parent node.
          */
-        void parent();
+        ConstIterator& parent();
 
         /**
          * @brief Sets the value of the left child.
          *
          * @param value The new value for the left child.
          */
-        void set_left(T& value) const;
+        void set_left(const T& value) const;
 
         /**
          * @brief Sets the value of the right child.
          *
          * @param value The new value for the right child.
          */
-        void set_right(T& value) const;
+        void set_right(const T& value) const;
 
         /**
          * @brief Copies the subtree rooted at the current node.

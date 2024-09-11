@@ -37,7 +37,7 @@ typename binary_tree<T>::Iterator binary_tree<T>::Iterator::get_left() const
         throw std::invalid_argument("Error in get_left()");
     }
 
-    return Iterator(current->left,*this);
+    return Iterator(current->left,outer);
 }
 
 template <typename T>
@@ -53,7 +53,7 @@ typename binary_tree<T>::Iterator binary_tree<T>::Iterator::get_right() const
         throw std::invalid_argument("Error get_right()");
     }
 
-    return Iterator(current->right,*this);
+    return Iterator(current->right,outer);
 }
 
 template <typename T>
@@ -69,11 +69,11 @@ typename binary_tree<T>::Iterator binary_tree<T>::Iterator::get_parent() const
         throw std::invalid_argument("Error get_parent()");
     }
 
-    return Iterator(current->parent,*this);
+    return Iterator(current->parent,outer);
 }
 
 template <typename T>
-void binary_tree<T>::Iterator::left()
+typename binary_tree<T>::Iterator& binary_tree<T>::Iterator::left()
 {
     if (current == nullptr)
     {
@@ -86,10 +86,12 @@ void binary_tree<T>::Iterator::left()
     }
 
     current = current->left;
+
+    return *this;
 }
 
 template <typename T>
-void binary_tree<T>::Iterator::right()
+typename binary_tree<T>::Iterator& binary_tree<T>::Iterator::right()
 {
     if (current == nullptr)
     {
@@ -102,10 +104,12 @@ void binary_tree<T>::Iterator::right()
     }
 
     current = current->right;
+
+    return *this;
 }
 
 template <typename T>
-void binary_tree<T>::Iterator::parent()
+typename binary_tree<T>::Iterator& binary_tree<T>::Iterator::parent()
 {
     if (current == nullptr)
     {
@@ -118,10 +122,12 @@ void binary_tree<T>::Iterator::parent()
     }
 
     current = current->parent;
+
+    return *this;
 }
 
 template <typename T>
-void binary_tree<T>::Iterator::set_left(T& value) const
+void binary_tree<T>::Iterator::set_left(const T& value) const
 {
     if(current == nullptr)
     {
@@ -138,7 +144,7 @@ void binary_tree<T>::Iterator::set_left(T& value) const
 }
 
 template <typename T>
-void binary_tree<T>::Iterator::set_right(T& value) const
+void binary_tree<T>::Iterator::set_right(const T& value) const
 {
     if (current == nullptr)
     {
@@ -155,23 +161,23 @@ void binary_tree<T>::Iterator::set_right(T& value) const
 }
 
 template <typename T>
-binary_tree<T> binary_tree<T>::Iterator::cut_subtree() const
+binary_tree<T> binary_tree<T>::Iterator::cut_subtree()
 {
     if(current == nullptr)
     {
-        return binary_tree<T>();
+        return binary_tree();
     }
 
     if(current->parent == nullptr)
     {
-        binary_tree temp=std::move(*this);
+        binary_tree temp=std::move(outer);
 
         return temp;
     }
 
     binary_tree temp(*current);
 
-    if(current->parent->has_left())
+    if(current->parent->left!=nullptr)
     {
         if(current->parent->left==current)
         {
@@ -199,12 +205,12 @@ binary_tree<T> binary_tree<T>::Iterator::copy_subtree() const
 {
     if(current == nullptr)
     {
-        return binary_tree<T>();
+        return binary_tree();
     }
 
     if(current->parent == nullptr)
     {
-        binary_tree temp=*this;
+        binary_tree temp=outer;
         return temp;
     }
 
@@ -242,7 +248,7 @@ iterator::ForwardIterator<T, typename binary_tree<T>::tree_node>& binary_tree<T>
     {
         throw std::invalid_argument("Error in operator++(),where current is nullptr.");
     }
-    //中序遍历
+    //先序遍历
     if (has_left())//如果有左子节点就返回左子节点的迭代器
     {
         left();
@@ -257,7 +263,7 @@ iterator::ForwardIterator<T, typename binary_tree<T>::tree_node>& binary_tree<T>
 
     //如果既没有左子节点也没有右子节点就回溯parent，
     //直到回到根节点或者找到子节点满足其有未遍历过的右子节点
-    while (current->parent != nullptr&&current->parent->right!=nullptr&&current->parent->right!=current)
+    while (current->parent != nullptr&&(current->parent->right==nullptr||current->parent->right==current))
     {
         parent();
     }
@@ -288,9 +294,9 @@ iterator::BidirectionalIterator<T, typename binary_tree<T>::tree_node>& binary_t
     }
 
     // 回到父节点，如果是从右节点回溯的且父节点有左节点，则返回左子树的最右下节点，否则返回自身（父节点）
-    parent();
     if (current->parent->left != nullptr&&current->parent->right == current)
     {
+        parent();
         left();
         while (has_right()||has_left())
         {
@@ -303,6 +309,10 @@ iterator::BidirectionalIterator<T, typename binary_tree<T>::tree_node>& binary_t
                 left();
             }
         }
+    }
+    else
+    {
+        parent();
     }
 
     return *this;
@@ -347,7 +357,7 @@ typename binary_tree<T>::ConstIterator binary_tree<T>::ConstIterator::get_left()
         throw std::invalid_argument("Error in get_left()");
     }
 
-    return ConstIterator(current->left,*this);
+    return ConstIterator(current->left,outer);
 }
 
 template <typename T>
@@ -363,7 +373,7 @@ typename binary_tree<T>::ConstIterator binary_tree<T>::ConstIterator::get_right(
         throw std::invalid_argument("Error get_right()");
     }
 
-    return ConstIterator(current->right,*this);
+    return ConstIterator(current->right,outer);
 }
 
 template <typename T>
@@ -379,11 +389,11 @@ typename binary_tree<T>::ConstIterator binary_tree<T>::ConstIterator::get_parent
         throw std::invalid_argument("Error get_parent()");
     }
 
-    return ConstIterator(current->parent,*this);
+    return ConstIterator(current->parent,outer);
 }
 
 template <typename T>
-void binary_tree<T>::ConstIterator::left()
+typename binary_tree<T>::ConstIterator& binary_tree<T>::ConstIterator::left()
 {
     if (current == nullptr)
     {
@@ -396,10 +406,12 @@ void binary_tree<T>::ConstIterator::left()
     }
 
     current = current->left;
+
+    return *this;
 }
 
 template <typename T>
-void binary_tree<T>::ConstIterator::right()
+typename binary_tree<T>::ConstIterator& binary_tree<T>::ConstIterator::right()
 {
     if (current == nullptr)
     {
@@ -412,10 +424,12 @@ void binary_tree<T>::ConstIterator::right()
     }
 
     current = current->right;
+
+    return *this;
 }
 
 template <typename T>
-void binary_tree<T>::ConstIterator::parent()
+typename binary_tree<T>::ConstIterator& binary_tree<T>::ConstIterator::parent()
 {
     if (current == nullptr)
     {
@@ -428,10 +442,12 @@ void binary_tree<T>::ConstIterator::parent()
     }
 
     current = current->parent;
+
+    return *this;
 }
 
 template <typename T>
-void binary_tree<T>::ConstIterator::set_left(T& value) const
+void binary_tree<T>::ConstIterator::set_left(const T& value) const
 {
     if(current == nullptr)
     {
@@ -448,7 +464,7 @@ void binary_tree<T>::ConstIterator::set_left(T& value) const
 }
 
 template <typename T>
-void binary_tree<T>::ConstIterator::set_right(T& value) const
+void binary_tree<T>::ConstIterator::set_right(const T& value) const
 {
     if (current == nullptr)
     {
@@ -469,12 +485,12 @@ binary_tree<T> binary_tree<T>::ConstIterator::copy_subtree() const
 {
     if(current == nullptr)
     {
-        return binary_tree<T>();
+        return binary_tree();
     }
 
     if(current->parent == nullptr)
     {
-        binary_tree temp=*this;
+        binary_tree temp=outer;
         return temp;
     }
 
@@ -512,7 +528,7 @@ iterator::ForwardConstIterator<T, typename binary_tree<T>::tree_node>& binary_tr
         throw std::invalid_argument("Error in operator++(),where current is nullptr.");
     }
 
-    //中序遍历
+    //先序遍历
     if (has_left())//如果有左子节点就返回左子节点的迭代器
     {
         left();
@@ -527,7 +543,7 @@ iterator::ForwardConstIterator<T, typename binary_tree<T>::tree_node>& binary_tr
 
     //如果既没有左子节点也没有右子节点就回溯parent，
     //直到回到根节点或者找到子节点满足其有未遍历过的右子节点
-    while (current->parent != nullptr&&current->parent->right!=nullptr&&current->parent->right!=current)
+    while (current->parent != nullptr&&(current->parent->right==nullptr||current->parent->right==current))
     {
         parent();
     }
@@ -558,9 +574,9 @@ iterator::BidirectionalConstIterator<T, typename binary_tree<T>::tree_node>& bin
     }
 
     // 回到父节点，如果是从右节点回溯的且父节点有左节点，则返回左子树的最右下节点，否则返回自身（父节点）
-    parent();
     if (current->parent->left != nullptr&&current->parent->right == current)
     {
+        parent();
         left();
         while (has_right()||has_left())
         {
@@ -573,6 +589,10 @@ iterator::BidirectionalConstIterator<T, typename binary_tree<T>::tree_node>& bin
                 left();
             }
         }
+    }
+    else
+    {
+        parent();
     }
 
     return *this;
@@ -779,7 +799,7 @@ std::string binary_tree<T>::to_string(traversal type) const
 }
 
 template <typename T>
-binary_tree<T>::binary_tree(const tree_node& root)
+binary_tree<T>::binary_tree(tree_node& root)
 {
     this->root = &root;
 }

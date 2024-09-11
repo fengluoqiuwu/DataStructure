@@ -173,6 +173,108 @@ TEST_F(BinaryTreeTest,FunctionGetSizeTest)
     ASSERT_EQ(test_tree->get_size(),8);
 }
 
-TEST_F(BinaryTreeTest,IteratorTest){}
+TEST_F(BinaryTreeTest,IteratorTest)
+{
+    auto it = test_tree->begin();
+    *it=-1;
+    ASSERT_EQ(*it,-1);
+    ASSERT_TRUE(it.has_left());
+    ASSERT_TRUE(it.has_right());
 
-TEST_F(BinaryTreeTest,ConstIteratorTest){}
+    const auto left=it.get_left();
+    const auto right=it.get_right();
+    ASSERT_EQ(*left,2);
+    ASSERT_EQ(*right,7);
+    ASSERT_FALSE(right.has_left());
+    ASSERT_TRUE(right.get_parent()==it);
+
+    it.left();
+    ASSERT_EQ(*it,2);
+    it.parent();
+    ASSERT_EQ(*it,-1);
+    it.right();
+    ASSERT_EQ(*it,7);
+    it.parent();
+
+    it.set_left(0);
+    it.set_right(0);
+
+    ASSERT_EQ(*left,0);
+    ASSERT_EQ(*right,0);
+
+    auto right2=right.get_right();
+    const binary_tree compare(8);
+    const binary_tree<int> compare2=right2.copy_subtree();
+    ASSERT_EQ(compare,compare2);
+    ASSERT_EQ(*right2,8);
+
+    const binary_tree<int> compare3=right2.cut_subtree();
+    ASSERT_EQ(compare,compare3);
+    ASSERT_EQ(*right2,0);
+    ASSERT_FALSE(right2.has_right());
+
+    auto it2=test_tree->begin();
+    ASSERT_TRUE(it2==it);
+    ASSERT_FALSE(it2!=it);
+    it2.left();
+    ASSERT_FALSE(it2==it);
+    ASSERT_TRUE(it2!=it);
+
+    auto it_4 = test_tree->begin().left().left().left();
+
+    ++it_4;
+    ASSERT_TRUE(*it_4==5);
+    --it_4;
+    ASSERT_TRUE(*it_4==4);
+}
+
+TEST_F(BinaryTreeTest,ConstIteratorTest)
+{
+    const auto tree = *test_tree;
+
+    auto it = tree.begin();
+    ASSERT_EQ(*it,1);
+    ASSERT_TRUE(it.has_left());
+    ASSERT_TRUE(it.has_right());
+
+    const auto left=it.get_left();
+    const auto right=it.get_right();
+    ASSERT_EQ(*left,2);
+    ASSERT_EQ(*right,7);
+    ASSERT_FALSE(right.has_left());
+    ASSERT_TRUE(right.get_parent()==it);
+
+    it.left();
+    ASSERT_EQ(*it,2);
+    it.parent();
+    ASSERT_EQ(*it,1);
+    it.right();
+    ASSERT_EQ(*it,7);
+    it.parent();
+
+    it.set_left(0);
+    it.set_right(0);
+
+    ASSERT_EQ(*left,0);
+    ASSERT_EQ(*right,0);
+
+    auto right2=right.get_right();
+    const binary_tree compare(8);
+    const binary_tree<int> compare2=right2.copy_subtree();
+    ASSERT_EQ(compare,compare2);
+    ASSERT_EQ(*right2,8);
+
+    auto it2=tree.begin();
+    ASSERT_TRUE(it2==it);
+    ASSERT_FALSE(it2!=it);
+    it2.left();
+    ASSERT_FALSE(it2==it);
+    ASSERT_TRUE(it2!=it);
+
+    auto it_4 = test_tree->begin().left().left().left();
+
+    ++it_4;
+    ASSERT_TRUE(*it_4==5);
+    --it_4;
+    ASSERT_TRUE(*it_4==4);
+}
