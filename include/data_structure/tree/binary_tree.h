@@ -456,6 +456,7 @@ public:
         friend class binary_tree;
 
         const binary_tree& outer; /** reference of linked list */
+        const traversal it_type;  /** iterator traversal type*/
         tree_node * current;      /** current pointer*/
 
         /**
@@ -470,8 +471,9 @@ public:
          * Complexity: O(1)
          * @param node current node
          * @param outer reference of binary tree
+         * @param type iterator traversal type
          */
-        explicit Iterator(tree_node *node,const binary_tree& outer): outer(outer)
+        explicit Iterator(tree_node *node,const binary_tree& outer,const traversal type): outer(outer),it_type(type)
         {
          this->current = node;
         }
@@ -611,6 +613,7 @@ public:
         friend class binary_tree;
 
         const binary_tree& outer;   /** reference of linked list */
+        const traversal it_type;    /** iterator traversal type*/
         const tree_node * current;  /** current pointer*/
 
         /**
@@ -625,8 +628,9 @@ public:
          * Complexity: O(1)
          * @param node current node
          * @param outer reference of binary tree
+         * @param type traversal type
          */
-        explicit ConstIterator(const tree_node *node,const binary_tree& outer): outer(outer)
+        explicit ConstIterator(const tree_node *node,const binary_tree& outer, const traversal type): outer(outer),it_type(type)
         {
              current = node;
         }
@@ -635,30 +639,38 @@ public:
     /**
      * get begin iterator,which is pointing to root
      * Complexity: O(1)
+     *
+     * @param type traversal type
      * @return begin iterator
      */
-    Iterator begin();
+    Iterator begin(traversal type);
 
     /**
      * get end iterator,which is pointing to null
      * Complexity: O(1)
+     *
+     * @param type traversal type
      * @return end iterator
      */
-    Iterator end();
+    Iterator end(traversal type);
 
     /**
      * get const begin iterator,which is pointing to root
      * Complexity: O(1)
+     *
+     * @param type traversal type
      * @return const begin iterator
      */
-    ConstIterator begin() const;
+    ConstIterator begin(traversal type) const;
 
     /**
      * get const end iterator,which is pointing to null
      * Complexity: O(1)
+     *
+     * @param type traversal type
      * @return const end iterator
      */
-    ConstIterator end() const;
+    ConstIterator end(traversal type) const;
 };
 
 #include "binary_tree.tpp"
