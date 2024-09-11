@@ -193,6 +193,28 @@ public:
         int* operator->() const override;
 
         /**
+         * Equal operator
+         * Complexity: O(1)
+         * @param other other iterator
+         * @return true if their currents are equal else false
+         */
+        bool operator==(const Iterator& other) const
+        {
+         return this->current == other.current;
+        }
+
+        /**
+         * Not Equal operator
+         * Complexity: O(1)
+         * @param other other iterator
+         * @return true if their currents are not equal else false
+         */
+        bool operator!=(const Iterator& other) const
+        {
+         return this->current != other.current;
+        }
+
+        /**
          * This is the pre-increment operator. It advances the iterator by one position and returns a reference to the modified iterator itself.
          * Complexity: O(1)
          * @return A reference to the updated iterator after it has been incremented.
@@ -331,6 +353,28 @@ public:
          * @return A pointer to the value pointed to by the iterator.
          */
         const int* operator->() const override;
+
+        /**
+         * Equal operator
+         * Complexity: O(1)
+         * @param other other const iterator
+         * @return true if their currents are equal else false
+         */
+        bool operator==(const ConstIterator& other) const
+        {
+         return this->current == other.current;
+        }
+
+        /**
+         * Not Equal operator
+         * Complexity: O(1)
+         * @param other other const iterator
+         * @return true if their currents are not equal else false
+         */
+        bool operator!=(const ConstIterator& other) const
+        {
+         return this->current != other.current;
+        }
 
         /**
          * This is the pre-increment operator. It advances the iterator by one position and returns a reference to the modified iterator itself.

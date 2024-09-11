@@ -2,6 +2,7 @@
 // Created by Eden_ on 2024/9/9.
 //
 #pragma once
+#include "binary_tree.h"
 
 template <typename T>
 bool binary_tree<T>::Iterator::has_left() const
@@ -738,6 +739,44 @@ template <typename T>
 size_t binary_tree<T>::get_size() const
 {
     return size_Rec(root);
+}
+
+template <typename T>
+std::string binary_tree<T>::to_string(traversal type) const
+{
+    if (root == nullptr)
+    {
+        return "";
+    }
+
+    std::stringstream ss;
+
+    switch (type)
+    {
+    case INORDER:
+        inorder([&ss](const int i)
+        {
+            ss<<i<<' ';
+        });
+        break;
+    case PREORDER:
+        preorder([&ss](const int i)
+        {
+            ss<<i<<' ';
+        });
+        break;
+    case POSTORDER:
+        postorder([&ss](const int i)
+        {
+            ss<<i<<' ';
+        });
+        break;
+    }
+
+    std::string result = ss.str();
+    result.pop_back();
+
+    return result;
 }
 
 template <typename T>

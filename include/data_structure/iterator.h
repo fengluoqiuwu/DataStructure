@@ -203,7 +203,7 @@ public:
      * @param other other iterator
      * @return true if the current iterator is equal to the other iterator (i.e., they point to the same position); otherwise, false.
      */
-    virtual bool operator==(const ConstIterator& other)
+    bool operator==(const ConstIterator& other)
     {
      return current == other.current;
     }
@@ -213,7 +213,7 @@ public:
      * @param other other iterator
      * @return true if the current iterator is not equal to the other iterator (i.e., they point to different positions); otherwise, false.
      */
-    virtual bool operator!=(const ConstIterator& other)
+    bool operator!=(const ConstIterator& other)
     {
      return current != other.current;
     }

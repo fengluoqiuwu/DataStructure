@@ -8,6 +8,18 @@
 #include <iterator.h>
 #include "linked_list.h"
 
+namespace TreeData
+{
+    enum traversal
+    {
+     PREORDER,
+     INORDER,
+     POSTORDER
+    };
+}
+
+using namespace TreeData;
+
 /**
  * @brief A template class for binary trees.
  *
@@ -63,7 +75,7 @@ public:
     /**
      * @brief Constructor with an array of values.
      *
-     * Initializes the tree with values from an array.
+     * Initializes the tree with values from a preorder array.
      *
      * @param initialize_list Pointer to the array of values.
      * @param size The number of elements in the array.
@@ -74,7 +86,7 @@ public:
     /**
      * @brief Constructor with a linked list.
      *
-     * Initializes the tree with values from a linked list.
+     * Initializes the tree with values from a preorder linked list.
      *
      * @param initialize_list The linked list of values.
      * @param label Ending label.
@@ -198,6 +210,13 @@ public:
      */
     [[nodiscard]] size_t get_size() const;
 
+    /**
+     * transform binary tree to string
+     * @param type traversal type
+     * @return traversal string
+     */
+    [[nodiscard]] std::string to_string(traversal type) const;
+
 private:
     /**
      * @brief Constructor with root.
@@ -289,7 +308,6 @@ private:
     tree_node* root; ///< Pointer to the root node of the tree.
 
 public:
-
 
     friend class Iterator;
     /**
@@ -391,6 +409,26 @@ public:
          * @return Pointer to the data in the current node.
          */
         T* operator->() const override;
+
+        /**
+         * Equal operator
+         * @param other other iterator
+         * @return true if their currents are equal else false
+         */
+        bool operator==(const Iterator& other) const
+        {
+            return this->current == other.current;
+        }
+
+        /**
+         * Not Equal operator
+         * @param other other iterator
+         * @return true if their currents are not equal else false
+         */
+        bool operator!=(const Iterator& other) const
+        {
+            return this->current != other.current;
+        }
 
         /**
          * @brief Advances the iterator to the next node in the traversal.
@@ -526,6 +564,26 @@ public:
          * @return Const pointer to the data in the current node.
          */
         const T* operator->() const override;
+
+        /**
+         * Equal operator
+         * @param other other const iterator
+         * @return true if their currents are equal else false
+         */
+        bool operator==(const ConstIterator& other) const
+        {
+             return this->current == other.current;
+        }
+
+        /**
+         * Not Equal operator
+         * @param other other const iterator
+         * @return true if their currents are not equal else false
+         */
+        bool operator!=(const ConstIterator& other) const
+        {
+             return this->current != other.current;
+        }
 
         /**
          * @brief Advances the iterator to the next node in the traversal.

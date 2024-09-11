@@ -19,27 +19,58 @@ protected:
     }
 };
 
-TEST_F(BinaryTreeTest,InitTest)
-{
-    std::stringstream ss1,ss2,ss3;
+TEST_F(BinaryTreeTest,InitTest){
+    ASSERT_EQ(test_tree->to_string(TreeData::PREORDER),"1 2 3 4 6 5 8 7");
 
-    test_tree->preorder([&ss1](const int i)
-    {
-        ss1<<i<<' ';
-    });
-    ASSERT_EQ(ss1.str(),"1 2 3 4 6 5 8 7 ");
+    ASSERT_EQ(test_tree->to_string(TreeData::INORDER),"4 3 2 5 6 1 7 8");
 
-    test_tree->inorder([&ss2](const int i)
-    {
-        ss2<<i<<' ';
-    });
-    ASSERT_EQ(ss2.str(),"4 3 2 5 6 1 7 8 ");
-
-    test_tree->postorder([&ss3](const int i)
-    {
-        ss3<<i<<' ';
-    });
-    ASSERT_EQ(ss3.str(),"4 3 6 5 2 8 7 1 ");
+    ASSERT_EQ(test_tree->to_string(TreeData::POSTORDER),"4 3 6 5 2 8 7 1");
 }
 
-TEST_F(BinaryTreeTest)
+TEST_F(BinaryTreeTest,ConstructorDefaultTest)
+{
+    const auto tree = new binary_tree<int>();
+
+    ASSERT_TRUE(tree->begin()==tree->end());
+
+    delete tree;
+}
+
+TEST_F(BinaryTreeTest,ConstructorWithASingleValueTest)
+{
+
+}
+
+TEST_F(BinaryTreeTest,ConstructorWithAPreorderArrayTest){}
+
+TEST_F(BinaryTreeTest,ConstructorWithAPreorderLinkedListTest){}
+
+TEST_F(BinaryTreeTest,ConstructorCopyTest){}
+
+TEST_F(BinaryTreeTest,ConstructorMoveTest){}
+
+TEST_F(BinaryTreeTest,OperatorCopyTest){}
+
+TEST_F(BinaryTreeTest,OperatorMoveTest){}
+
+TEST_F(BinaryTreeTest,OperatorEqualTest){}
+
+TEST_F(BinaryTreeTest,FunctionSearchTest){}
+
+TEST_F(BinaryTreeTest,FunctionInorderTest){}
+
+TEST_F(BinaryTreeTest,FunctionPreorderTest){}
+
+TEST_F(BinaryTreeTest,FunctionPostorderTest){}
+
+TEST_F(BinaryTreeTest,FunctionClearTest){}
+
+TEST_F(BinaryTreeTest,FunctionIsEmptyTest){}
+
+TEST_F(BinaryTreeTest,FunctionGetDepthTest){}
+
+TEST_F(BinaryTreeTest,FunctionGetSizeTest){}
+
+TEST_F(BinaryTreeTest,IteratorTest){}
+
+TEST_F(BinaryTreeTest,ConstIteratorTest){}
