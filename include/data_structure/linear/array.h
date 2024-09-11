@@ -5,8 +5,8 @@
 #ifndef ARRAY_H
 #define ARRAY_H
 #include "object.h"
-#include "linked_list.h"
 #include "iterator.h"
+#include "linked_list.h"
 
 class array final : public object {
 public:
@@ -153,14 +153,9 @@ public:
     static array from_string(const std::string &str);
 
 private:
-    /**
-     * Size of the array
-     */
-    size_t size;
-    /**
-     * head pointer of the array
-     */
-    int* data;
+    size_t size; /** Size of the array */
+
+    int* data;   /** head pointer of the array */
 
     /**
      * clear data and release space

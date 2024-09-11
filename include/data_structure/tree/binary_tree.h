@@ -5,7 +5,7 @@
 #ifndef BINARY_TREE_H
 #define BINARY_TREE_H
 #include <functional>
-#include <iterator.h>
+#include "iterator.h"
 #include "linked_list.h"
 
 namespace TreeData

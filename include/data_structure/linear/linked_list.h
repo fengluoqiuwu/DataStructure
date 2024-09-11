@@ -4,8 +4,8 @@
 
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
-#include <iterator.h>
 
+#include "iterator.h"
 #include "object.h"
 
 /**
@@ -245,18 +245,9 @@ private:
     class Node
     {
     public:
-        /**
-         * data of the node
-         */
-        T data;
-        /**
-         * next node pointer
-         */
-        Node *next;
-        /**
-         * previous node pointer
-         */
-        Node *previous;
+        T data;         /** data of the node */
+        Node *next;     /** next node pointer */
+        Node *previous; /** previous node pointer */
 
         /**
          * constructor of all coefficients
@@ -292,18 +283,10 @@ private:
             previous = nullptr;
         }
     };
-    /**
-     * Linked List Head
-     */
-    Node *head_node = new Node(nullptr,nullptr);
-    /**
-     * Linked List Tail
-     */
-    Node *tail_node = new Node(nullptr,nullptr);
-    /**
-     * Linked List Length
-     */
-    size_t size = 0;
+
+    Node *head_node = new Node(nullptr,nullptr); /** Linked List Head */
+    Node *tail_node = new Node(nullptr,nullptr); /** Linked List Tail */
+    size_t size = 0;                             /** Linked List Length */
 
     /**
      * This function will return the Node has input index in previous linked_list.
