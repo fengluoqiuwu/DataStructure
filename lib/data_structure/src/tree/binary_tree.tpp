@@ -6,18 +6,30 @@
 template <typename T>
 bool binary_tree<T>::Iterator::has_left() const
 {
+    if (current == nullptr)
+    {
+        throw std::invalid_argument("Error in has_left() ,where current is nullptr.");
+    }
     return current->left != nullptr;
 }
 
 template <typename T>
 bool binary_tree<T>::Iterator::has_right() const
 {
+    if (current == nullptr)
+    {
+        throw std::invalid_argument("Error in has_right() ,where current is nullptr.");
+    }
     return current->right != nullptr;
 }
 
 template <typename T>
 typename binary_tree<T>::Iterator binary_tree<T>::Iterator::get_left() const
 {
+    if (current == nullptr)
+    {
+        throw std::invalid_argument("Error in get_left() ,where current is nullptr.");
+    }
     if (current->left == nullptr)
     {
         std::cerr << "Error in get_left() which left_child is nullptr" << std::endl;
@@ -30,6 +42,10 @@ typename binary_tree<T>::Iterator binary_tree<T>::Iterator::get_left() const
 template <typename T>
 typename binary_tree<T>::Iterator binary_tree<T>::Iterator::get_right() const
 {
+    if (current == nullptr)
+    {
+        throw std::invalid_argument("Error in get_right() ,where current is nullptr.");
+    }
     if (current->right == nullptr)
     {
         std::cerr << "Error get_right() which right_child is nullptr" << std::endl;
@@ -42,6 +58,10 @@ typename binary_tree<T>::Iterator binary_tree<T>::Iterator::get_right() const
 template <typename T>
 typename binary_tree<T>::Iterator binary_tree<T>::Iterator::get_parent() const
 {
+    if (current == nullptr)
+    {
+        throw std::invalid_argument("Error in get_parent() ,where current is nullptr.");
+    }
     if (current->parent == nullptr)
     {
         std::cerr << "Error get_parent() which parent is nullptr,maybe it is the root of a binary tree." << std::endl;
@@ -54,6 +74,10 @@ typename binary_tree<T>::Iterator binary_tree<T>::Iterator::get_parent() const
 template <typename T>
 void binary_tree<T>::Iterator::left()
 {
+    if (current == nullptr)
+    {
+        throw std::invalid_argument("Error in left() ,where current is nullptr.");
+    }
     if (current->left == nullptr)
     {
         std::cerr << "Error in left() which left child is nullptr" << std::endl;
@@ -66,6 +90,10 @@ void binary_tree<T>::Iterator::left()
 template <typename T>
 void binary_tree<T>::Iterator::right()
 {
+    if (current == nullptr)
+    {
+        throw std::invalid_argument("Error in right() ,where current is nullptr.");
+    }
     if (current->right == nullptr)
     {
         std::cerr << "Error in right() which right child is nullptr" << std::endl;
@@ -78,6 +106,10 @@ void binary_tree<T>::Iterator::right()
 template <typename T>
 void binary_tree<T>::Iterator::parent()
 {
+    if (current == nullptr)
+    {
+        throw std::invalid_argument("Error in parent() ,where current is nullptr.");
+    }
     if (current->parent == nullptr)
     {
         std::cerr << "Error in parent() which parent is nullptr" << std::endl;
@@ -90,6 +122,10 @@ void binary_tree<T>::Iterator::parent()
 template <typename T>
 void binary_tree<T>::Iterator::set_left(T& value) const
 {
+    if(current == nullptr)
+    {
+        throw std::invalid_argument("Error in set_left() ,where current is nullptr.");
+    }
     if (current->left != nullptr)
     {
         current->left->data = value;
@@ -103,6 +139,10 @@ void binary_tree<T>::Iterator::set_left(T& value) const
 template <typename T>
 void binary_tree<T>::Iterator::set_right(T& value) const
 {
+    if (current == nullptr)
+    {
+        throw std::invalid_argument("Error in set_right() ,where current is nullptr.");
+    }
     if (current->right != nullptr)
     {
         current->right->data = value;
@@ -116,6 +156,11 @@ void binary_tree<T>::Iterator::set_right(T& value) const
 template <typename T>
 binary_tree<T> binary_tree<T>::Iterator::cut_subtree() const
 {
+    if(current == nullptr)
+    {
+        return binary_tree<T>();
+    }
+
     if(current->parent == nullptr)
     {
         binary_tree temp=std::move(*this);
@@ -151,6 +196,11 @@ binary_tree<T> binary_tree<T>::Iterator::cut_subtree() const
 template <typename T>
 binary_tree<T> binary_tree<T>::Iterator::copy_subtree() const
 {
+    if(current == nullptr)
+    {
+        return binary_tree<T>();
+    }
+
     if(current->parent == nullptr)
     {
         binary_tree temp=*this;
@@ -187,6 +237,10 @@ T* binary_tree<T>::Iterator::operator->() const
 template <typename T>
 iterator::ForwardIterator<T, typename binary_tree<T>::tree_node>& binary_tree<T>::Iterator::operator++()
 {
+    if(current == nullptr)
+    {
+        throw std::invalid_argument("Error in operator++(),where current is nullptr.");
+    }
     //中序遍历
     if (has_left())//如果有左子节点就返回左子节点的迭代器
     {
@@ -222,6 +276,10 @@ iterator::ForwardIterator<T, typename binary_tree<T>::tree_node>& binary_tree<T>
 template <typename T>
 iterator::BidirectionalIterator<T, typename binary_tree<T>::tree_node>& binary_tree<T>::Iterator::operator--()
 {
+    if (current==nullptr)
+    {
+        throw std::invalid_argument("Error in operator--(),where current is nullptr.");
+    }
     if (current->parent == nullptr)//如果是根节点就返回空的迭代器
     {
         current=nullptr;
@@ -258,18 +316,30 @@ typename binary_tree<T>::tree_node* binary_tree<T>::Iterator::get_node() const
 template <typename T>
 bool binary_tree<T>::ConstIterator::has_left() const
 {
+    if (current == nullptr)
+    {
+        throw std::invalid_argument("Error in has_left() ,where current is nullptr.");
+    }
     return current->left != nullptr;
 }
 
 template <typename T>
 bool binary_tree<T>::ConstIterator::has_right() const
 {
+    if (current == nullptr)
+    {
+        throw std::invalid_argument("Error in has_right() ,where current is nullptr.");
+    }
     return current->right != nullptr;
 }
 
 template <typename T>
 typename binary_tree<T>::ConstIterator binary_tree<T>::ConstIterator::get_left() const
 {
+    if (current == nullptr)
+    {
+        throw std::invalid_argument("Error in get_left() ,where current is nullptr.");
+    }
     if (current->left == nullptr)
     {
         std::cerr << "Error in get_left() which left_child is nullptr" << std::endl;
@@ -282,6 +352,10 @@ typename binary_tree<T>::ConstIterator binary_tree<T>::ConstIterator::get_left()
 template <typename T>
 typename binary_tree<T>::ConstIterator binary_tree<T>::ConstIterator::get_right() const
 {
+    if (current == nullptr)
+    {
+        throw std::invalid_argument("Error in get_right() ,where current is nullptr.");
+    }
     if (current->right == nullptr)
     {
         std::cerr << "Error get_right() which right_child is nullptr" << std::endl;
@@ -294,6 +368,10 @@ typename binary_tree<T>::ConstIterator binary_tree<T>::ConstIterator::get_right(
 template <typename T>
 typename binary_tree<T>::ConstIterator binary_tree<T>::ConstIterator::get_parent() const
 {
+    if (current == nullptr)
+    {
+        throw std::invalid_argument("Error in get_parent() ,where current is nullptr.");
+    }
     if (current->parent == nullptr)
     {
         std::cerr << "Error get_parent() which parent is nullptr,maybe it is the root of a binary tree." << std::endl;
@@ -306,6 +384,10 @@ typename binary_tree<T>::ConstIterator binary_tree<T>::ConstIterator::get_parent
 template <typename T>
 void binary_tree<T>::ConstIterator::left()
 {
+    if (current == nullptr)
+    {
+        throw std::invalid_argument("Error in left() ,where current is nullptr.");
+    }
     if (current->left == nullptr)
     {
         std::cerr << "Error in left() which left child is nullptr" << std::endl;
@@ -318,6 +400,10 @@ void binary_tree<T>::ConstIterator::left()
 template <typename T>
 void binary_tree<T>::ConstIterator::right()
 {
+    if (current == nullptr)
+    {
+        throw std::invalid_argument("Error in right() ,where current is nullptr.");
+    }
     if (current->right == nullptr)
     {
         std::cerr << "Error in right() which right child is nullptr" << std::endl;
@@ -330,6 +416,10 @@ void binary_tree<T>::ConstIterator::right()
 template <typename T>
 void binary_tree<T>::ConstIterator::parent()
 {
+    if (current == nullptr)
+    {
+        throw std::invalid_argument("Error in parent() ,where current is nullptr.");
+    }
     if (current->parent == nullptr)
     {
         std::cerr << "Error in parent() which parent is nullptr" << std::endl;
@@ -342,6 +432,10 @@ void binary_tree<T>::ConstIterator::parent()
 template <typename T>
 void binary_tree<T>::ConstIterator::set_left(T& value) const
 {
+    if(current == nullptr)
+    {
+        throw std::invalid_argument("Error in set_left() ,where current is nullptr.");
+    }
     if (current->left != nullptr)
     {
         current->left->data = value;
@@ -355,6 +449,10 @@ void binary_tree<T>::ConstIterator::set_left(T& value) const
 template <typename T>
 void binary_tree<T>::ConstIterator::set_right(T& value) const
 {
+    if (current == nullptr)
+    {
+        throw std::invalid_argument("Error in set_right() ,where current is nullptr.");
+    }
     if (current->right != nullptr)
     {
         current->right->data = value;
@@ -368,6 +466,11 @@ void binary_tree<T>::ConstIterator::set_right(T& value) const
 template <typename T>
 binary_tree<T> binary_tree<T>::ConstIterator::copy_subtree() const
 {
+    if(current == nullptr)
+    {
+        return binary_tree<T>();
+    }
+
     if(current->parent == nullptr)
     {
         binary_tree temp=*this;
@@ -403,8 +506,12 @@ const T* binary_tree<T>::ConstIterator::operator->() const
 template <typename T>
 iterator::ForwardConstIterator<T, typename binary_tree<T>::tree_node>& binary_tree<T>::ConstIterator::operator++()
 {
+    if(current == nullptr)
+    {
+        throw std::invalid_argument("Error in operator++(),where current is nullptr.");
+    }
 
-    //先序遍历
+    //中序遍历
     if (has_left())//如果有左子节点就返回左子节点的迭代器
     {
         left();
@@ -439,6 +546,10 @@ iterator::ForwardConstIterator<T, typename binary_tree<T>::tree_node>& binary_tr
 template <typename T>
 iterator::BidirectionalConstIterator<T, typename binary_tree<T>::tree_node>& binary_tree<T>::ConstIterator::operator--()
 {
+    if (current==nullptr)
+    {
+        throw std::invalid_argument("Error in operator--(),where current is nullptr.");
+    }
     if (current->parent == nullptr)//如果是根节点就返回空的迭代器
     {
         current=nullptr;

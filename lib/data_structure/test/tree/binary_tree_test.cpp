@@ -41,3 +41,5 @@ TEST_F(BinaryTreeTest,InitTest)
     });
     ASSERT_EQ(ss3.str(),"4 3 6 5 2 8 7 1 ");
 }
+
+TEST_F(BinaryTreeTest)

@@ -18,6 +18,8 @@ target_include_directories(DataStructure
         ${CMAKE_SOURCE_DIR}/include/data_structure
         ${CMAKE_SOURCE_DIR}/include/data_structure/linear
         ${CMAKE_SOURCE_DIR}/include/data_structure/tree
+        src/linear
+        src/tree
 )
 
 target_link_libraries(DataStructure PRIVATE nlohmann_json::nlohmann_json)
