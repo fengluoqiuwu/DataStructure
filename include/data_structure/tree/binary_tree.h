@@ -31,7 +31,7 @@ using namespace TreeData;
  * @tparam D Label type for extend
  */
 template <typename T,typename D = void>
-class binary_tree
+class binary_tree //TODO,Add level traversal
 {
 protected:
     /**
@@ -478,6 +478,7 @@ public:
          */
         tree_node *get_node() const;
 
+    protected:
         /**
          * @brief Constructor only can use by binary tree
          * Complexity: O(1)
@@ -630,6 +631,7 @@ public:
          */
         tree_node *get_node() const;
 
+    protected:
         /**
          * Constructor only can use by binary tree
          * Complexity: O(1)
