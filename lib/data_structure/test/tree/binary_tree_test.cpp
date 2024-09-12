@@ -20,7 +20,7 @@ protected:
 };
 
 TEST_F(BinaryTreeTest,InitTest){
-    ASSERT_EQ(test_tree->to_string(TreeData::PREORDER),"1 2 3 4 6 5 8 7");
+    ASSERT_EQ(test_tree->to_string(TreeData::PREORDER),"1 2 3 4 5 6 7 8");
 
     ASSERT_EQ(test_tree->to_string(TreeData::INORDER),"4 3 2 5 6 1 7 8");
 
@@ -49,7 +49,7 @@ TEST_F(BinaryTreeTest,ConstructorWithASingleValueTest)
 
 TEST_F(BinaryTreeTest,ConstructorWithAPreorderArrayTest)
 {
-    ASSERT_EQ(test_tree->to_string(TreeData::PREORDER),"1 2 3 4 6 5 8 7");
+    ASSERT_EQ(test_tree->to_string(TreeData::PREORDER),"1 2 3 4 5 6 7 8");
 
     ASSERT_EQ(test_tree->to_string(TreeData::INORDER),"4 3 2 5 6 1 7 8");
 
@@ -61,7 +61,7 @@ TEST_F(BinaryTreeTest,ConstructorWithAPreorderLinkedListTest)
     const auto init_list = new linked_list<int>(a,17);
     const auto tree = new binary_tree<int>(*init_list,0);
 
-    ASSERT_EQ(tree->to_string(TreeData::PREORDER),"1 2 3 4 6 5 8 7");
+    ASSERT_EQ(tree->to_string(TreeData::PREORDER),"1 2 3 4 5 6 7 8");
 
     ASSERT_EQ(tree->to_string(TreeData::INORDER),"4 3 2 5 6 1 7 8");
 
@@ -75,7 +75,7 @@ TEST_F(BinaryTreeTest,ConstructorCopyTest)
 {
     const auto tree = new binary_tree<int>(*test_tree);
 
-    ASSERT_EQ(tree->to_string(TreeData::PREORDER),"1 2 3 4 6 5 8 7");
+    ASSERT_EQ(tree->to_string(TreeData::PREORDER),"1 2 3 4 5 6 7 8");
 
     ASSERT_EQ(tree->to_string(TreeData::INORDER),"4 3 2 5 6 1 7 8");
 
@@ -88,7 +88,7 @@ TEST_F(BinaryTreeTest,ConstructorMoveTest)
 {
     const auto tree = new binary_tree<int>(std::move(*test_tree));
 
-    ASSERT_EQ(tree->to_string(TreeData::PREORDER),"1 2 3 4 6 5 8 7");
+    ASSERT_EQ(tree->to_string(TreeData::PREORDER),"1 2 3 4 5 6 7 8");
 
     ASSERT_EQ(tree->to_string(TreeData::INORDER),"4 3 2 5 6 1 7 8");
 
@@ -104,7 +104,7 @@ TEST_F(BinaryTreeTest,OperatorCopyTest)
     auto tree = *test_tree;
     tree = *test_tree;
 
-    ASSERT_EQ(tree.to_string(TreeData::PREORDER),"1 2 3 4 6 5 8 7");
+    ASSERT_EQ(tree.to_string(TreeData::PREORDER),"1 2 3 4 5 6 7 8");
 
     ASSERT_EQ(tree.to_string(TreeData::INORDER),"4 3 2 5 6 1 7 8");
 
@@ -116,7 +116,7 @@ TEST_F(BinaryTreeTest,OperatorMoveTest)
     auto tree = *test_tree;
     tree = std::move(*test_tree);
 
-    ASSERT_EQ(tree.to_string(TreeData::PREORDER),"1 2 3 4 6 5 8 7");
+    ASSERT_EQ(tree.to_string(TreeData::PREORDER),"1 2 3 4 5 6 7 8");
 
     ASSERT_EQ(tree.to_string(TreeData::INORDER),"4 3 2 5 6 1 7 8");
 
@@ -140,7 +140,7 @@ TEST_F(BinaryTreeTest,FunctionSearchTest)
 
 TEST_F(BinaryTreeTest,FunctionOrderTest)
 {
-    ASSERT_EQ(test_tree->to_string(TreeData::PREORDER),"1 2 3 4 6 5 8 7");
+    ASSERT_EQ(test_tree->to_string(TreeData::PREORDER),"1 2 3 4 5 6 7 8");
 
     ASSERT_EQ(test_tree->to_string(TreeData::INORDER),"4 3 2 5 6 1 7 8");
 
@@ -277,4 +277,47 @@ TEST_F(BinaryTreeTest,ConstIteratorTest)
     ASSERT_TRUE(*it_4==5);
     --it_4;
     ASSERT_TRUE(*it_4==4);
+}
+
+TEST_F(BinaryTreeTest,IteratorTraversalTest)
+{
+    const int pre[8]={1,2,3,4,5,6,7,8};
+    const int in[8]={4,3,2,5,6,1,7,8};
+    const int post[8]={4,3,6,5,2,8,7,1};
+
+    auto it_pre=test_tree->begin(PREORDER);
+    for(int i=1;i<=7;i++)
+    {
+        ++it_pre;
+        ASSERT_EQ(*it_pre,pre[i]);
+    }
+    for(int i=7;i>=0;i--)
+    {
+        ASSERT_EQ(*it_pre,pre[i]);
+        --it_pre;
+    }
+
+    auto it_in=test_tree->begin(INORDER);
+    for(int i=1;i<=7;i++)
+    {
+        ++it_in;
+        ASSERT_EQ(*it_in,in[i]);
+    }
+    for(int i=7;i>=0;i--)
+    {
+        ASSERT_EQ(*it_in,in[i]);
+        --it_in;
+    }
+
+    auto it_post=test_tree->begin(POSTORDER);
+    for(int i=1;i<=7;i++)
+    {
+        ++it_post;
+        ASSERT_EQ(*it_post,post[i]);
+    }
+    for(int i=7;i>=0;i--)
+    {
+        ASSERT_EQ(*it_post,post[i]);
+        --it_post;
+    }
 }

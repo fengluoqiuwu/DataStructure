@@ -370,7 +370,7 @@ typename binary_tree<T>::Iterator& binary_tree<T>::Iterator::operator--()
             break;
         }
 
-        while (current->parent != nullptr && current->parent->left!=current)
+        while (current->parent != nullptr && current->parent->right!=current)
         {
             parent();
         }
@@ -635,33 +635,84 @@ typename binary_tree<T>::ConstIterator& binary_tree<T>::ConstIterator::operator+
         throw std::invalid_argument("Error in operator++(),where current is nullptr.");
     }
 
-    //先序遍历
-    if (has_left())//如果有左子节点就返回左子节点的迭代器
+    switch(it_type)
     {
-        left();
-        return *this;
+    case PREORDER:
+    {
+        if(has_left())
+        {
+            left();
+            break;
+        }
+
+        if(has_right())
+        {
+            right();
+            break;
+        }
+
+        while(
+            current->parent != nullptr
+            &&(current->parent->right==nullptr||current->parent->right==current)
+            )
+        {
+            parent();
+        }
+
+        if(current->parent == nullptr)
+        {
+            current=nullptr;
+        }
+        else
+        {
+            current=get_first(current->parent->right,PREORDER);
+        }
+
+        break;
     }
 
-    if(has_right())//如过有右子节点就返回右子节点的迭代器
+    case INORDER:
     {
-        right();
-        return *this;
+        if (has_right())
+        {
+            current=get_first(current->right,INORDER);
+            break;
+        }
+
+        while (current->parent != nullptr && current->parent->right == current)
+        {
+            parent();
+        }
+
+        if (current->parent == nullptr)
+        {
+            current = nullptr;
+        }
+        else
+        {
+            parent();
+        }
+
+        break;
     }
 
-    //如果既没有左子节点也没有右子节点就回溯parent，
-    //直到回到根节点或者找到子节点满足其有未遍历过的右子节点
-    while (current->parent != nullptr&&(current->parent->right==nullptr||current->parent->right==current))
+    case POSTORDER:
     {
-        parent();
-    }
+        if (current->parent == nullptr)
+        {
+            current = nullptr;
+            break;
+        }
 
-    if (current->left == nullptr)
-    {
-        current=nullptr;
+        if (current->parent->right == current || current->parent->right == nullptr)
+        {
+            parent();
+            break;
+        }
+
+        current = get_first(current->parent->right,POSTORDER);
+        break;
     }
-    else
-    {
-        parent();right();
     }
 
     return *this;
@@ -674,32 +725,87 @@ typename binary_tree<T>::ConstIterator& binary_tree<T>::ConstIterator::operator-
     {
         throw std::invalid_argument("Error in operator--(),where current is nullptr.");
     }
-    if (current->parent == nullptr)//如果是根节点就返回空的迭代器
+
+    switch(it_type)
     {
-        current=nullptr;
-        return *this;
+    case PREORDER:
+    {
+        if (current->parent == nullptr)
+        {
+            current = nullptr;
+            break;
+        }
+
+        if (current->parent->left != nullptr && current->parent->left != current)
+        {
+            current = get_last(current->parent->left,PREORDER);
+        }
+        else
+        {
+            parent();
+        }
+
+        break;
     }
 
-    // 回到父节点，如果是从右节点回溯的且父节点有左节点，则返回左子树的最右下节点，否则返回自身（父节点）
-    if (current->parent->left != nullptr&&current->parent->right == current)
+    case INORDER:
     {
-        parent();
-        left();
-        while (has_right()||has_left())
+        if (current->left !=nullptr)
         {
-            if (has_right())
-            {
-                right();
-            }
-            else
-            {
-                left();
-            }
+            current = get_last(current->left,INORDER);
+            break;
         }
+
+        while (current->parent != nullptr && current->parent->right!=current)
+        {
+            parent();
+        }
+
+        if (current->parent == nullptr)
+        {
+            current = nullptr;
+        }
+        else
+        {
+            parent();
+        }
+
+        break;
     }
-    else
+
+    case POSTORDER:
     {
-        parent();
+        if(has_right())
+        {
+            right();
+            break;
+        }
+
+        if (has_left())
+        {
+            left();
+            break;
+        }
+
+        while (
+            current->parent!=nullptr
+            &&(current->parent->left==nullptr||current->parent->left==current)
+        )
+        {
+            parent();
+        }
+
+        if (current->parent == nullptr)
+        {
+            current = nullptr;
+        }
+        else
+        {
+            current = get_last(current->parent->left,POSTORDER);
+        }
+
+        break;
+    }
     }
 
     return *this;
@@ -950,7 +1056,7 @@ void binary_tree<T>::preorderRec(tree_node* node, std::function<void(const T&)> 
 
     doSomething(node->data);
     preorderRec(node->left,doSomething);
-    postorderRec(node->right,doSomething);
+    preorderRec(node->right,doSomething);
 }
 
 template <typename T>
@@ -1126,7 +1232,7 @@ typename binary_tree<T>::tree_node *binary_tree<T>::get_last(tree_node *node, tr
 template <typename T>
 typename binary_tree<T>::Iterator binary_tree<T>::begin(const traversal type)
 {
-    return Iterator(root,*this,type);
+    return Iterator(get_first(root,type),*this,type);
 }
 
 template <typename T>
@@ -1138,7 +1244,7 @@ typename binary_tree<T>::Iterator binary_tree<T>::end(const traversal type)
 template <typename T>
 typename binary_tree<T>::ConstIterator binary_tree<T>::begin(const traversal type) const
 {
-    return ConstIterator(root,*this,type);
+    return ConstIterator(get_first(root,type),*this,type);
 }
 
 template <typename T>
