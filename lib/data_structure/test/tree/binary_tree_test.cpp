@@ -31,18 +31,18 @@ TEST_F(BinaryTreeTest,ConstructorDefaultTest)
 {
     const auto tree = new binary_tree<int>();
 
-    ASSERT_TRUE(tree->begin()==tree->end());
+    ASSERT_TRUE(tree->is_empty());
 
     delete tree;
 }
 
 TEST_F(BinaryTreeTest,ConstructorWithASingleValueTest)
 {
-    const auto tree = new binary_tree<int>(1);
+    const auto tree = new binary_tree(1);
 
-    ASSERT_TRUE(*tree->begin()==1);
-    binary_tree<int>::Iterator it=tree->begin();++it;
-    ASSERT_TRUE(it==tree->end());
+    ASSERT_TRUE(*tree->begin(PREORDER)==1);
+    binary_tree<int>::Iterator it=tree->begin(PREORDER);++it;
+    ASSERT_TRUE(it==tree->end(PREORDER));
 
     delete tree;
 }
@@ -175,7 +175,7 @@ TEST_F(BinaryTreeTest,FunctionGetSizeTest)
 
 TEST_F(BinaryTreeTest,IteratorTest)
 {
-    auto it = test_tree->begin();
+    auto it = test_tree->begin(PREORDER);
     *it=-1;
     ASSERT_EQ(*it,-1);
     ASSERT_TRUE(it.has_left());
@@ -213,14 +213,14 @@ TEST_F(BinaryTreeTest,IteratorTest)
     ASSERT_EQ(*right2,0);
     ASSERT_FALSE(right2.has_right());
 
-    auto it2=test_tree->begin();
+    auto it2=test_tree->begin(PREORDER);
     ASSERT_TRUE(it2==it);
     ASSERT_FALSE(it2!=it);
     it2.left();
     ASSERT_FALSE(it2==it);
     ASSERT_TRUE(it2!=it);
 
-    auto it_4 = test_tree->begin().left().left().left();
+    auto it_4 = test_tree->begin(PREORDER).left().left().left();
 
     ++it_4;
     ASSERT_TRUE(*it_4==5);
@@ -232,7 +232,7 @@ TEST_F(BinaryTreeTest,ConstIteratorTest)
 {
     const auto tree = *test_tree;
 
-    auto it = tree.begin();
+    auto it = tree.begin(PREORDER);
     ASSERT_EQ(*it,1);
     ASSERT_TRUE(it.has_left());
     ASSERT_TRUE(it.has_right());
@@ -264,14 +264,14 @@ TEST_F(BinaryTreeTest,ConstIteratorTest)
     ASSERT_EQ(compare,compare2);
     ASSERT_EQ(*right2,8);
 
-    auto it2=tree.begin();
+    auto it2=tree.begin(PREORDER);
     ASSERT_TRUE(it2==it);
     ASSERT_FALSE(it2!=it);
     it2.left();
     ASSERT_FALSE(it2==it);
     ASSERT_TRUE(it2!=it);
 
-    auto it_4 = test_tree->begin().left().left().left();
+    auto it_4 = test_tree->begin(PREORDER).left().left().left();
 
     ++it_4;
     ASSERT_TRUE(*it_4==5);

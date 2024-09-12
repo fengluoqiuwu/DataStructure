@@ -29,21 +29,22 @@ using namespace TreeData;
  *
  * @tparam T The type of the data stored in the tree nodes.
  */
-template<typename T>
-class binary_tree {
+template <typename T>
+class binary_tree
+{
 protected:
-
     /**
      * @brief A node in the binary tree.
      *
      * This structure represents a node in the binary tree, storing data and pointers to
      * its left and right children, as well as its parent.
      */
-    struct tree_node {
-        T data;                   ///< The data stored in the node.
-        tree_node *left;          ///< Pointer to the left child node.
-        tree_node *right;         ///< Pointer to the right child node.
-        tree_node *parent;        ///< Pointer to the parent node.
+    struct tree_node
+    {
+        T data; ///< The data stored in the node.
+        tree_node *left; ///< Pointer to the left child node.
+        tree_node *right; ///< Pointer to the right child node.
+        tree_node *parent; ///< Pointer to the parent node.
     };
 
     /**
@@ -53,7 +54,7 @@ protected:
      * @param value The value to search for.
      * @return True if the value is found, false otherwise.
      */
-    static bool searchRec(tree_node* node, const T& value);
+    static bool searchRec(tree_node *node, const T &value);
 
 public:
     /**
@@ -70,7 +71,7 @@ public:
      *
      * @param value The value to initialize the root node with.
      */
-    explicit binary_tree(const T& value);
+    explicit binary_tree(const T &value);
 
     /**
      * @brief Constructor with an array of values.
@@ -81,7 +82,7 @@ public:
      * @param size The number of elements in the array.
      * @param label Ending label.
      */
-    binary_tree(const T* initialize_list, const size_t& size, const T& label);
+    binary_tree(const T *initialize_list, const size_t &size, const T &label);
 
     /**
      * @brief Constructor with a linked list.
@@ -91,7 +92,7 @@ public:
      * @param initialize_list The linked list of values.
      * @param label Ending label.
      */
-    explicit binary_tree(const linked_list<T>& initialize_list, const T& label);
+    explicit binary_tree(const linked_list<T> &initialize_list, const T &label);
 
     /**
      * @brief Copy constructor.
@@ -100,7 +101,7 @@ public:
      *
      * @param other The binary tree to copy.
      */
-    binary_tree(const binary_tree& other);
+    binary_tree(const binary_tree &other);
 
     /**
      * @brief Move constructor.
@@ -109,7 +110,7 @@ public:
      *
      * @param other The binary tree to move from.
      */
-    binary_tree(binary_tree&& other) noexcept;
+    binary_tree(binary_tree &&other) noexcept;
 
     /**
      * @brief Destructor.
@@ -131,7 +132,7 @@ public:
      * @param other The binary tree to copy from.
      * @return Reference to this binary tree.
      */
-    binary_tree& operator=(const binary_tree& other);
+    binary_tree &operator=(const binary_tree &other);
 
     /**
      * @brief Move assignment operator.
@@ -141,7 +142,7 @@ public:
      * @param other The binary tree to move from.
      * @return Reference to this binary tree.
      */
-    binary_tree& operator=(binary_tree&& other) noexcept;
+    binary_tree &operator=(binary_tree &&other) noexcept;
 
     /**
      * @brief Equality operator.
@@ -151,7 +152,7 @@ public:
      * @param other The binary tree to compare with.
      * @return True if the trees are equal, false otherwise.
      */
-    bool operator==(const binary_tree& other) const;
+    bool operator==(const binary_tree &other) const;
 
     /**
      * @brief Searches for a value in the binary tree.
@@ -159,36 +160,39 @@ public:
      * @param value The value to search for.
      * @return True if the value is found, false otherwise.
      */
-    bool search(const T& value) const;
+    bool search(const T &value) const;
 
     /**
      * @brief Performs an in-order traversal of the tree.
      *
      * @param doSomething A function to apply to each node's data during traversal.
      */
-    void inorder(std::function<void(const T&)> doSomething) const;
+    void inorder(std::function<void(const T &)> doSomething) const;
 
     /**
      * @brief Performs a pre-order traversal of the tree.
      *
      * @param doSomething A function to apply to each node's data during traversal.
      */
-    void preorder(std::function<void(const T&)> doSomething) const;
+    void preorder(std::function<void(const T &)> doSomething) const;
 
     /**
      * @brief Performs a post-order traversal of the tree.
      *
      * @param doSomething A function to apply to each node's data during traversal.
      */
-    void postorder(std::function<void(const T&)> doSomething) const;
+    void postorder(std::function<void(const T &)> doSomething) const;
 
     /**
      * @brief Clears the tree, releasing all resources.
      *
      * @param doSomething A function to apply to each node's data during traversal.
      */
-    void clear(std::function<void(const T&)> doSomething);
-    void clear(){clear([](const T&) {});}
+    void clear(std::function<void(const T &)> doSomething);
+    void clear()
+    {
+        clear([](const T &) {});
+    }
 
     /**
      * @brief Checks if the tree is empty.
@@ -226,7 +230,7 @@ private:
      *
      * @param root The root of binary tree.
      */
-    explicit binary_tree(tree_node& root);
+    explicit binary_tree(tree_node &root);
 
     /**
      * @brief Recursively destroys the tree.
@@ -234,7 +238,7 @@ private:
      * @param node The node to start destruction from.
      * @param doSomething A function to apply to each node's data during destruction.
      */
-    static void destroyRec(tree_node* node, std::function<void(const T&)> doSomething);
+    static void destroyRec(tree_node *node, std::function<void(const T &)> doSomething);
 
     /**
      * @brief Recursively performs an in-order traversal.
@@ -242,7 +246,7 @@ private:
      * @param node The node to start traversal from.
      * @param doSomething A function to apply to each node's data during traversal.
      */
-    static void inorderRec(tree_node* node, std::function<void(const T&)> doSomething);
+    static void inorderRec(tree_node *node, std::function<void(const T &)> doSomething);
 
     /**
      * @brief Recursively performs a pre-order traversal.
@@ -250,7 +254,7 @@ private:
      * @param node The node to start traversal from.
      * @param doSomething A function to apply to each node's data during traversal.
      */
-    static void preorderRec(tree_node* node, std::function<void(const T&)> doSomething);
+    static void preorderRec(tree_node *node, std::function<void(const T &)> doSomething);
 
     /**
      * @brief Recursively performs a post-order traversal.
@@ -258,7 +262,7 @@ private:
      * @param node The node to start traversal from.
      * @param doSomething A function to apply to each node's data during traversal.
      */
-    static void postorderRec(tree_node* node, std::function<void(const T&)> doSomething);
+    static void postorderRec(tree_node *node, std::function<void(const T &)> doSomething);
 
     /**
      * @brief Recursively builds the tree with an inorder list with end_label.
@@ -269,8 +273,8 @@ private:
      * @param end end pointer or iterator
      * @param label end label, witch means it is nullptr
      */
-    template<typename D>
-    static void buildRec(tree_node* parent, tree_node*& node, D& begin, D& end, const T& label);
+    template <typename D>
+    static void buildRec(tree_node *parent, tree_node *&node, D &begin, D &end, const T &label);
 
     /**
      * @brief Recursively compares this tree with another tree for equality.
@@ -279,7 +283,7 @@ private:
      * @param other_node Other node to compare with.
      * @return Are they equal or not?
      */
-    static bool equalRec(tree_node* node, tree_node* other_node);
+    static bool equalRec(tree_node *node, tree_node *other_node);
 
     /**
      * @brief Recursively counts the number of nodes in the tree.
@@ -287,7 +291,7 @@ private:
      * @param node The node to start counting from.
      * @return The number of nodes in the subtree rooted at the given node.
      */
-    static size_t sizeRec(tree_node* node);
+    static size_t sizeRec(tree_node *node);
 
     /**
      * @brief Recursively calculates the depth of the tree.
@@ -295,7 +299,7 @@ private:
      * @param node The node to start depth calculation from.
      * @return The depth of the subtree rooted at the given node.
      */
-    static size_t depthRec(tree_node* node);
+    static size_t depthRec(tree_node *node);
 
     /**
      * @brief Recursively copies nodes from another tree.
@@ -304,21 +308,37 @@ private:
      * @param node The node to start copying from.
      * @param other_node The tree to be copied.
      */
-    static void copyRec(tree_node* parent, tree_node*& node,const tree_node* other_node);
+    static void copyRec(tree_node *parent, tree_node *&node, const tree_node *other_node);
 
-    tree_node* root; ///< Pointer to the root node of the tree.
+    /**
+     * Get the first node of subtree in specific traversal type
+     * @param node tree node as the root of the subtree
+     * @param type traversal type
+     * @return first node of the subtree of node by given traversal type
+     */
+    static tree_node *get_first(tree_node *node, traversal type);
+
+    /**
+     * Get the first node of subtree in specific traversal type
+     * @param node tree node as the root of the subtree
+     * @param type traversal type
+     * @return first node of the subtree of node by given traversal type
+     */
+    static tree_node *get_last(tree_node *node, traversal type);
+
+    tree_node *root; ///< Pointer to the root node of the tree.
 
 public:
-
     friend class Iterator;
     /**
      * @brief Bidirectional iterator for the binary tree.
      *
      * This iterator provides bidirectional traversal capabilities for the binary tree.
      */
-    class Iterator{
+    class Iterator
+    {
     public:
-        static constexpr iterator::type type=iterator::BIDIRECTIONAL;
+        static constexpr iterator::type type = iterator::BIDIRECTIONAL;
 
         /**
          * @brief Checks if the iterator has a left child.
@@ -360,35 +380,35 @@ public:
          *
          * @return self
          */
-        Iterator& left();
+        Iterator &left();
 
         /**
          * @brief Moves the iterator to the right child.
          *
          * @return self
          */
-        Iterator& right();
+        Iterator &right();
 
         /**
          * @brief Moves the iterator to the parent node.
          *
          * @return self
          */
-        Iterator& parent();
+        Iterator &parent();
 
         /**
          * @brief Sets the value of the left child.
          *
          * @param value The new value for the left child.
          */
-        void set_left(const T& value) const;
+        void set_left(const T &value) const;
 
         /**
          * @brief Sets the value of the right child.
          *
          * @param value The new value for the right child.
          */
-        void set_right(const T& value) const;
+        void set_right(const T &value) const;
 
         /**
          * @brief Cuts the subtree rooted at the current node.
@@ -409,62 +429,56 @@ public:
          *
          * @return Reference to the data in the current node.
          */
-        T& operator*() const;
+        T &operator*() const;
 
         /**
          * @brief Accesses the node's data using arrow operator.
          *
          * @return Pointer to the data in the current node.
          */
-        T* operator->() const;
+        T *operator->() const;
 
         /**
          * Equal operator
          * @param other other iterator
          * @return true if their currents are equal else false
          */
-        bool operator==(const Iterator& other) const
-        {
-            return this->current == other.current;
-        }
+        bool operator==(const Iterator &other) const { return this->current == other.current; }
 
         /**
          * Not Equal operator
          * @param other other iterator
          * @return true if their currents are not equal else false
          */
-        bool operator!=(const Iterator& other) const
-        {
-            return this->current != other.current;
-        }
+        bool operator!=(const Iterator &other) const { return this->current != other.current; }
 
         /**
          * @brief Advances the iterator to the next node in the traversal.
          *
          * @return Reference to this iterator.
          */
-        Iterator& operator++();
+        Iterator &operator++();
 
         /**
          * @brief Moves the iterator to the previous node in the traversal.
          *
          * @return Reference to this iterator.
          */
-        Iterator& operator--();
+        Iterator &operator--();
 
     private:
         friend class binary_tree;
 
-        const binary_tree& outer; /** reference of linked list */
-        const traversal it_type;  /** iterator traversal type*/
-        tree_node * current;      /** current pointer*/
+        const binary_tree &outer; /** reference of linked list */
+        const traversal it_type; /** iterator traversal type*/
+        tree_node *current; /** current pointer*/
 
         /**
          * @brief Gets the node pointed to by the iterator.
          *
          * @return Pointer to the current node.
          */
-        tree_node* get_node() const;
+        tree_node *get_node() const;
 
         /**
          * @brief Constructor only can use by binary tree
@@ -473,9 +487,9 @@ public:
          * @param outer reference of binary tree
          * @param type iterator traversal type
          */
-        explicit Iterator(tree_node *node,const binary_tree& outer,const traversal type): outer(outer),it_type(type)
+        explicit Iterator(tree_node *node, const binary_tree &outer, const traversal type) : outer(outer), it_type(type)
         {
-         this->current = node;
+            this->current = node;
         }
     };
 
@@ -486,9 +500,10 @@ public:
      * This iterator provides bidirectional traversal capabilities for the binary tree,
      * with read-only access to the data.
      */
-    class ConstIterator{
+    class ConstIterator
+    {
     public:
-        static constexpr iterator::type type=iterator::BIDIRECTIONAL;
+        static constexpr iterator::type type = iterator::BIDIRECTIONAL;
 
         /**
          * @brief Checks if the iterator has a left child.
@@ -528,31 +543,31 @@ public:
         /**
          * @brief Moves the iterator to the left child.
          */
-        ConstIterator& left();
+        ConstIterator &left();
 
         /**
          * @brief Moves the iterator to the right child.
          */
-        ConstIterator& right();
+        ConstIterator &right();
 
         /**
          * @brief Moves the iterator to the parent node.
          */
-        ConstIterator& parent();
+        ConstIterator &parent();
 
         /**
          * @brief Sets the value of the left child.
          *
          * @param value The new value for the left child.
          */
-        void set_left(const T& value) const;
+        void set_left(const T &value) const;
 
         /**
          * @brief Sets the value of the right child.
          *
          * @param value The new value for the right child.
          */
-        void set_right(const T& value) const;
+        void set_right(const T &value) const;
 
         /**
          * @brief Copies the subtree rooted at the current node.
@@ -566,62 +581,56 @@ public:
          *
          * @return Const reference to the data in the current node.
          */
-        const T& operator*() const;
+        const T &operator*() const;
 
         /**
          * @brief Accesses the node's data using arrow operator.
          *
          * @return Const pointer to the data in the current node.
          */
-        const T* operator->() const;
+        const T *operator->() const;
 
         /**
          * Equal operator
          * @param other other const iterator
          * @return true if their currents are equal else false
          */
-        bool operator==(const ConstIterator& other) const
-        {
-             return this->current == other.current;
-        }
+        bool operator==(const ConstIterator &other) const { return this->current == other.current; }
 
         /**
          * Not Equal operator
          * @param other other const iterator
          * @return true if their currents are not equal else false
          */
-        bool operator!=(const ConstIterator& other) const
-        {
-             return this->current != other.current;
-        }
+        bool operator!=(const ConstIterator &other) const { return this->current != other.current; }
 
         /**
          * @brief Advances the iterator to the next node in the traversal.
          *
          * @return Reference to this const iterator.
          */
-        ConstIterator& operator++();
+        ConstIterator &operator++();
 
         /**
          * @brief Moves the iterator to the previous node in the traversal.
          *
          * @return Reference to this const iterator.
          */
-        ConstIterator& operator--();
+        ConstIterator &operator--();
 
     private:
         friend class binary_tree;
 
-        const binary_tree& outer;   /** reference of linked list */
-        const traversal it_type;    /** iterator traversal type*/
-        const tree_node * current;  /** current pointer*/
+        const binary_tree &outer; /** reference of linked list */
+        const traversal it_type; /** iterator traversal type*/
+        const tree_node *current; /** current pointer*/
 
         /**
          * @brief Gets the node pointed to by the iterator.
          *
          * @return Pointer to the current node.
          */
-        tree_node* get_node() const;
+        tree_node *get_node() const;
 
         /**
          * Constructor only can use by binary tree
@@ -630,9 +639,10 @@ public:
          * @param outer reference of binary tree
          * @param type traversal type
          */
-        explicit ConstIterator(const tree_node *node,const binary_tree& outer, const traversal type): outer(outer),it_type(type)
+        explicit ConstIterator(const tree_node *node, const binary_tree &outer, const traversal type) :
+            outer(outer), it_type(type)
         {
-             current = node;
+            current = node;
         }
     };
 

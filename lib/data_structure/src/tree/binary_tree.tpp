@@ -37,7 +37,7 @@ typename binary_tree<T>::Iterator binary_tree<T>::Iterator::get_left() const
         throw std::invalid_argument("Error in get_left()");
     }
 
-    return Iterator(current->left,outer);
+    return Iterator(current->left,outer,it_type);
 }
 
 template <typename T>
@@ -53,7 +53,7 @@ typename binary_tree<T>::Iterator binary_tree<T>::Iterator::get_right() const
         throw std::invalid_argument("Error get_right()");
     }
 
-    return Iterator(current->right,outer);
+    return Iterator(current->right,outer,it_type);
 }
 
 template <typename T>
@@ -69,7 +69,7 @@ typename binary_tree<T>::Iterator binary_tree<T>::Iterator::get_parent() const
         throw std::invalid_argument("Error get_parent()");
     }
 
-    return Iterator(current->parent,outer);
+    return Iterator(current->parent,outer,it_type);
 }
 
 template <typename T>
@@ -252,93 +252,81 @@ typename binary_tree<T>::Iterator& binary_tree<T>::Iterator::operator++()
     switch(it_type)
     {
     case PREORDER:
-        if (has_left())//如果有左子节点就返回左子节点的迭代器
+    {
+        if(has_left())
         {
             left();
+            break;
         }
-        else
-        {
-            if(has_right())//如过有右子节点就返回右子节点的迭代器
-            {
-                right();
-            }
-            else
-            {
-                //如果既没有左子节点也没有右子节点就回溯parent，
-                //直到回到根节点或者找到子节点满足其有未遍历过的右子节点
-                while (
-                    (current->parent->right==nullptr||current->parent->right==current)
-                    &&current->parent != nullptr
-                    )
-                {
-                    parent();
-                }
 
-                if (current->parent->right!=nullptr&&current->parent->right!=current)
-                {
-                    parent();right();
-                }
-                else
-                {
-                    current=nullptr;
-                }
-            }
-        }
-        break;
-    case INORDER:
-        if (has_right())
+        if(has_right())
         {
             right();
-            while(has_left())
-            {
-                left();
-            }
+            break;
         }
-        else
+
+        while(
+            current->parent != nullptr
+            &&(current->parent->right==nullptr||current->parent->right==current)
+            )
         {
-            while (current->parent->right==current&&current->parent != nullptr)
-            {
-                parent();
-            }
-            if (current->parent->right!=current)
-            {
-                parent();
-            }
-            else
-            {
-                current=nullptr;
-            }
+            parent();
         }
-        break;
-    case POSTORDER:
-        if (current->parent == nullptr)
+
+        if(current->parent == nullptr)
         {
             current=nullptr;
         }
         else
         {
-            if(current->parent->right==current||current->parent->right==nullptr)
-            {
-                parent();
-            }
-            else
-            {
-                parent();
-                right();
-                while(has_left()||has_right())
-                {
-                    if(has_left())
-                    {
-                        left();
-                    }
-                    else
-                    {
-                        right();
-                    }
-                }
-            }
+            current=get_first(current->parent->right,PREORDER);
         }
+
         break;
+    }
+
+    case INORDER:
+    {
+        if (has_right())
+        {
+            current=get_first(current->right,INORDER);
+            break;
+        }
+
+        while (current->parent != nullptr && current->parent->right == current)
+        {
+            parent();
+        }
+
+        if (current->parent == nullptr)
+        {
+            current = nullptr;
+        }
+        else
+        {
+            parent();
+        }
+
+        break;
+    }
+
+    case POSTORDER:
+    {
+        if (current->parent == nullptr)
+        {
+            current = nullptr;
+            break;
+        }
+
+        if (current->parent->right == current || current->parent->right == nullptr)
+        {
+            parent();
+            break;
+        }
+
+        current = get_first(current->parent->right,POSTORDER);
+        break;
+    }
     }
 
     return *this;
@@ -355,40 +343,83 @@ typename binary_tree<T>::Iterator& binary_tree<T>::Iterator::operator--()
     switch(it_type)
     {
     case PREORDER:
-        if (current->parent == nullptr)//如果是根节点就返回空的迭代器
+    {
+        if (current->parent == nullptr)
         {
-            current=nullptr;
+            current = nullptr;
+            break;
+        }
+
+        if (current->parent->left != nullptr && current->parent->left != current)
+        {
+            current = get_last(current->parent->left,PREORDER);
         }
         else
         {
-            // 回到父节点，如果是从右节点回溯的且父节点有左节点，则返回左子树的最右下节点，否则返回自身（父节点）
-            if (current->parent->left != nullptr&&current->parent->right == current)
-            {
-                parent();
-                left();
-                while (has_right()||has_left())
-                {
-                    if (has_right())
-                    {
-                        right();
-                    }
-                    else
-                    {
-                        left();
-                    }
-                }
-            }
-            else
-            {
-                parent();
-            }
+            parent();
         }
-        break;
-    case INORDER:// TODO
 
         break;
-    case POSTORDER:
+    }
+
+    case INORDER:
+    {
+        if (current->left !=nullptr)
+        {
+            current = get_last(current->left,INORDER);
+            break;
+        }
+
+        while (current->parent != nullptr && current->parent->left!=current)
+        {
+            parent();
+        }
+
+        if (current->parent == nullptr)
+        {
+            current = nullptr;
+        }
+        else
+        {
+            parent();
+        }
+
         break;
+    }
+
+    case POSTORDER:
+    {
+        if(has_right())
+        {
+            right();
+            break;
+        }
+
+        if (has_left())
+        {
+            left();
+            break;
+        }
+
+        while (
+            current->parent!=nullptr
+            &&(current->parent->left==nullptr||current->parent->left==current)
+        )
+        {
+            parent();
+        }
+
+        if (current->parent == nullptr)
+        {
+            current = nullptr;
+        }
+        else
+        {
+            current = get_last(current->parent->left,POSTORDER);
+        }
+
+        break;
+    }
     }
 
     return *this;
@@ -433,7 +464,7 @@ typename binary_tree<T>::ConstIterator binary_tree<T>::ConstIterator::get_left()
         throw std::invalid_argument("Error in get_left()");
     }
 
-    return ConstIterator(current->left,outer);
+    return ConstIterator(current->left,outer,it_type);
 }
 
 template <typename T>
@@ -449,7 +480,7 @@ typename binary_tree<T>::ConstIterator binary_tree<T>::ConstIterator::get_right(
         throw std::invalid_argument("Error get_right()");
     }
 
-    return ConstIterator(current->right,outer);
+    return ConstIterator(current->right,outer,it_type);
 }
 
 template <typename T>
@@ -465,7 +496,7 @@ typename binary_tree<T>::ConstIterator binary_tree<T>::ConstIterator::get_parent
         throw std::invalid_argument("Error get_parent()");
     }
 
-    return ConstIterator(current->parent,outer);
+    return ConstIterator(current->parent,outer,it_type);
 }
 
 template <typename T>
@@ -1014,6 +1045,82 @@ void binary_tree<T>::copyRec(tree_node* parent,tree_node*& node,const tree_node*
 
     copyRec(node,node->left,other_node->left);
     copyRec(node,node->right,other_node->right);
+}
+
+template <typename T>
+typename binary_tree<T>::tree_node *binary_tree<T>::get_first(tree_node *node, const traversal type)
+{
+    if (node == nullptr)
+    {
+        throw std::invalid_argument("get_first: node is nullptr.");
+    }
+
+    tree_node* result = node;
+
+    switch (type)
+    {
+    case PREORDER:
+        break;
+    case INORDER:
+        while (result->left != nullptr)
+        {
+            result = result->left;
+        }
+        break;
+    case POSTORDER:
+        while (result->left != nullptr||result->right != nullptr)
+        {
+            if (result->left != nullptr)
+            {
+                result = result->left;
+            }
+            else
+            {
+                result = result->right;
+            }
+        }
+        break;
+    }
+
+    return result;
+}
+
+template <typename T>
+typename binary_tree<T>::tree_node *binary_tree<T>::get_last(tree_node *node, traversal type)
+{
+    if (node == nullptr)
+    {
+        throw std::invalid_argument("get_last: node is nullptr.");
+    }
+
+    tree_node* result = node;
+
+    switch (type)
+    {
+    case PREORDER:
+        while (result->left != nullptr||result->right != nullptr)
+        {
+            if (result->right != nullptr)
+            {
+                result = result->right;
+            }
+            else
+            {
+                result = result->left;
+            }
+        }
+        break;
+    case INORDER:
+        while (result->right != nullptr)
+        {
+            result = result->right;
+        }
+        break;
+    case POSTORDER:
+        break;
+    }
+
+    return result;
 }
 
 template <typename T>
