@@ -4,8 +4,8 @@
 #pragma once
 #include "binary_tree.h"
 
-template <typename T>
-bool binary_tree<T>::Iterator::has_left() const
+template <typename T, typename D>
+bool binary_tree<T,D>::Iterator::has_left() const
 {
     if (current == nullptr)
     {
@@ -14,8 +14,8 @@ bool binary_tree<T>::Iterator::has_left() const
     return current->left != nullptr;
 }
 
-template <typename T>
-bool binary_tree<T>::Iterator::has_right() const
+template <typename T, typename D>
+bool binary_tree<T,D>::Iterator::has_right() const
 {
     if (current == nullptr)
     {
@@ -24,8 +24,8 @@ bool binary_tree<T>::Iterator::has_right() const
     return current->right != nullptr;
 }
 
-template <typename T>
-typename binary_tree<T>::Iterator binary_tree<T>::Iterator::get_left() const
+template <typename T, typename D>
+typename binary_tree<T,D>::Iterator binary_tree<T,D>::Iterator::get_left() const
 {
     if (current == nullptr)
     {
@@ -40,8 +40,8 @@ typename binary_tree<T>::Iterator binary_tree<T>::Iterator::get_left() const
     return Iterator(current->left,outer,it_type);
 }
 
-template <typename T>
-typename binary_tree<T>::Iterator binary_tree<T>::Iterator::get_right() const
+template <typename T, typename D>
+typename binary_tree<T,D>::Iterator binary_tree<T,D>::Iterator::get_right() const
 {
     if (current == nullptr)
     {
@@ -56,8 +56,8 @@ typename binary_tree<T>::Iterator binary_tree<T>::Iterator::get_right() const
     return Iterator(current->right,outer,it_type);
 }
 
-template <typename T>
-typename binary_tree<T>::Iterator binary_tree<T>::Iterator::get_parent() const
+template <typename T, typename D>
+typename binary_tree<T,D>::Iterator binary_tree<T,D>::Iterator::get_parent() const
 {
     if (current == nullptr)
     {
@@ -72,8 +72,8 @@ typename binary_tree<T>::Iterator binary_tree<T>::Iterator::get_parent() const
     return Iterator(current->parent,outer,it_type);
 }
 
-template <typename T>
-typename binary_tree<T>::Iterator& binary_tree<T>::Iterator::left()
+template <typename T, typename D>
+typename binary_tree<T,D>::Iterator& binary_tree<T,D>::Iterator::left()
 {
     if (current == nullptr)
     {
@@ -90,8 +90,8 @@ typename binary_tree<T>::Iterator& binary_tree<T>::Iterator::left()
     return *this;
 }
 
-template <typename T>
-typename binary_tree<T>::Iterator& binary_tree<T>::Iterator::right()
+template <typename T, typename D>
+typename binary_tree<T,D>::Iterator& binary_tree<T,D>::Iterator::right()
 {
     if (current == nullptr)
     {
@@ -108,8 +108,8 @@ typename binary_tree<T>::Iterator& binary_tree<T>::Iterator::right()
     return *this;
 }
 
-template <typename T>
-typename binary_tree<T>::Iterator& binary_tree<T>::Iterator::parent()
+template <typename T, typename D>
+typename binary_tree<T,D>::Iterator& binary_tree<T,D>::Iterator::parent()
 {
     if (current == nullptr)
     {
@@ -126,8 +126,8 @@ typename binary_tree<T>::Iterator& binary_tree<T>::Iterator::parent()
     return *this;
 }
 
-template <typename T>
-void binary_tree<T>::Iterator::set_left(const T& value) const
+template <typename T, typename D>
+void binary_tree<T,D>::Iterator::set_left(const T& value) const
 {
     if(current == nullptr)
     {
@@ -143,8 +143,8 @@ void binary_tree<T>::Iterator::set_left(const T& value) const
     }
 }
 
-template <typename T>
-void binary_tree<T>::Iterator::set_right(const T& value) const
+template <typename T, typename D>
+void binary_tree<T,D>::Iterator::set_right(const T& value) const
 {
     if (current == nullptr)
     {
@@ -160,8 +160,8 @@ void binary_tree<T>::Iterator::set_right(const T& value) const
     }
 }
 
-template <typename T>
-binary_tree<T> binary_tree<T>::Iterator::cut_subtree()
+template <typename T, typename D>
+binary_tree<T,D> binary_tree<T,D>::Iterator::cut_subtree()
 {
     if(current == nullptr)
     {
@@ -200,8 +200,8 @@ binary_tree<T> binary_tree<T>::Iterator::cut_subtree()
     return temp;
 }
 
-template <typename T>
-binary_tree<T> binary_tree<T>::Iterator::copy_subtree() const
+template <typename T, typename D>
+binary_tree<T,D> binary_tree<T,D>::Iterator::copy_subtree() const
 {
     if(current == nullptr)
     {
@@ -221,8 +221,8 @@ binary_tree<T> binary_tree<T>::Iterator::copy_subtree() const
     return temp;
 }
 
-template <typename T>
-T& binary_tree<T>::Iterator::operator*() const
+template <typename T, typename D>
+T& binary_tree<T,D>::Iterator::operator*() const
 {
     if (current == nullptr)
     {
@@ -231,8 +231,8 @@ T& binary_tree<T>::Iterator::operator*() const
     return current->data;
 }
 
-template <typename T>
-T* binary_tree<T>::Iterator::operator->() const
+template <typename T, typename D>
+T* binary_tree<T,D>::Iterator::operator->() const
 {
     if (current == nullptr)
     {
@@ -241,8 +241,8 @@ T* binary_tree<T>::Iterator::operator->() const
     return &(current->data);
 }
 
-template <typename T>
-typename binary_tree<T>::Iterator& binary_tree<T>::Iterator::operator++()
+template <typename T, typename D>
+typename binary_tree<T,D>::Iterator& binary_tree<T,D>::Iterator::operator++()
 {
     if(current == nullptr)
     {
@@ -332,8 +332,8 @@ typename binary_tree<T>::Iterator& binary_tree<T>::Iterator::operator++()
     return *this;
 }
 
-template <typename T>
-typename binary_tree<T>::Iterator& binary_tree<T>::Iterator::operator--()
+template <typename T, typename D>
+typename binary_tree<T,D>::Iterator& binary_tree<T,D>::Iterator::operator--()
 {
     if (current==nullptr)
     {
@@ -425,14 +425,14 @@ typename binary_tree<T>::Iterator& binary_tree<T>::Iterator::operator--()
     return *this;
 }
 
-template <typename T>
-typename binary_tree<T>::tree_node* binary_tree<T>::Iterator::get_node() const
+template <typename T, typename D>
+typename binary_tree<T,D>::tree_node* binary_tree<T,D>::Iterator::get_node() const
 {
     return current;
 }
 
-template <typename T>
-bool binary_tree<T>::ConstIterator::has_left() const
+template <typename T, typename D>
+bool binary_tree<T,D>::ConstIterator::has_left() const
 {
     if (current == nullptr)
     {
@@ -441,8 +441,8 @@ bool binary_tree<T>::ConstIterator::has_left() const
     return current->left != nullptr;
 }
 
-template <typename T>
-bool binary_tree<T>::ConstIterator::has_right() const
+template <typename T, typename D>
+bool binary_tree<T,D>::ConstIterator::has_right() const
 {
     if (current == nullptr)
     {
@@ -451,8 +451,8 @@ bool binary_tree<T>::ConstIterator::has_right() const
     return current->right != nullptr;
 }
 
-template <typename T>
-typename binary_tree<T>::ConstIterator binary_tree<T>::ConstIterator::get_left() const
+template <typename T, typename D>
+typename binary_tree<T,D>::ConstIterator binary_tree<T,D>::ConstIterator::get_left() const
 {
     if (current == nullptr)
     {
@@ -467,8 +467,8 @@ typename binary_tree<T>::ConstIterator binary_tree<T>::ConstIterator::get_left()
     return ConstIterator(current->left,outer,it_type);
 }
 
-template <typename T>
-typename binary_tree<T>::ConstIterator binary_tree<T>::ConstIterator::get_right() const
+template <typename T, typename D>
+typename binary_tree<T,D>::ConstIterator binary_tree<T,D>::ConstIterator::get_right() const
 {
     if (current == nullptr)
     {
@@ -483,8 +483,8 @@ typename binary_tree<T>::ConstIterator binary_tree<T>::ConstIterator::get_right(
     return ConstIterator(current->right,outer,it_type);
 }
 
-template <typename T>
-typename binary_tree<T>::ConstIterator binary_tree<T>::ConstIterator::get_parent() const
+template <typename T, typename D>
+typename binary_tree<T,D>::ConstIterator binary_tree<T,D>::ConstIterator::get_parent() const
 {
     if (current == nullptr)
     {
@@ -499,8 +499,8 @@ typename binary_tree<T>::ConstIterator binary_tree<T>::ConstIterator::get_parent
     return ConstIterator(current->parent,outer,it_type);
 }
 
-template <typename T>
-typename binary_tree<T>::ConstIterator& binary_tree<T>::ConstIterator::left()
+template <typename T, typename D>
+typename binary_tree<T,D>::ConstIterator& binary_tree<T,D>::ConstIterator::left()
 {
     if (current == nullptr)
     {
@@ -517,8 +517,8 @@ typename binary_tree<T>::ConstIterator& binary_tree<T>::ConstIterator::left()
     return *this;
 }
 
-template <typename T>
-typename binary_tree<T>::ConstIterator& binary_tree<T>::ConstIterator::right()
+template <typename T, typename D>
+typename binary_tree<T,D>::ConstIterator& binary_tree<T,D>::ConstIterator::right()
 {
     if (current == nullptr)
     {
@@ -535,8 +535,8 @@ typename binary_tree<T>::ConstIterator& binary_tree<T>::ConstIterator::right()
     return *this;
 }
 
-template <typename T>
-typename binary_tree<T>::ConstIterator& binary_tree<T>::ConstIterator::parent()
+template <typename T, typename D>
+typename binary_tree<T,D>::ConstIterator& binary_tree<T,D>::ConstIterator::parent()
 {
     if (current == nullptr)
     {
@@ -553,8 +553,8 @@ typename binary_tree<T>::ConstIterator& binary_tree<T>::ConstIterator::parent()
     return *this;
 }
 
-template <typename T>
-void binary_tree<T>::ConstIterator::set_left(const T& value) const
+template <typename T, typename D>
+void binary_tree<T,D>::ConstIterator::set_left(const T& value) const
 {
     if(current == nullptr)
     {
@@ -570,8 +570,8 @@ void binary_tree<T>::ConstIterator::set_left(const T& value) const
     }
 }
 
-template <typename T>
-void binary_tree<T>::ConstIterator::set_right(const T& value) const
+template <typename T, typename D>
+void binary_tree<T,D>::ConstIterator::set_right(const T& value) const
 {
     if (current == nullptr)
     {
@@ -587,8 +587,8 @@ void binary_tree<T>::ConstIterator::set_right(const T& value) const
     }
 }
 
-template <typename T>
-binary_tree<T> binary_tree<T>::ConstIterator::copy_subtree() const
+template <typename T, typename D>
+binary_tree<T,D> binary_tree<T,D>::ConstIterator::copy_subtree() const
 {
     if(current == nullptr)
     {
@@ -607,8 +607,8 @@ binary_tree<T> binary_tree<T>::ConstIterator::copy_subtree() const
     return temp;
 }
 
-template <typename T>
-const T& binary_tree<T>::ConstIterator::operator*() const
+template <typename T, typename D>
+const T& binary_tree<T,D>::ConstIterator::operator*() const
 {
     if (current == nullptr)
     {
@@ -617,8 +617,8 @@ const T& binary_tree<T>::ConstIterator::operator*() const
     return current->data;
 }
 
-template <typename T>
-const T* binary_tree<T>::ConstIterator::operator->() const
+template <typename T, typename D>
+const T* binary_tree<T,D>::ConstIterator::operator->() const
 {
     if (current == nullptr)
     {
@@ -627,8 +627,8 @@ const T* binary_tree<T>::ConstIterator::operator->() const
     return &(current->data);
 }
 
-template <typename T>
-typename binary_tree<T>::ConstIterator& binary_tree<T>::ConstIterator::operator++()
+template <typename T, typename D>
+typename binary_tree<T,D>::ConstIterator& binary_tree<T,D>::ConstIterator::operator++()
 {
     if(current == nullptr)
     {
@@ -718,8 +718,8 @@ typename binary_tree<T>::ConstIterator& binary_tree<T>::ConstIterator::operator+
     return *this;
 }
 
-template <typename T>
-typename binary_tree<T>::ConstIterator& binary_tree<T>::ConstIterator::operator--()
+template <typename T, typename D>
+typename binary_tree<T,D>::ConstIterator& binary_tree<T,D>::ConstIterator::operator--()
 {
     if (current==nullptr)
     {
@@ -811,14 +811,14 @@ typename binary_tree<T>::ConstIterator& binary_tree<T>::ConstIterator::operator-
     return *this;
 }
 
-template <typename T>
-typename binary_tree<T>::tree_node* binary_tree<T>::ConstIterator::get_node() const
+template <typename T, typename D>
+typename binary_tree<T,D>::tree_node* binary_tree<T,D>::ConstIterator::get_node() const
 {
     return current;
 }
 
-template <typename T>
-bool binary_tree<T>::searchRec(tree_node* node, const T& value)
+template <typename T, typename D>
+bool binary_tree<T,D>::searchRec(tree_node* node, const T& value)
 {
     if (node == nullptr)
     {
@@ -832,20 +832,20 @@ bool binary_tree<T>::searchRec(tree_node* node, const T& value)
     return searchRec(node->left,value)||searchRec(node->right,value);
 }
 
-template <typename T>
-binary_tree<T>::binary_tree()
+template <typename T, typename D>
+binary_tree<T,D>::binary_tree()
 {
     root = nullptr;
 }
 
-template <typename T>
-binary_tree<T>::binary_tree(const T& value)
+template <typename T, typename D>
+binary_tree<T,D>::binary_tree(const T& value)
 {
     root = new tree_node(value);
 }
 
-template <typename T>
-binary_tree<T>::binary_tree(const T* initialize_list, const size_t& size, const T& label)
+template <typename T, typename D>
+binary_tree<T,D>::binary_tree(const T* initialize_list, const size_t& size, const T& label)
 {
     root=nullptr;
 
@@ -860,8 +860,8 @@ binary_tree<T>::binary_tree(const T* initialize_list, const size_t& size, const 
     buildRec<const T*>(nullptr, root,begin,end, label);
 }
 
-template <typename T>
-binary_tree<T>::binary_tree(const linked_list<T>& initialize_list, const T& label)
+template <typename T, typename D>
+binary_tree<T,D>::binary_tree(const linked_list<T>& initialize_list, const T& label)
 {
     root=nullptr;
 
@@ -876,29 +876,29 @@ binary_tree<T>::binary_tree(const linked_list<T>& initialize_list, const T& labe
     buildRec<typename linked_list<T>::ConstIterator>(nullptr, root,begin,end,label);
 }
 
-template <typename T>
-binary_tree<T>::binary_tree(const binary_tree& other)
+template <typename T, typename D>
+binary_tree<T,D>::binary_tree(const binary_tree& other)
 {
     root = nullptr;
     copyRec(nullptr,root,other.root);
 }
 
-template <typename T>
-binary_tree<T>::binary_tree(binary_tree&& other) noexcept
+template <typename T, typename D>
+binary_tree<T,D>::binary_tree(binary_tree&& other) noexcept
 {
     root = other.root;
     other.root = nullptr;
 }
 
-template <typename T>
-binary_tree<T>::~binary_tree()
+template <typename T, typename D>
+binary_tree<T,D>::~binary_tree()
 {
     clear();
     root = nullptr;
 }
 
-template <typename T>
-binary_tree<T>& binary_tree<T>::operator=(const binary_tree& other)
+template <typename T, typename D>
+binary_tree<T,D>& binary_tree<T,D>::operator=(const binary_tree& other)
 {
     if (this == &other) return *this;
     clear();
@@ -906,8 +906,8 @@ binary_tree<T>& binary_tree<T>::operator=(const binary_tree& other)
     return *this;
 }
 
-template <typename T>
-binary_tree<T>& binary_tree<T>::operator=(binary_tree&& other) noexcept
+template <typename T, typename D>
+binary_tree<T,D>& binary_tree<T,D>::operator=(binary_tree&& other) noexcept
 {
     if (this == &other) return *this;
     clear();
@@ -916,65 +916,65 @@ binary_tree<T>& binary_tree<T>::operator=(binary_tree&& other) noexcept
     return *this;
 }
 
-template <typename T>
-bool binary_tree<T>::operator==(const binary_tree& other) const
+template <typename T, typename D>
+bool binary_tree<T,D>::operator==(const binary_tree& other) const
 {
     if (this == &other) return true;
 
     return equalRec(root,other.root);
 }
 
-template <typename T>
-bool binary_tree<T>::search(const T& value) const
+template <typename T, typename D>
+bool binary_tree<T,D>::search(const T& value) const
 {
     return searchRec(root,value);
 }
 
-template <typename T>
-void binary_tree<T>::inorder(std::function<void(const T&)> doSomething) const
+template <typename T, typename D>
+void binary_tree<T,D>::inorder(std::function<void(const T&)> doSomething) const
 {
     inorderRec(root,doSomething);
 }
 
-template <typename T>
-void binary_tree<T>::preorder(std::function<void(const T&)> doSomething) const
+template <typename T, typename D>
+void binary_tree<T,D>::preorder(std::function<void(const T&)> doSomething) const
 {
     preorderRec(root,doSomething);
 }
 
-template <typename T>
-void binary_tree<T>::postorder(std::function<void(const T&)> doSomething) const
+template <typename T, typename D>
+void binary_tree<T,D>::postorder(std::function<void(const T&)> doSomething) const
 {
     postorderRec(root,doSomething);
 }
 
-template <typename T>
-void binary_tree<T>::clear(std::function<void(const T&)> doSomething)
+template <typename T, typename D>
+void binary_tree<T,D>::clear(std::function<void(const T&)> doSomething)
 {
     destroyRec(root,doSomething);
     root = nullptr;
 }
 
-template <typename T>
-bool binary_tree<T>::is_empty() const
+template <typename T, typename D>
+bool binary_tree<T,D>::is_empty() const
 {
     return root == nullptr;
 }
 
-template <typename T>
-size_t binary_tree<T>::get_depth() const
+template <typename T, typename D>
+size_t binary_tree<T,D>::get_depth() const
 {
     return depthRec(root);
 }
 
-template <typename T>
-size_t binary_tree<T>::get_size() const
+template <typename T, typename D>
+size_t binary_tree<T,D>::get_size() const
 {
     return sizeRec(root);
 }
 
-template <typename T>
-std::string binary_tree<T>::to_string(const traversal type) const
+template <typename T, typename D>
+std::string binary_tree<T,D>::to_string(const traversal type) const
 {
     if (root == nullptr)
     {
@@ -1011,14 +1011,14 @@ std::string binary_tree<T>::to_string(const traversal type) const
     return result;
 }
 
-template <typename T>
-binary_tree<T>::binary_tree(tree_node& root)
+template <typename T, typename D>
+binary_tree<T,D>::binary_tree(tree_node& root)
 {
     this->root = &root;
 }
 
-template <typename T>
-void binary_tree<T>::destroyRec(tree_node* node, std::function<void(const T&)> doSomething)
+template <typename T, typename D>
+void binary_tree<T,D>::destroyRec(tree_node* node, std::function<void(const T&)> doSomething)
 {
     if (node == nullptr)
     {
@@ -1033,8 +1033,8 @@ void binary_tree<T>::destroyRec(tree_node* node, std::function<void(const T&)> d
     delete node;
 }
 
-template <typename T>
-void binary_tree<T>::inorderRec(tree_node* node, std::function<void(const T&)> doSomething)
+template <typename T, typename D>
+void binary_tree<T,D>::inorderRec(tree_node* node, std::function<void(const T&)> doSomething)
 {
     if (node == nullptr)
     {
@@ -1046,8 +1046,8 @@ void binary_tree<T>::inorderRec(tree_node* node, std::function<void(const T&)> d
     inorderRec(node->right,doSomething);
 }
 
-template <typename T>
-void binary_tree<T>::preorderRec(tree_node* node, std::function<void(const T&)> doSomething)
+template <typename T, typename D>
+void binary_tree<T,D>::preorderRec(tree_node* node, std::function<void(const T&)> doSomething)
 {
     if (node == nullptr)
     {
@@ -1059,8 +1059,8 @@ void binary_tree<T>::preorderRec(tree_node* node, std::function<void(const T&)> 
     preorderRec(node->right,doSomething);
 }
 
-template <typename T>
-void binary_tree<T>::postorderRec(tree_node* node, std::function<void(const T&)> doSomething)
+template <typename T, typename D>
+void binary_tree<T,D>::postorderRec(tree_node* node, std::function<void(const T&)> doSomething)
 {
     if (node == nullptr)
     {
@@ -1072,9 +1072,9 @@ void binary_tree<T>::postorderRec(tree_node* node, std::function<void(const T&)>
     doSomething(node->data);
 }
 
-template <typename T>
-template <typename D>
-void binary_tree<T>::buildRec(tree_node* parent, tree_node*& node, D& begin, D& end, const T& label)
+template <typename T, typename D>
+template <typename I>
+void binary_tree<T,D>::buildRec(tree_node* parent, tree_node*& node, I& begin, I& end, const T& label)
 {
     if(begin!=end)
     {
@@ -1092,8 +1092,8 @@ void binary_tree<T>::buildRec(tree_node* parent, tree_node*& node, D& begin, D& 
     }
 }
 
-template <typename T>
-bool binary_tree<T>::equalRec(tree_node* node, tree_node* other_node)
+template <typename T, typename D>
+bool binary_tree<T,D>::equalRec(tree_node* node, tree_node* other_node)
 {
     if (node == nullptr)
     {
@@ -1113,8 +1113,8 @@ bool binary_tree<T>::equalRec(tree_node* node, tree_node* other_node)
     return equalRec(node->left,other_node->left) && equalRec(node->right,other_node->right);
 }
 
-template <typename T>
-size_t binary_tree<T>::sizeRec(tree_node* node)
+template <typename T, typename D>
+size_t binary_tree<T,D>::sizeRec(tree_node* node)
 {
     if (node == nullptr)
     {
@@ -1124,8 +1124,8 @@ size_t binary_tree<T>::sizeRec(tree_node* node)
     return 1 + sizeRec(node->left) + sizeRec(node->right);
 }
 
-template <typename T>
-size_t binary_tree<T>::depthRec(tree_node* node)
+template <typename T, typename D>
+size_t binary_tree<T,D>::depthRec(tree_node* node)
 {
     if (node == nullptr)
     {
@@ -1135,8 +1135,8 @@ size_t binary_tree<T>::depthRec(tree_node* node)
     return 1 + std::max(depthRec(node->left), depthRec(node->right));
 }
 
-template <typename T>
-void binary_tree<T>::copyRec(tree_node* parent,tree_node*& node,const tree_node* other_node)
+template <typename T, typename D>
+void binary_tree<T,D>::copyRec(tree_node* parent,tree_node*& node,const tree_node* other_node)
 {
     if (node != nullptr)
     {
@@ -1153,8 +1153,8 @@ void binary_tree<T>::copyRec(tree_node* parent,tree_node*& node,const tree_node*
     copyRec(node,node->right,other_node->right);
 }
 
-template <typename T>
-typename binary_tree<T>::tree_node *binary_tree<T>::get_first(tree_node *node, const traversal type)
+template <typename T, typename D>
+typename binary_tree<T,D>::tree_node *binary_tree<T,D>::get_first(tree_node *node, const traversal type)
 {
     if (node == nullptr)
     {
@@ -1191,8 +1191,8 @@ typename binary_tree<T>::tree_node *binary_tree<T>::get_first(tree_node *node, c
     return result;
 }
 
-template <typename T>
-typename binary_tree<T>::tree_node *binary_tree<T>::get_last(tree_node *node, traversal type)
+template <typename T, typename D>
+typename binary_tree<T,D>::tree_node *binary_tree<T,D>::get_last(tree_node *node, traversal type)
 {
     if (node == nullptr)
     {
@@ -1229,26 +1229,26 @@ typename binary_tree<T>::tree_node *binary_tree<T>::get_last(tree_node *node, tr
     return result;
 }
 
-template <typename T>
-typename binary_tree<T>::Iterator binary_tree<T>::begin(const traversal type)
+template <typename T, typename D>
+typename binary_tree<T,D>::Iterator binary_tree<T,D>::begin(const traversal type)
 {
     return Iterator(get_first(root,type),*this,type);
 }
 
-template <typename T>
-typename binary_tree<T>::Iterator binary_tree<T>::end(const traversal type)
+template <typename T, typename D>
+typename binary_tree<T,D>::Iterator binary_tree<T,D>::end(const traversal type)
 {
     return Iterator(nullptr,*this,type);
 }
 
-template <typename T>
-typename binary_tree<T>::ConstIterator binary_tree<T>::begin(const traversal type) const
+template <typename T, typename D>
+typename binary_tree<T,D>::ConstIterator binary_tree<T,D>::begin(const traversal type) const
 {
     return ConstIterator(get_first(root,type),*this,type);
 }
 
-template <typename T>
-typename binary_tree<T>::ConstIterator binary_tree<T>::end(const traversal type) const
+template <typename T, typename D>
+typename binary_tree<T,D>::ConstIterator binary_tree<T,D>::end(const traversal type) const
 {
     return ConstIterator(nullptr,*this,type);
 }

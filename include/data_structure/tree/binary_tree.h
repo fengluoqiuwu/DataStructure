@@ -2,8 +2,8 @@
 // Created by Eden_ on 2024/9/9.
 //
 
-#ifndef BINARY_TREE_H
-#define BINARY_TREE_H
+#ifndef BASIC_BINARY_TREE_H
+#define BASIC_BINARY_TREE_H
 #include <functional>
 #include "iterator.h"
 #include "linked_list.h"
@@ -28,8 +28,9 @@ using namespace TreeData;
  * in a bidirectional manner.
  *
  * @tparam T The type of the data stored in the tree nodes.
+ * @tparam D Label type for extend
  */
-template <typename T>
+template <typename T,typename D = void>
 class binary_tree
 {
 protected:
@@ -41,10 +42,11 @@ protected:
      */
     struct tree_node
     {
-        T data; ///< The data stored in the node.
-        tree_node *left; ///< Pointer to the left child node.
-        tree_node *right; ///< Pointer to the right child node.
-        tree_node *parent; ///< Pointer to the parent node.
+        T data;                          ///< The data stored in the node.
+        tree_node *left = nullptr;       ///< Pointer to the left child node.
+        tree_node *right = nullptr;      ///< Pointer to the right child node.
+        tree_node *parent = nullptr;    ///< Pointer to the parent node.
+        std::conditional_t<!std::is_void_v<D>, D, char> label; ///< label of the node only use
     };
 
     /**
@@ -262,15 +264,15 @@ private:
 
     /**
      * @brief Recursively builds the tree with an inorder list with end_label.
-     * @tparam D pointer or iterator type
+     * @tparam I pointer or iterator type
      * @param parent parent node pointer
      * @param node root node to build
      * @param begin start pointer or iterator
      * @param end end pointer or iterator
      * @param label end label, witch means it is nullptr
      */
-    template <typename D>
-    static void buildRec(tree_node *parent, tree_node *&node, D &begin, D &end, const T &label);
+    template <typename I>
+    static void buildRec(tree_node *parent, tree_node *&node, I &begin, I &end, const T &label);
 
     /**
      * @brief Recursively compares this tree with another tree for equality.
@@ -649,7 +651,7 @@ public:
      * @param type traversal type
      * @return begin iterator
      */
-    Iterator begin(traversal type);
+    Iterator begin(traversal type = PREORDER);
 
     /**
      * get end iterator,which is pointing to null
@@ -658,7 +660,7 @@ public:
      * @param type traversal type
      * @return end iterator
      */
-    Iterator end(traversal type);
+    Iterator end(traversal type = PREORDER);
 
     /**
      * get const begin iterator,which is pointing to root
@@ -667,7 +669,7 @@ public:
      * @param type traversal type
      * @return const begin iterator
      */
-    ConstIterator begin(traversal type) const;
+    ConstIterator begin(traversal type = PREORDER) const;
 
     /**
      * get const end iterator,which is pointing to null
@@ -676,9 +678,9 @@ public:
      * @param type traversal type
      * @return const end iterator
      */
-    ConstIterator end(traversal type) const;
+    ConstIterator end(traversal type = PREORDER) const;
 };
 
 #include "binary_tree.tpp"
 
-#endif //BINARY_TREE_H
+#endif //BASIC_BINARY_TREE_H
