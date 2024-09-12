@@ -167,32 +167,28 @@ public:
      *
      * @param doSomething A function to apply to each node's data during traversal.
      */
-    void inorder(std::function<void(const T &)> doSomething) const;
+    void inorder(std::function<void(const T &)> doSomething = [](const T &) {}) const;
 
     /**
      * @brief Performs a pre-order traversal of the tree.
      *
      * @param doSomething A function to apply to each node's data during traversal.
      */
-    void preorder(std::function<void(const T &)> doSomething) const;
+    void preorder(std::function<void(const T &)> doSomething = [](const T &) {}) const;
 
     /**
      * @brief Performs a post-order traversal of the tree.
      *
      * @param doSomething A function to apply to each node's data during traversal.
      */
-    void postorder(std::function<void(const T &)> doSomething) const;
+    void postorder(std::function<void(const T &)> doSomething = [](const T &) {}) const;
 
     /**
      * @brief Clears the tree, releasing all resources.
      *
      * @param doSomething A function to apply to each node's data during traversal.
      */
-    void clear(std::function<void(const T &)> doSomething);
-    void clear()
-    {
-        clear([](const T &) {});
-    }
+    void clear(std::function<void(const T &)> doSomething=[](const T &) {});
 
     /**
      * @brief Checks if the tree is empty.
@@ -220,7 +216,7 @@ public:
      * @param type traversal type
      * @return traversal string
      */
-    [[nodiscard]] std::string to_string(traversal type) const;
+    [[nodiscard]] std::string to_string(traversal type = PREORDER) const;
 
 private:
     /**
@@ -238,7 +234,7 @@ private:
      * @param node The node to start destruction from.
      * @param doSomething A function to apply to each node's data during destruction.
      */
-    static void destroyRec(tree_node *node, std::function<void(const T &)> doSomething);
+    static void destroyRec(tree_node *node, std::function<void(const T &)> doSomething=[](const T &) {});
 
     /**
      * @brief Recursively performs an in-order traversal.
@@ -246,7 +242,7 @@ private:
      * @param node The node to start traversal from.
      * @param doSomething A function to apply to each node's data during traversal.
      */
-    static void inorderRec(tree_node *node, std::function<void(const T &)> doSomething);
+    static void inorderRec(tree_node *node, std::function<void(const T &)> doSomething=[](const T &) {});
 
     /**
      * @brief Recursively performs a pre-order traversal.
@@ -254,7 +250,7 @@ private:
      * @param node The node to start traversal from.
      * @param doSomething A function to apply to each node's data during traversal.
      */
-    static void preorderRec(tree_node *node, std::function<void(const T &)> doSomething);
+    static void preorderRec(tree_node *node, std::function<void(const T &)> doSomething=[](const T &) {});
 
     /**
      * @brief Recursively performs a post-order traversal.
@@ -262,7 +258,7 @@ private:
      * @param node The node to start traversal from.
      * @param doSomething A function to apply to each node's data during traversal.
      */
-    static void postorderRec(tree_node *node, std::function<void(const T &)> doSomething);
+    static void postorderRec(tree_node *node, std::function<void(const T &)> doSomething=[](const T &) {});
 
     /**
      * @brief Recursively builds the tree with an inorder list with end_label.
@@ -316,7 +312,7 @@ private:
      * @param type traversal type
      * @return first node of the subtree of node by given traversal type
      */
-    static tree_node *get_first(tree_node *node, traversal type);
+    static tree_node *get_first(tree_node *node, traversal type = PREORDER);
 
     /**
      * Get the first node of subtree in specific traversal type
@@ -324,7 +320,7 @@ private:
      * @param type traversal type
      * @return first node of the subtree of node by given traversal type
      */
-    static tree_node *get_last(tree_node *node, traversal type);
+    static tree_node *get_last(tree_node *node, traversal type = PREORDER);
 
     tree_node *root; ///< Pointer to the root node of the tree.
 
@@ -487,7 +483,7 @@ public:
          * @param outer reference of binary tree
          * @param type iterator traversal type
          */
-        explicit Iterator(tree_node *node, const binary_tree &outer, const traversal type) : outer(outer), it_type(type)
+        explicit Iterator(tree_node *node, const binary_tree &outer, const traversal type = PREORDER) : outer(outer), it_type(type)
         {
             this->current = node;
         }
@@ -639,7 +635,7 @@ public:
          * @param outer reference of binary tree
          * @param type traversal type
          */
-        explicit ConstIterator(const tree_node *node, const binary_tree &outer, const traversal type) :
+        explicit ConstIterator(const tree_node *node, const binary_tree &outer, const traversal type = PREORDER) :
             outer(outer), it_type(type)
         {
             current = node;
