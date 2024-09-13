@@ -220,7 +220,6 @@ public:
     typename binary_tree<T, D>::ConstIterator end(traversal type = PREORDER) const;
 
 protected:
-
     using binary_tree<T, D>::root; ///< Pointer to the root node of the tree.
 
     /**
@@ -254,7 +253,6 @@ protected:
     virtual void insertRec(typename binary_tree<T, D>::tree_node *node, const T &value);
 
 private:
-
     /**
      * @brief Recursively searches for a value in the binary tree.
      *
@@ -267,4 +265,4 @@ private:
 
 #include "binary_search_tree.tpp"
 
-#endif //BINARY_SEARCH_TREE_H
+#endif // BINARY_SEARCH_TREE_H

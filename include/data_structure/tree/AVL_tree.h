@@ -30,7 +30,7 @@ using namespace TreeData;
  * @tparam T Type of elements stored in the tree.
  */
 template <typename T>
-class AVL_tree : protected binary_search_tree<T, AVL_label>// TODO
+class AVL_tree : protected binary_search_tree<T, AVL_label>
 {
 public:
     /**
@@ -208,8 +208,7 @@ public:
      * @param type The type of traversal to use (preorder, inorder, or postorder).
      * @return An iterator to the beginning of the traversal.
      */
-    // ReSharper disable once CppHidingFunction
-    typename binary_search_tree<T, AVL_label>::ConstIterator begin(traversal type = PREORDER) const;
+    using binary_search_tree<T, AVL_label>::begin;
 
     /**
      * @brief Returns an iterator to the end of the tree traversal.
@@ -217,8 +216,7 @@ public:
      * @param type The type of traversal to use (preorder, inorder, or postorder).
      * @return An iterator to the end of the traversal.
      */
-    // ReSharper disable once CppHidingFunction
-    typename binary_search_tree<T, AVL_label>::ConstIterator end(traversal type = PREORDER) const;
+    using binary_search_tree<T, AVL_label>::end;
 
 protected:
     using binary_search_tree<T, AVL_label>::root; ///< Pointer to the root node of the tree.
