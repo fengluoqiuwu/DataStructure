@@ -221,6 +221,7 @@ public:
 protected:
 
     using binary_tree<T, D>::root; ///< Pointer to the root node of the tree.
+
     /**
      * @brief A node in the binary tree.
      *
@@ -234,14 +235,24 @@ protected:
      *
      * @param node The node to rotate.
      */
-    virtual void rotate_left(typename binary_tree<T, D>::tree_node *node); // TODO, Test
+    void rotate_left(typename binary_tree<T, D>::tree_node *node); // TODO, Test
 
     /**
      * @brief Performs a right rotation on the given node.
      *
      * @param node The node to rotate.
      */
-    virtual void rotate_right(typename binary_tree<T, D>::tree_node *node); // TODO, Test
+    void rotate_right(typename binary_tree<T, D>::tree_node *node); // TODO, Test
+
+    /**
+     * @brief Recursively inserts for a value in the binary tree.
+     *
+     * @param node The node to start the insert.
+     * @param value The value to insert.
+     */
+    virtual void insertRec(typename binary_tree<T, D>::tree_node *node, const T &value);
+
+private:
 
     /**
      * @brief Recursively searches for a value in the binary tree.
@@ -251,14 +262,6 @@ protected:
      * @return True if the value is found, false otherwise.
      */
     bool searchRec(typename binary_tree<T, D>::tree_node *node, const T &value) const override;
-
-    /**
-     * @brief Recursively inserts for a value in the binary tree.
-     *
-     * @param node The node to start the insert.
-     * @param value The value to insert.
-     */
-    virtual void insertRec(typename binary_tree<T, D>::tree_node *node, const T &value);
 };
 
 #include "binary_search_tree.tpp"
