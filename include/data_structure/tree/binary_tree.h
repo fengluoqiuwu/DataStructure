@@ -206,7 +206,7 @@ public:
      *
      * @return The depth of the tree.
      */
-    [[nodiscard]] size_t get_depth() const;
+    [[nodiscard]] virtual size_t get_depth() const;
 
     /**
      * @brief Gets the number of nodes in the tree.

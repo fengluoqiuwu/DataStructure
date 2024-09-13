@@ -176,6 +176,7 @@ public:
      * @param value The value to be removed.
      * @param doSomething A function to apply to each node's data during delete.
      */
+    // ReSharper disable once CppHiddenFunction
     void remove(const T &value, std::function<void(const T &)> doSomething = [](const T &) {});
 
     /**
