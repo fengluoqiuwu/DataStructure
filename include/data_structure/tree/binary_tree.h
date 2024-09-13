@@ -49,6 +49,8 @@ protected:
         std::conditional_t<!std::is_void_v<D>, D, char> label; ///< label of the node only use
     };
 
+    tree_node *root; ///< Pointer to the root node of the tree.
+
     /**
      * @brief Recursively searches for a value in the binary tree.
      *
@@ -56,7 +58,7 @@ protected:
      * @param value The value to search for.
      * @return True if the value is found, false otherwise.
      */
-    static bool searchRec(tree_node *node, const T &value);
+    virtual bool searchRec(tree_node *node, const T &value);
 
 public:
     /**
@@ -119,7 +121,7 @@ public:
      *
      * Releases all resources held by the tree.
      */
-    ~binary_tree();
+    virtual ~binary_tree();
 
     /**
      * @brief Copy assignment operator.
@@ -323,8 +325,6 @@ private:
      * @return first node of the subtree of node by given traversal type
      */
     static tree_node *get_last(tree_node *node, traversal type = PREORDER);
-
-    tree_node *root; ///< Pointer to the root node of the tree.
 
 public:
     friend class Iterator;
@@ -671,6 +671,7 @@ public:
      * @param type traversal type
      * @return const begin iterator
      */
+    // ReSharper disable once CppHiddenFunction
     ConstIterator begin(traversal type = PREORDER) const;
 
     /**
@@ -680,6 +681,7 @@ public:
      * @param type traversal type
      * @return const end iterator
      */
+    // ReSharper disable once CppHiddenFunction
     ConstIterator end(traversal type = PREORDER) const;
 };
 

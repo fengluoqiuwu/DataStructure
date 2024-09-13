@@ -18,6 +18,6 @@
 /**
  * Tree Data structure class
  */
-#include "tree.h"
+#include "tree.h" //Tons of shit!!!
 
 #endif //DATA_STRUCTURE_H
