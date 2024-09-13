@@ -175,6 +175,7 @@ public:
      * @brief Removes a value from the binary search tree.
      *
      * @param value The value to be removed.
+     * @param doSomething A function to apply to each node's data during delete.
      */
     void remove(const T &value, std::function<void(const T &)> doSomething = [](const T &) {});
 
