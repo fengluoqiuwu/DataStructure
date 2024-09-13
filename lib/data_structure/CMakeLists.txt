@@ -32,7 +32,8 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
             test/linear/*.cpp
             test/tree/*.cpp
     )
-    add_executable(DataStructureTest ${TEST_SRC})
+    add_executable(DataStructureTest ${TEST_SRC}
+            test/tree/binary_search_tree_test.cpp)
     target_link_libraries(DataStructureTest PRIVATE DataStructure nlohmann_json::nlohmann_json gtest gtest_main)
     add_test(NAME DataStructureTest COMMAND DataStructureTest)
 endif()

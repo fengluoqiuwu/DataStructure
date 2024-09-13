@@ -818,7 +818,7 @@ typename binary_tree<T,D>::tree_node* binary_tree<T,D>::ConstIterator::get_node(
 }
 
 template <typename T, typename D>
-bool binary_tree<T,D>::searchRec(tree_node* node, const T& value)
+bool binary_tree<T,D>::searchRec(tree_node* node, const T& value) const
 {
     if (node == nullptr)
     {
@@ -847,9 +847,10 @@ binary_tree<T,D>::binary_tree(const T& value)
 template <typename T, typename D>
 binary_tree<T,D>::binary_tree(const T* initialize_list, const size_t& size, const T& label)
 {
+
     root=nullptr;
 
-    if(*initialize_list == label)
+    if(initialize_list==nullptr||*initialize_list == label||size == 0)
     {
         return;
     }

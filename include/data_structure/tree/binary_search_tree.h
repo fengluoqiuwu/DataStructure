@@ -52,9 +52,8 @@ public:
      * @brief Constructor that initializes the tree from a linked list.
      *
      * @param initialize_list The linked list to initialize the tree with.
-     * @param label Optional label for the tree.
      */
-    binary_search_tree(const linked_list<T> &initialize_list, const T &label);
+    explicit binary_search_tree(const linked_list<T> &initialize_list);
 
     /**
      * @brief Copy constructor for the binary search tree.
@@ -208,7 +207,7 @@ public:
      * @return An iterator to the beginning of the traversal.
      */
     // ReSharper disable once CppHidingFunction
-    [[nodiscard]] ConstIterator begin(traversal type = PREORDER) const;
+    typename binary_tree<T, D>::ConstIterator begin(traversal type = PREORDER) const;
 
     /**
      * @brief Returns an iterator to the end of the tree traversal.
@@ -217,7 +216,7 @@ public:
      * @return An iterator to the end of the traversal.
      */
     // ReSharper disable once CppHidingFunction
-    [[nodiscard]] ConstIterator end(traversal type = PREORDER) const;
+    typename binary_tree<T, D>::ConstIterator end(traversal type = PREORDER) const;
 
 protected:
 
@@ -235,14 +234,14 @@ protected:
      *
      * @param node The node to rotate.
      */
-    virtual void rotate_left(typename binary_tree<T, D>::tree_node *node);
+    virtual void rotate_left(typename binary_tree<T, D>::tree_node *node); // TODO, Test
 
     /**
      * @brief Performs a right rotation on the given node.
      *
      * @param node The node to rotate.
      */
-    virtual void rotate_right(typename binary_tree<T, D>::tree_node *node);
+    virtual void rotate_right(typename binary_tree<T, D>::tree_node *node); // TODO, Test
 
     /**
      * @brief Recursively searches for a value in the binary tree.
@@ -251,7 +250,7 @@ protected:
      * @param value The value to search for.
      * @return True if the value is found, false otherwise.
      */
-    bool searchRec(tree_node *node, const T &value) override;
+    bool searchRec(typename binary_tree<T, D>::tree_node *node, const T &value) const override;
 
     /**
      * @brief Recursively inserts for a value in the binary tree.
@@ -259,7 +258,7 @@ protected:
      * @param node The node to start the insert.
      * @param value The value to insert.
      */
-    virtual void insertRec(tree_node *node, const T &value);
+    virtual void insertRec(typename binary_tree<T, D>::tree_node *node, const T &value);
 };
 
 #include "binary_search_tree.tpp"

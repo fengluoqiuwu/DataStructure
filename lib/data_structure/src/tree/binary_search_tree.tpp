@@ -14,6 +14,13 @@ binary_search_tree<T, D>::binary_search_tree(const T &value) : binary_tree<T, D>
 template <typename T, typename D>
 binary_search_tree<T, D>::binary_search_tree(const T *initialize_list, const size_t &size)
 {
+    root=nullptr;
+
+    if (initialize_list == nullptr||size == 0)
+    {
+        return;
+    }
+
     for (size_t i = 0; i < size; i++)
     {
         insert(initialize_list[i]);
@@ -21,8 +28,9 @@ binary_search_tree<T, D>::binary_search_tree(const T *initialize_list, const siz
 }
 
 template <typename T, typename D>
-binary_search_tree<T, D>::binary_search_tree(const linked_list<T> &initialize_list, const T &label)
+binary_search_tree<T, D>::binary_search_tree(const linked_list<T> &initialize_list)
 {
+    root = nullptr;
     for (auto it = initialize_list.begin(); it != initialize_list.end(); ++it)
     {
         insert(*it);
@@ -33,7 +41,7 @@ template <typename T, typename D>
 binary_search_tree<T, D>::binary_search_tree(const binary_search_tree &other) : binary_tree<T, D>(other) {}
 
 template <typename T, typename D>
-binary_search_tree<T, D>::binary_search_tree(binary_search_tree &&other) : binary_tree<T, D>(std::move(other)) {}
+binary_search_tree<T, D>::binary_search_tree(binary_search_tree &&other) noexcept : binary_tree<T, D>(std::move(other)) {}
 
 template <typename T, typename D>
 binary_search_tree<T, D>::~binary_search_tree()=default;
@@ -49,7 +57,7 @@ binary_search_tree<T, D> &binary_search_tree<T, D>::operator=(const binary_searc
 }
 
 template <typename T, typename D>
-binary_search_tree<T, D> &binary_search_tree<T, D>::operator=(binary_search_tree &&other)
+binary_search_tree<T, D> &binary_search_tree<T, D>::operator=(binary_search_tree &&other) noexcept
 {
     if (this != &other)
     {
@@ -65,38 +73,31 @@ bool binary_search_tree<T, D>::operator==(const binary_search_tree &other) const
 }
 
 template <typename T, typename D>
-void binary_search_tree<T, D>::insert(const T &value)// TODO
+void binary_search_tree<T, D>::insert(const T &value)
 {
-    insertRec(root,value);
+    if (root == nullptr)
+    {
+        root = new typename binary_tree<T, D>::tree_node(value);
+    }
+    else
+    {
+        insertRec(root,value);
+    }
 }
 
 template <typename T, typename D>
 void binary_search_tree<T, D>::remove(const T &value, std::function<void(const T &)> doSomething)
 {
-    tree_node *temp = root;
+    auto temp = root;
 
-    while (*temp!=value||temp!=nullptr)
+    while (temp->data!=value&&temp!=nullptr)
     {
-        temp= value > *temp ?temp->left:temp->right;
+        temp= value > temp->data ?temp->left:temp->right;
     }
 
-    if (temp!=nullptr)
+    if (temp==nullptr)
     {
         std::cerr<<"value not founded."<<std::endl;
-        return;
-    }
-
-    if (temp->left == nullptr)
-    {
-        if(temp->parent != nullptr)
-        {
-            auto& child = temp->parent->left == temp ? temp->parent->left : temp->parent->right;
-            child = temp->left;
-        }
-
-        temp->left->parent = temp->parent;
-
-        delete temp;
         return;
     }
 
@@ -105,16 +106,40 @@ void binary_search_tree<T, D>::remove(const T &value, std::function<void(const T
         if(temp->parent != nullptr)
         {
             auto& child = temp->parent->left == temp ? temp->parent->left : temp->parent->right;
-            child = temp->right;
+            child = temp->left;
+        }
+        else
+        {
+            root = temp->left;
         }
 
-        temp->right->parent = temp->parent;
+        temp->left->parent = temp->parent;
 
+        doSomething(temp->data);
         delete temp;
         return;
     }
 
-    tree_node *temp1 = temp->right;
+    if (temp->left == nullptr)
+    {
+        if(temp->parent != nullptr)
+        {
+            auto& child = temp->parent->left == temp ? temp->parent->left : temp->parent->right;
+            child = temp->right;
+        }
+        else
+        {
+            root = temp->right;
+        }
+
+        temp->right->parent = temp->parent;
+
+        doSomething(temp->data);
+        delete temp;
+        return;
+    }
+
+    typename binary_tree<T, D>::tree_node *temp1 = temp->right;
 
     while (temp1->left != nullptr)
     {
@@ -136,31 +161,32 @@ void binary_search_tree<T, D>::remove(const T &value, std::function<void(const T
         temp1->parent->right = nullptr;
     }
 
+    doSomething(temp1->data);
     delete temp1;
 }
 
 template <typename T, typename D>
 const T &binary_search_tree<T, D>::get_min()
 {
-    tree_node temp_node = root;
+    typename binary_tree<T, D>::tree_node *temp_node = root;
     while (temp_node->left != nullptr)
     {
         temp_node = temp_node->left;
     }
 
-    return temp_node->value;
+    return temp_node->data;
 }
 
 template <typename T, typename D>
 const T &binary_search_tree<T, D>::get_max()
 {
-    tree_node temp_node = root;
-    while (temp_node.right != nullptr)
+    typename binary_tree<T, D>::tree_node *temp_node = root;
+    while (temp_node->right != nullptr)
     {
-        temp_node = temp_node.right;
+        temp_node = temp_node->right;
     }
 
-    return temp_node->value;
+    return temp_node->data;
 }
 
 template <typename T, typename D>
@@ -190,7 +216,7 @@ void binary_search_tree<T, D>::rotate_left(typename binary_tree<T, D>::tree_node
     }
 
     node->right->parent = node->parent;
-    tree_node *temp = node->right->left;
+    typename binary_tree<T, D>::tree_node *temp = node->right->left;
     node->right->left = node;
     node->parent = node->right;
     node->right = temp;
@@ -211,26 +237,26 @@ void binary_search_tree<T, D>::rotate_right(typename binary_tree<T, D>::tree_nod
     }
 
     node->left->parent = node->parent;
-    tree_node *temp = node->left->right;
+    typename binary_tree<T, D>::tree_node *temp = node->left->right;
     node->left->right = node;
     node->parent = node->left;
     node->right = temp;
 }
 
 template <typename T, typename D>
-bool binary_search_tree<T, D>::searchRec(tree_node *node, const T &value)
+bool binary_search_tree<T, D>::searchRec(typename binary_tree<T, D>::tree_node *node, const T &value) const
 {
     if (node == nullptr)
     {
         return false;
     }
 
-    if (node->value == value)
+    if (node->data == value)
     {
         return true;
     }
 
-    if (value > node->value)
+    if (value > node->data)
     {
         return searchRec(node->left, value);
     }
@@ -239,24 +265,24 @@ bool binary_search_tree<T, D>::searchRec(tree_node *node, const T &value)
 }
 
 template <typename T, typename D>
-void binary_search_tree<T, D>::insertRec(tree_node *node, const T &value)
+void binary_search_tree<T, D>::insertRec(typename binary_tree<T, D>::tree_node *node, const T &value)
 {
     if (node == nullptr)
     {
         throw std::invalid_argument("Node is null");
     }
 
-    if (value == node->value)
+    if (value == node->data)
     {
         std::cerr<<"Error in insertion,Receive same values"<<std::endl;
         return;
     }
 
-    if constexpr (value > node->value)
+    if (value < node->data)
     {
         if(node->left==nullptr)
         {
-            node->left=new tree_node(value,nullptr,nullptr,node);
+            node->left=new typename binary_tree<T, D>::tree_node(value,nullptr,nullptr,node);
         }
         else
         {
@@ -267,7 +293,7 @@ void binary_search_tree<T, D>::insertRec(tree_node *node, const T &value)
     {
         if(node->right==nullptr)
         {
-            node->right=new tree_node(value,nullptr,nullptr,node);
+            node->right=new typename binary_tree<T, D>::tree_node(value,nullptr,nullptr,node);
         }
         else
         {

@@ -58,7 +58,7 @@ protected:
      * @param value The value to search for.
      * @return True if the value is found, false otherwise.
      */
-    virtual bool searchRec(tree_node *node, const T &value);
+    virtual bool searchRec(tree_node *node, const T &value) const;
 
 public:
     /**

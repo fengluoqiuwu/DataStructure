@@ -10,4 +10,9 @@
  */
 #include "binary_tree.h"
 
+/**
+ * Class of binary search tree
+ */
+#include "binary_search_tree.h"
+
 #endif //TREE_H
