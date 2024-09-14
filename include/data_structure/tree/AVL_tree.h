@@ -30,7 +30,7 @@ using namespace TreeData;
  * @tparam T Type of elements stored in the tree.
  */
 template <typename T>
-class AVL_tree : protected binary_search_tree<T, AVL_label>
+class AVL_tree : protected binary_search_tree<T, AVL_label> // TODO Add Copy of label to binary_tree
 {
 public:
     /**
@@ -127,6 +127,13 @@ public:
      * @param doSomething A function to apply to each node's data during traversal.
      */
     using binary_search_tree<T, AVL_label>::postorder;
+
+    /**
+     * transform binary tree to string
+     * @param type traversal type
+     * @return traversal string
+     */
+    using binary_search_tree<T, AVL_label>::to_string;
 
     /**
      * @brief Clears the tree, releasing all resources.
@@ -278,6 +285,18 @@ private:
     void removeRec(
         typename binary_search_tree<T, AVL_label>::tree_node *node, const T &value,
         std::function<void(const T &)> doSomething = [](const T &) {});
+
+
+    /**
+     * @brief Balance a node in the AVL tree.
+     *
+     * Recalculate the depth of node,
+     * balance a node in the AVL tree by left and right rotate,
+     * suppose its children are balanced before.
+     *
+     * @param node The node to balance.
+     */
+    void balance(typename binary_search_tree<T, AVL_label>::tree_node *node);
 };
 
 #include "AVL_tree.tpp"

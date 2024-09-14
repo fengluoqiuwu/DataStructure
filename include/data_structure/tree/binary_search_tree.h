@@ -261,17 +261,6 @@ private:
      * @return True if the value is found, false otherwise.
      */
     bool searchRec(typename binary_tree<T, D>::tree_node *node, const T &value) const override;
-
-    /**
-     * @brief Balance a node in the AVL tree.
-     *
-     * Recalculate the depth of node,
-     * balance a node in the AVL tree by left and right rotate,
-     * suppose its children are balanced before.
-     *
-     * @param node The node to balance.
-     */
-    void balance(typename binary_tree<T, D>::tree_node *node);
 };
 
 #include "binary_search_tree.tpp"

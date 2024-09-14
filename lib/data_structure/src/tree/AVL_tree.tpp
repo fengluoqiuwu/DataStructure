@@ -14,6 +14,7 @@ AVL_tree<T>::AVL_tree() : binary_search_tree<T, AVL_label>()
 template <typename T>
 AVL_tree<T>::AVL_tree(const T &value) : binary_search_tree<T, AVL_label>(value)
 {
+
 }
 
 template <typename T>
@@ -83,7 +84,7 @@ void AVL_tree<T>::rotate_left(typename binary_search_tree<T, AVL_label>::tree_no
 {
     binary_search_tree<T, AVL_label>::rotate_left(node);
     update_depth(node);
-    update_height(node->parent);
+    update_depth(node->parent);
 }
 
 template <typename T>
@@ -91,11 +92,11 @@ void AVL_tree<T>::rotate_right(typename binary_search_tree<T, AVL_label>::tree_n
 {
     binary_search_tree<T, AVL_label>::rotate_right(node);
     update_depth(node);
-    update_height(node->parent);
+    update_depth(node->parent);
 }
 
 template <typename T>
-void AVL_tree<T>::insertRec(tree_node *node, const T &value)
+void AVL_tree<T>::insertRec(typename binary_search_tree<T, AVL_label>::tree_node *node, const T &value)
 {
     if (node == nullptr)
     {
@@ -112,7 +113,7 @@ void AVL_tree<T>::insertRec(tree_node *node, const T &value)
     {
         if (node->left == nullptr)
         {
-            node->left = new tree_node(value, nullptr, nullptr, node);
+            node->left = new typename binary_search_tree<T, AVL_label>::tree_node(value, nullptr, nullptr, node);
         }
         else
         {
@@ -123,7 +124,7 @@ void AVL_tree<T>::insertRec(tree_node *node, const T &value)
     {
         if (node->right == nullptr)
         {
-            node->right = new tree_node(value, nullptr, nullptr, node);
+            node->right = new typename binary_search_tree<T, AVL_label>::tree_node(value, nullptr, nullptr, node);
         }
         else
         {
@@ -135,25 +136,25 @@ void AVL_tree<T>::insertRec(tree_node *node, const T &value)
 }
 
 template <typename T>
-size_t AVL_tree<T>::get_depth(const tree_node *node)
+size_t AVL_tree<T>::get_depth(const typename binary_search_tree<T, AVL_label>::tree_node *node)
 {
     return node ? node->label->depth : 0;
 }
 
 template <typename T>
-void AVL_tree<T>::update_depth(const tree_node *node)
+void AVL_tree<T>::update_depth(const typename binary_search_tree<T, AVL_label>::tree_node *node)
 {
     node->label->depth = 1 + std::max(get_depth(node->left), get_depth(node->right));
 }
 
 template <typename T>
-long long AVL_tree<T>::get_balance(const tree_node *node)
+long long AVL_tree<T>::get_balance(const typename binary_search_tree<T, AVL_label>::tree_node *node)
 {
     return get_depth(node->left) - get_depth(node->right);
 }
 
 template <typename T>
-void AVL_tree<T>::removeRec(tree_node *node, const T &value, std::function<void(const T &)> doSomething)
+void AVL_tree<T>::removeRec(typename binary_search_tree<T, AVL_label>::tree_node *node, const T &value, std::function<void(const T &)> doSomething)
 {
     if (node == nullptr)
     {
@@ -207,8 +208,8 @@ void AVL_tree<T>::removeRec(tree_node *node, const T &value, std::function<void(
     balance(node);
 }
 
-template <typename T, typename D>
-void binary_search_tree<T, D>::balance(tree_node *node)
+template <typename T>
+void AVL_tree<T>::balance(typename binary_search_tree<T, AVL_label>::tree_node *node)
 {
     if (node == nullptr)
     {
