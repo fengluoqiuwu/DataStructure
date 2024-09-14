@@ -18,14 +18,29 @@ AVL_tree<T>::AVL_tree(const T &value) : binary_search_tree<T, AVL_label>(value)
 }
 
 template <typename T>
-AVL_tree<T>::AVL_tree(const T *initialize_list, const size_t &size) :
-    binary_search_tree<T, AVL_label>(initialize_list, size)
+AVL_tree<T>::AVL_tree(const T *initialize_list, const size_t &size)
 {
+    root=nullptr;
+
+    if (initialize_list == nullptr||size == 0)
+    {
+        return;
+    }
+
+    for (size_t i = 0; i < size; i++)
+    {
+        insert(initialize_list[i]);
+    }
 }
 
 template <typename T>
-AVL_tree<T>::AVL_tree(const linked_list<T> &initialize_list) : binary_search_tree<T, AVL_label>(initialize_list)
+AVL_tree<T>::AVL_tree(const linked_list<T> &initialize_list)
 {
+    root = nullptr;
+    for (auto it = initialize_list.begin(); it != initialize_list.end(); ++it)
+    {
+        insert(*it);
+    }
 }
 
 template <typename T>

@@ -221,6 +221,10 @@ void binary_search_tree<T, D>::rotate_left(typename binary_tree<T, D>::tree_node
 
     node->right->parent = node->parent;
     typename binary_tree<T, D>::tree_node *temp = node->right->left;
+    if(temp!=nullptr)
+    {
+        temp->parent=node;
+    }
     node->right->left = node;
     node->parent = node->right;
     node->right = temp;
@@ -246,9 +250,13 @@ void binary_search_tree<T, D>::rotate_right(typename binary_tree<T, D>::tree_nod
 
     node->left->parent = node->parent;
     typename binary_tree<T, D>::tree_node *temp = node->left->right;
+    if(temp!=nullptr)
+    {
+        temp->parent=node;
+    }
     node->left->right = node;
     node->parent = node->left;
-    node->right = temp;
+    node->left = temp;
 }
 
 template <typename T, typename D>
