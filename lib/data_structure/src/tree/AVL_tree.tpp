@@ -23,8 +23,7 @@ AVL_tree<T>::AVL_tree(const T *initialize_list, const size_t &size) :
 }
 
 template <typename T>
-AVL_tree<T>::AVL_tree(const linked_list<T> &initialize_list) :
-    binary_search_tree<T, AVL_label>(initialize_list)
+AVL_tree<T>::AVL_tree(const linked_list<T> &initialize_list) : binary_search_tree<T, AVL_label>(initialize_list)
 {
 }
 
@@ -76,17 +75,67 @@ size_t AVL_tree<T>::get_depth() const
 template <typename T>
 void AVL_tree<T>::remove(const T &value, std::function<void(const T &)> doSomething)
 {
-    remove(root, value, doSomething);
+    removeRec(root, value, doSomething);
+}
+
+template <typename T>
+void AVL_tree<T>::rotate_left(typename binary_search_tree<T, AVL_label>::tree_node *node)
+{
+    binary_search_tree<T, AVL_label>::rotate_left(node);
+    update_depth(node);
+    update_height(node->parent);
+}
+
+template <typename T>
+void AVL_tree<T>::rotate_right(typename binary_search_tree<T, AVL_label>::tree_node *node)
+{
+    binary_search_tree<T, AVL_label>::rotate_right(node);
+    update_depth(node);
+    update_height(node->parent);
 }
 
 template <typename T>
 void AVL_tree<T>::insertRec(tree_node *node, const T &value)
 {
-//TODO
+    if (node == nullptr)
+    {
+        throw std::invalid_argument("Node is null");
+    }
+
+    if (value == node->data)
+    {
+        std::cerr << "Error in insertion,Receive same values" << std::endl;
+        return;
+    }
+
+    if (value < node->data)
+    {
+        if (node->left == nullptr)
+        {
+            node->left = new tree_node(value, nullptr, nullptr, node);
+        }
+        else
+        {
+            insertRec(node->left, value);
+        }
+    }
+    else
+    {
+        if (node->right == nullptr)
+        {
+            node->right = new tree_node(value, nullptr, nullptr, node);
+        }
+        else
+        {
+            insertRec(node->right, value);
+        }
+    }
+
+    balance(node);
 }
 
 template <typename T>
-size_t AVL_tree<T>::get_depth(const tree_node *node) const
+size_t AVL_tree<T>::get_depth(const tree_node *node)
 {
     return node ? node->label->depth : 0;
 }
@@ -98,7 +147,7 @@ void AVL_tree<T>::update_depth(const tree_node *node)
 }
 
 template <typename T>
-long long AVL_tree<T>::get_balance(const tree_node *node) const
+long long AVL_tree<T>::get_balance(const tree_node *node)
 {
     return get_depth(node->left) - get_depth(node->right);
 }
@@ -106,5 +155,93 @@ long long AVL_tree<T>::get_balance(const tree_node *node) const
 template <typename T>
 void AVL_tree<T>::removeRec(tree_node *node, const T &value, std::function<void(const T &)> doSomething)
 {
+    if (node == nullptr)
+    {
+        std::cerr << "value not founded." << std::endl;
+        return;
+    }
 
-}// TODO 注意root的处理
+    if (value < node->data)
+    {
+        deleteRec(node->left, value, doSomething);
+    }
+    else if (value > node->data)
+    {
+        deleteRec(node->right, value, doSomething);
+    }
+    else
+    {
+        if (node->left != nullptr || node->right != nullptr)
+        {
+            auto temp = node->left ? node->left : node->right;
+
+            if (node->parent != nullptr)
+            {
+                auto &child = node->parent->left == node ? node->parent->left : node->parent->right;
+                child = temp;
+            }
+            else
+            {
+                root = temp;
+            }
+            temp->parent = node->parent;
+
+            doSomething(node->data);
+            delete node;
+            return;
+        }
+
+        auto temp = node->right;
+        while (temp->left != nullptr)
+        {
+            temp = temp->left;
+        }
+
+        doSomething(node->data);
+
+        node->data = temp->data;
+
+        removeRec(node, temp->data);
+    }
+
+    balance(node);
+}
+
+template <typename T, typename D>
+void binary_search_tree<T, D>::balance(tree_node *node)
+{
+    if (node == nullptr)
+    {
+        return;
+    }
+
+    update_depth(node);
+
+    const long long balance = get_balance(node);
+
+    if (balance > 1)
+    {
+        if (get_balance(node->left) >= 0)
+        {
+            rotate_right(node);
+        }
+        else
+        {
+            rotate_left(node->left);
+            rotate_right(node);
+        }
+    }
+
+    if (balance < -1)
+    {
+        if (get_balance(node->right) <= 0)
+        {
+            rotate_left(node);
+        }
+        else
+        {
+            rotate_right(node->right);
+            rotate_left(node);
+        }
+    }
+}

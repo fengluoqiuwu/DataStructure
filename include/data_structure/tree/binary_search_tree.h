@@ -235,14 +235,14 @@ protected:
      *
      * @param node The node to rotate.
      */
-    void rotate_left(typename binary_tree<T, D>::tree_node *node); // TODO, Test
+    virtual void rotate_left(typename binary_tree<T, D>::tree_node *node); // TODO, Test
 
     /**
      * @brief Performs a right rotation on the given node.
      *
      * @param node The node to rotate.
      */
-    void rotate_right(typename binary_tree<T, D>::tree_node *node); // TODO, Test
+    virtual void rotate_right(typename binary_tree<T, D>::tree_node *node); // TODO, Test
 
     /**
      * @brief Recursively inserts for a value in the binary tree.
@@ -261,6 +261,17 @@ private:
      * @return True if the value is found, false otherwise.
      */
     bool searchRec(typename binary_tree<T, D>::tree_node *node, const T &value) const override;
+
+    /**
+     * @brief Balance a node in the AVL tree.
+     *
+     * Recalculate the depth of node,
+     * balance a node in the AVL tree by left and right rotate,
+     * suppose its children are balanced before.
+     *
+     * @param node The node to balance.
+     */
+    void balance(typename binary_tree<T, D>::tree_node *node);
 };
 
 #include "binary_search_tree.tpp"

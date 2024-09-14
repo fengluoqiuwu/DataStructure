@@ -214,6 +214,10 @@ void binary_search_tree<T, D>::rotate_left(typename binary_tree<T, D>::tree_node
         auto& child = node->parent->left == node ? node->parent->left :node->parent->right;
         child = node->right;
     }
+    else
+    {
+        root = node->right;
+    }
 
     node->right->parent = node->parent;
     typename binary_tree<T, D>::tree_node *temp = node->right->left;
@@ -234,6 +238,10 @@ void binary_search_tree<T, D>::rotate_right(typename binary_tree<T, D>::tree_nod
     {
         auto& child = node->parent->left == node ? node->parent->left :node->parent->right;
         child = node->left;
+    }
+    else
+    {
+        root = node->left;
     }
 
     node->left->parent = node->parent;

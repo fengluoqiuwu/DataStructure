@@ -227,14 +227,14 @@ protected:
      *
      * @param node The node to rotate.
      */
-    using binary_search_tree<T, AVL_label>::rotate_left;
+    void rotate_left(typename binary_search_tree<T, AVL_label>::tree_node *node) override;
 
     /**
      * @brief Performs a right rotation on the given node.
      *
      * @param node The node to rotate.
      */
-    using binary_search_tree<T, AVL_label>::rotate_right;
+    void rotate_right(typename binary_search_tree<T, AVL_label>::tree_node *node) override;
 
     /**
      * @brief Recursively inserts a value into the AVL tree.
@@ -251,14 +251,14 @@ private:
      * @param node The node to start the depth calculation from.
      * @return The depth of the subtree.
      */
-    size_t get_depth(const typename binary_search_tree<T, AVL_label>::tree_node *node) const;
+    static size_t get_depth(const typename binary_search_tree<T, AVL_label>::tree_node *node);
 
     /**
      * @brief Updates the depth of the nodes in the tree.
      *
      * @param node The node to start updating from.
      */
-    void update_depth(const typename binary_search_tree<T, AVL_label>::tree_node *node);
+    static void update_depth(const typename binary_search_tree<T, AVL_label>::tree_node *node);
 
     /**
      * @brief Calculates the balance factor of the given node.
@@ -266,7 +266,7 @@ private:
      * @param node The node to calculate the balance factor for.
      * @return The balance factor of the node.
      */
-    long long get_balance(const typename binary_search_tree<T, AVL_label>::tree_node *node) const;
+    static long long get_balance(const typename binary_search_tree<T, AVL_label>::tree_node *node);
 
     /**
      * @brief Recursively removes a value from the AVL tree.
