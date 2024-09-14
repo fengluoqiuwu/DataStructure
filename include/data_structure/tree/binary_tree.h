@@ -46,7 +46,7 @@ protected:
         tree_node *left = nullptr;       ///< Pointer to the left child node.
         tree_node *right = nullptr;      ///< Pointer to the right child node.
         tree_node *parent = nullptr;    ///< Pointer to the parent node.
-        std::conditional_t<!std::is_void_v<D>, D, char> *label; ///< label of the node only use
+        std::conditional_t<!std::is_void_v<D>, D, char> label; ///< label of the node only use
     };
 
     tree_node *root; ///< Pointer to the root node of the tree.

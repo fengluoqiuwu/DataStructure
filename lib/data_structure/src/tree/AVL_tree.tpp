@@ -138,13 +138,13 @@ void AVL_tree<T>::insertRec(typename binary_search_tree<T, AVL_label>::tree_node
 template <typename T>
 size_t AVL_tree<T>::get_depth(const typename binary_search_tree<T, AVL_label>::tree_node *node)
 {
-    return node ? node->label->depth : 0;
+    return node ? node->label.depth : 0;
 }
 
 template <typename T>
-void AVL_tree<T>::update_depth(const typename binary_search_tree<T, AVL_label>::tree_node *node)
+void AVL_tree<T>::update_depth(typename binary_search_tree<T, AVL_label>::tree_node *node)
 {
-    node->label->depth = 1 + std::max(get_depth(node->left), get_depth(node->right));
+    node->label.depth = 1 + std::max(get_depth(node->left), get_depth(node->right));
 }
 
 template <typename T>

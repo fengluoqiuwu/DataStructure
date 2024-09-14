@@ -265,7 +265,7 @@ private:
      *
      * @param node The node to start updating from.
      */
-    static void update_depth(const typename binary_search_tree<T, AVL_label>::tree_node *node);
+    static void update_depth(typename binary_search_tree<T, AVL_label>::tree_node *node);
 
     /**
      * @brief Calculates the balance factor of the given node.

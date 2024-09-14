@@ -1148,7 +1148,14 @@ void binary_tree<T,D>::copyRec(tree_node* parent,tree_node*& node,const tree_nod
         return;
     }
 
-    node = new tree_node(other_node->data,nullptr,nullptr,parent);
+    if constexpr (std::is_void_v<D>)
+    {
+        node = new tree_node(other_node->data,nullptr,nullptr,parent);
+    }
+    else
+    {
+        node = new tree_node(other_node->data,nullptr,nullptr,parent,other_node->label);
+    }
 
     copyRec(node,node->left,other_node->left);
     copyRec(node,node->right,other_node->right);
