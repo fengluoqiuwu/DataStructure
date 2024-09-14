@@ -15,4 +15,9 @@
  */
 #include "binary_search_tree.h"
 
+/**
+ * Class of AVL tree
+ */
+#include "AVL_tree.h"
+
 #endif //TREE_H
