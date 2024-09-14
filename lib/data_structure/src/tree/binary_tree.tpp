@@ -1096,9 +1096,9 @@ void binary_tree<T,D>::buildRec(tree_node* parent, tree_node*& node, I& begin, I
 template <typename T, typename D>
 bool binary_tree<T,D>::equalRec(tree_node* node, tree_node* other_node)
 {
-    if (node == nullptr)
+    if (node == nullptr || other_node == nullptr)
     {
-        if (other_node == nullptr)
+        if (node == nullptr && other_node == nullptr)
         {
             return true;
         }
@@ -1106,9 +1106,19 @@ bool binary_tree<T,D>::equalRec(tree_node* node, tree_node* other_node)
         return false;
     }
 
-    if (node->data != other_node->data)
+    if constexpr (std::is_void_v<D>)
     {
-        return false;
+        if (node->data != other_node->data)
+        {
+            return false;
+        }
+    }
+    else
+    {
+        if (node->data != other_node->data || node->label != other_node->label)
+        {
+            return false;
+        }
     }
 
     return equalRec(node->left,other_node->left) && equalRec(node->right,other_node->right);

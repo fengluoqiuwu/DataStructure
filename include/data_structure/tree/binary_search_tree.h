@@ -235,14 +235,14 @@ protected:
      *
      * @param node The node to rotate.
      */
-    virtual void rotate_left(typename binary_tree<T, D>::tree_node *node); // TODO, Test
+    virtual void rotate_left(typename binary_tree<T, D>::tree_node *node);
 
     /**
      * @brief Performs a right rotation on the given node.
      *
      * @param node The node to rotate.
      */
-    virtual void rotate_right(typename binary_tree<T, D>::tree_node *node); // TODO, Test
+    virtual void rotate_right(typename binary_tree<T, D>::tree_node *node);
 
     /**
      * @brief Recursively inserts for a value in the binary tree.

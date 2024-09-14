@@ -179,15 +179,15 @@ void AVL_tree<T>::removeRec(typename binary_search_tree<T, AVL_label>::tree_node
 
     if (value < node->data)
     {
-        deleteRec(node->left, value, doSomething);
+        removeRec(node->left, value, doSomething);
     }
     else if (value > node->data)
     {
-        deleteRec(node->right, value, doSomething);
+        removeRec(node->right, value, doSomething);
     }
     else
     {
-        if (node->left != nullptr || node->right != nullptr)
+        if (node->left == nullptr || node->right == nullptr)
         {
             auto temp = node->left ? node->left : node->right;
 
@@ -200,7 +200,11 @@ void AVL_tree<T>::removeRec(typename binary_search_tree<T, AVL_label>::tree_node
             {
                 root = temp;
             }
-            temp->parent = node->parent;
+
+            if(temp!=nullptr)
+            {
+                temp->parent = node->parent;
+            }
 
             doSomething(node->data);
             delete node;
@@ -217,7 +221,7 @@ void AVL_tree<T>::removeRec(typename binary_search_tree<T, AVL_label>::tree_node
 
         node->data = temp->data;
 
-        removeRec(node, temp->data);
+        removeRec(node->right, temp->data);
     }
 
     balance(node);

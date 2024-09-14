@@ -12,6 +12,8 @@ namespace TreeData
     struct AVL_label
     {
         size_t depth=1;
+
+        bool operator==(const AVL_label&) const=default;
     };
 }
 
@@ -30,7 +32,7 @@ using namespace TreeData;
  * @tparam T Type of elements stored in the tree.
  */
 template <typename T>
-class AVL_tree : protected binary_search_tree<T, AVL_label> // TODO Add Copy of label to binary_tree
+class AVL_tree : protected binary_search_tree<T, AVL_label>
 {
 public:
     /**
