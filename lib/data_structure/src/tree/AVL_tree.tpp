@@ -14,7 +14,6 @@ AVL_tree<T>::AVL_tree() : binary_search_tree<T, AVL_label>()
 template <typename T>
 AVL_tree<T>::AVL_tree(const T &value) : binary_search_tree<T, AVL_label>(value)
 {
-
 }
 
 template <typename T>

@@ -20,4 +20,9 @@
  */
 #include "AVL_tree.h"
 
+/**
+ * Class of red black tree
+ */
+#include "red_black_tree.h"
+
 #endif //TREE_H

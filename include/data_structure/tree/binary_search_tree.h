@@ -161,7 +161,7 @@ public:
      *
      * @param value The value to be inserted.
      */
-    void insert(const T &value);
+    virtual void insert(const T &value);
 
     /**
      * @brief Searches for a value in the binary search tree.
