@@ -103,7 +103,7 @@ void red_black_tree<T>::remove(const T &value, std::function<void(const T &)> do
 
     while (temp->data!=value&&temp!=nullptr)
     {
-        temp= value > temp->data ?temp->left:temp->right;
+        temp= value > temp->data ?temp->right:temp->left;
     }
 
     if (temp==nullptr)
@@ -262,7 +262,10 @@ void red_black_tree<T>::fix_insert(typename binary_search_tree<T,red_black_label
     {
         set_color(parent, BLACK);
         set_color(uncle, BLACK);
-        set_color(grand_parent, RED);
+        if(grand_parent!=root)
+        {
+            set_color(grand_parent, RED);
+        }
         fix_insert(grand_parent);
         return;
     }
@@ -367,7 +370,8 @@ void red_black_tree<T>::fix_remove(typename binary_search_tree<T,red_black_label
         set_color(nephew_c, BLACK);
 
         brother = parent->left == node ? parent->right : parent->left;
-        //侄子后面没有使用，不需要更新
+        //同向侄子后面没有使用，不需要更新
+        nephew_d = parent->left == node ? brother->right : brother->left;
     }
 
     // Case 5 : 若兄弟节点是黑色，且与N反向的侄节点D为红色，父节点既可为红色又可为黑色。
@@ -387,4 +391,5 @@ void red_black_tree<T>::fix_remove(typename binary_search_tree<T,red_black_label
     Color temp_c=get_color(parent);
     set_color(parent, get_color(brother));
     set_color(brother, temp_c);
+    set_color(nephew_d, BLACK);
 }

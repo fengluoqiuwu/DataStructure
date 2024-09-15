@@ -92,7 +92,7 @@ void binary_search_tree<T, D>::remove(const T &value, std::function<void(const T
 
     while (temp->data!=value&&temp!=nullptr)
     {
-        temp= value > temp->data ?temp->left:temp->right;
+        temp= value > temp->data ?temp->right:temp->left;
     }
 
     if (temp==nullptr)

@@ -34,7 +34,7 @@ using namespace TreeData;
  * @tparam T Type of elements stored in the tree.
  */
 template <typename T>
-class red_black_tree : protected binary_search_tree<T>
+class red_black_tree : protected binary_search_tree<T,red_black_label>
 {
 public:
     /**
@@ -214,6 +214,22 @@ public:
      * Provides a way to traverse the tree in a read-only manner.
      */
     using binary_search_tree<T, red_black_label>::ConstIterator;
+
+    /**
+     * @brief Returns an iterator to the beginning of the tree traversal.
+     *
+     * @param type The type of traversal to use (preorder, inorder, or postorder).
+     * @return An iterator to the beginning of the traversal.
+     */
+    using binary_search_tree<T, red_black_label>::begin;
+
+    /**
+     * @brief Returns an iterator to the end of the tree traversal.
+     *
+     * @param type The type of traversal to use (preorder, inorder, or postorder).
+     * @return An iterator to the end of the traversal.
+     */
+    using binary_search_tree<T, red_black_label>::end;
 
     /**
      * @brief Removes a value from the red-black tree.
