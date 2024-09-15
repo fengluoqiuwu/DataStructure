@@ -370,6 +370,56 @@ T linked_list<T>::pop_last()
 }
 
 template <typename T>
+linked_list<T> linked_list<T>::sublist(const size_t begin, const size_t end) const
+{
+    if (begin >= end)
+    {
+        return linked_list();
+    }
+
+    if(end > size)
+    {
+        throw std::out_of_range("sub_list:End is larger than size!");
+    }
+
+    auto temp = get_node_pointer(begin,false);
+    linked_list result;
+
+    for (auto i = begin; i != end; i++)
+    {
+        result.add(temp->data);
+        temp = temp->next;
+    }
+
+    return result;
+}
+
+template <typename T>
+void linked_list<T>::reverse(const size_t begin, const size_t end) const
+{
+    if (begin > end||end > size)
+    {
+        throw std::out_of_range("reverse:Invalid input!");
+    }
+
+    auto begin_node = get_node_pointer(begin,true);
+    auto end_node = get_node_pointer(end,true)->previous;
+
+    for (auto i = 1; i <= (end-begin)/2; i++)
+    {
+        std::swap(begin_node->data, end_node->data);
+        begin_node = begin_node->next;
+        end_node = end_node->previous;
+    }
+}
+
+template <typename T>
+void linked_list<T>::reverse() const
+{
+    reverse(0,size);
+}
+
+template <typename T>
 std::string linked_list<T>::to_string() const
 {
     // 仅支持特定类型

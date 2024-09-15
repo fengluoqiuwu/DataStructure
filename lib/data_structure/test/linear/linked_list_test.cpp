@@ -293,6 +293,37 @@ TEST_F(LinkedListTest,FunctionPopLastTest)
     delete list;
 }
 
+TEST_F(LinkedListTest,FunctionSublistTest)
+{
+    int a[10] = {1,2,3,4,5,6,7,8,9,10};
+    auto* list = new linked_list(a,10);
+
+    auto list2 = list->sublist(0,10);
+    ASSERT_TRUE(list2==*list);
+
+    int b[5] = {1,2,3,4,5};
+    auto *list3 = new linked_list(b,5);
+    list2 = list->sublist(0,5);
+    ASSERT_TRUE(list2==*list3);
+
+    delete list;
+    delete list3;
+}
+
+TEST_F(LinkedListTest,FunctionReverseTest)
+{
+    int a[10] = {1,2,3,4,5,6,7,8,9,10};
+    auto* list = new linked_list(a,10);
+
+    list->reverse();
+    ASSERT_EQ(list->to_string(),"[10,9,8,7,6,5,4,3,2,1]");
+
+    list->reverse(0,5);
+    ASSERT_EQ(list->to_string(),"[6,7,8,9,10,5,4,3,2,1]");
+
+    delete list;
+}
+
 TEST_F(LinkedListTest,FunctionToStringAndFromStringTest)
 {
     const std::string test_int = "[1,2,3,4,5]";

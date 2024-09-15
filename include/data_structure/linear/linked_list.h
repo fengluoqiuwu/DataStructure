@@ -13,10 +13,9 @@
  * @tparam T Type of the data
  */
 template <typename T>
-class linked_list : public object// TODO,add sublist()
+class linked_list : public object
 {
 public:
-
     /**
      * Simple constructor, Init it as an empty linked list
      * Complexity: O(1)
@@ -216,6 +215,26 @@ public:
     T pop_last();
 
     /**
+     * get sublist of self, include begin but not include end
+     * @param begin begin index of sublist
+     * @param end end index of sublist
+     * @return sublist object
+     */
+    linked_list sublist(size_t begin, size_t end) const;
+
+    /**
+     * reverse a sublist of self, include begin but not include end
+     * @param begin begin index of sublist
+     * @param end end index of sublist
+     */
+    void reverse(size_t begin, size_t end) const;
+
+    /**
+     * reverse the linked list
+     */
+    void reverse() const;
+
+    /**
      * change linked list to string style
      * Only use the function if DataType is int,float,or string
      * Complexity: O(n)
@@ -245,8 +264,8 @@ private:
     class Node
     {
     public:
-        T data;         /** data of the node */
-        Node *next;     /** next node pointer */
+        T data; /** data of the node */
+        Node *next; /** next node pointer */
         Node *previous; /** previous node pointer */
 
         /**
@@ -284,9 +303,9 @@ private:
         }
     };
 
-    Node *head_node = new Node(nullptr,nullptr); /** Linked List Head */
-    Node *tail_node = new Node(nullptr,nullptr); /** Linked List Tail */
-    size_t size = 0;                             /** Linked List Length */
+    Node *head_node = new Node(nullptr, nullptr); /** Linked List Head */
+    Node *tail_node = new Node(nullptr, nullptr); /** Linked List Tail */
+    size_t size = 0; /** Linked List Length */
 
     /**
      * This function will return the Node has input index in previous linked_list.
@@ -295,10 +314,9 @@ private:
      * @param include_tail can it search for tail_node?
      * @return next node
      */
-    [[nodiscard]] Node * get_node_pointer(size_t index, bool include_tail) const;
+    [[nodiscard]] Node *get_node_pointer(size_t index, bool include_tail) const;
 
 public:
-
     friend class Iterator;
     /**
      * Linked List iterator, for not const linked list
@@ -306,21 +324,21 @@ public:
     class Iterator
     {
     public:
-        static constexpr iterator::type type=iterator::BIDIRECTIONAL;
+        static constexpr iterator::type type = iterator::BIDIRECTIONAL;
 
         /**
          * This method allows you to access and modify the value at the current position of the iterator.
          * Complexity: O(1)
          * @return A reference to the value pointed to by the iterator
          */
-        T& operator*() const;
+        T &operator*() const;
 
         /**
          * This method provides access to the value pointed to by the iterator, similar to dereferencing the iterator.
          * Complexity: O(1)
          * @return A pointer to the value pointed to by the iterator.
          */
-        T* operator->() const;
+        T *operator->() const;
 
         /**
          * Equal operator
@@ -328,10 +346,7 @@ public:
          * @param other other iterator
          * @return true if their currents are equal else false
          */
-        bool operator==(const Iterator& other) const
-        {
-         return this->current == other.current;
-        }
+        bool operator==(const Iterator &other) const { return this->current == other.current; }
 
         /**
          * Not Equal operator
@@ -339,34 +354,32 @@ public:
          * @param other other iterator
          * @return true if their currents are not equal else false
          */
-        bool operator!=(const Iterator& other) const
-        {
-         return this->current != other.current;
-        }
+        bool operator!=(const Iterator &other) const { return this->current != other.current; }
 
         /**
-         * This is the pre-increment operator. It advances the iterator by one position and returns a reference to the modified iterator itself.
-         * Complexity: O(1)
+         * This is the pre-increment operator. It advances the iterator by one position and returns a reference to the
+         * modified iterator itself. Complexity: O(1)
          * @return A reference to the updated iterator after it has been incremented.
          */
-        Iterator& operator++();
+        Iterator &operator++();
 
         /**
          * This method moves the iterator backward by one position (pre-decrement) and returns the iterator itself.
          * Complexity: O(1)
          * @return  A reference to the updated iterator after it has been decremented.
          */
-        Iterator& operator--();
+        Iterator &operator--();
 
         /**
          * destructor
          */
         ~Iterator();
+
     private:
         friend class linked_list;
 
-        const linked_list& outer; /** reference of linked list */
-        Node * current;     /** current pointer*/
+        const linked_list &outer; /** reference of linked list */
+        Node *current; /** current pointer*/
 
         /**
          * Constructor only can use by LinkedList
@@ -374,10 +387,7 @@ public:
          * @param node current node
          * @param outer reference of linked list
          */
-        explicit Iterator(Node *node,const linked_list& outer): outer(outer)
-        {
-            this->current = node;
-        }
+        explicit Iterator(Node *node, const linked_list &outer) : outer(outer) { this->current = node; }
     };
 
     friend class ConstIterator;
@@ -387,20 +397,19 @@ public:
     class ConstIterator
     {
     public:
-
         /**
          * This method allows you to access and modify the value at the current position of the iterator.
          * Complexity: O(1)
          * @return A reference to the value pointed to by the iterator
          */
-        const T& operator*() const;
+        const T &operator*() const;
 
         /**
          * This method provides access to the value pointed to by the iterator, similar to dereferencing the iterator.
          * Complexity: O(1)
          * @return A pointer to the value pointed to by the iterator.
          */
-        const T* operator->() const;
+        const T *operator->() const;
 
         /**
          * Equal operator
@@ -408,10 +417,7 @@ public:
          * @param other other const iterator
          * @return true if their currents are equal else false
          */
-        bool operator==(const ConstIterator& other) const
-        {
-         return this->current == other.current;
-        }
+        bool operator==(const ConstIterator &other) const { return this->current == other.current; }
 
         /**
          * Not Equal operator
@@ -419,36 +425,33 @@ public:
          * @param other other const iterator
          * @return true if their currents are not equal else false
          */
-        bool operator!=(const ConstIterator& other) const
-        {
-         return this->current != other.current;
-        }
+        bool operator!=(const ConstIterator &other) const { return this->current != other.current; }
 
         /**
-         * This is the pre-increment operator. It advances the iterator by one position and returns a reference to the modified iterator itself.
-         * Complexity: O(1)
+         * This is the pre-increment operator. It advances the iterator by one position and returns a reference to the
+         * modified iterator itself. Complexity: O(1)
          * @return A reference to the updated iterator after it has been incremented.
          */
-        ConstIterator& operator++();
+        ConstIterator &operator++();
 
         /**
          * This method moves the iterator backward by one position (pre-decrement) and returns the iterator itself.
          * Complexity: O(1)
          * @return  A reference to the updated iterator after it has been decremented.
          */
-        ConstIterator& operator--();
+        ConstIterator &operator--();
 
         /**
          * destructor
          * Complexity: O(1)
          */
         ~ConstIterator();
-    private:
 
+    private:
         friend class linked_list;
 
-        const linked_list& outer;     /** reference of linked list */
-        const Node * current;         /** current pointer*/
+        const linked_list &outer; /** reference of linked list */
+        const Node *current; /** current pointer*/
 
         /**
          * Constructor only can use by LinkedList
@@ -456,10 +459,7 @@ public:
          * @param node current node
          * @param outer reference of linked list
          */
-        explicit ConstIterator(Node *node,const linked_list& outer): outer(outer)
-        {
-            this->current = node;
-        }
+        explicit ConstIterator(Node *node, const linked_list &outer) : outer(outer) { this->current = node; }
     };
 
     /**
