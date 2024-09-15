@@ -87,7 +87,7 @@ void red_black_tree<T>::insert(const T &value)
 {
     if (root == nullptr)
     {
-        root = new tree_node(value);
+        root = new typename binary_search_tree<T,red_black_label>::tree_node(value);
         set_color(root, BLACK);
     }
     else
@@ -117,7 +117,7 @@ void red_black_tree<T>::remove(const T &value, std::function<void(const T &)> do
 }
 
 template <typename T>
-void red_black_tree<T>::insertRec(tree_node *node, const T &value)
+void red_black_tree<T>::insertRec(typename binary_search_tree<T,red_black_label>::tree_node *node, const T &value)
 {
     if (node == nullptr)
     {
@@ -157,7 +157,7 @@ void red_black_tree<T>::insertRec(tree_node *node, const T &value)
 }
 
 template <typename T>
-Color red_black_tree<T>::get_color(tree_node *node)
+Color red_black_tree<T>::get_color(typename binary_search_tree<T,red_black_label>::tree_node *node)
 {
     if (node == nullptr)
     {
@@ -168,7 +168,7 @@ Color red_black_tree<T>::get_color(tree_node *node)
 }
 
 template <typename T>
-void red_black_tree<T>::set_color(tree_node *node, Color c)
+void red_black_tree<T>::set_color(typename binary_search_tree<T,red_black_label>::tree_node *node, Color c)
 {
     if (node == nullptr)
     {
@@ -178,7 +178,7 @@ void red_black_tree<T>::set_color(tree_node *node, Color c)
 }
 
 template <typename T>
-void red_black_tree<T>::remove(tree_node *node)
+void red_black_tree<T>::remove(typename binary_search_tree<T,red_black_label>::tree_node *node)
 {
     // Case 0 : 若待删除节点为树中唯一的节点的话，直接删除即可.
     if (node==root&&is_empty())
@@ -232,7 +232,7 @@ void red_black_tree<T>::remove(tree_node *node)
 }
 
 template <typename T>
-void red_black_tree<T>::fix_insert(tree_node *node)
+void red_black_tree<T>::fix_insert(typename binary_search_tree<T,red_black_label>::tree_node *node)
 {
     if (node == nullptr)
     {
@@ -300,7 +300,7 @@ void red_black_tree<T>::fix_insert(tree_node *node)
 }
 
 template <typename T>
-void red_black_tree<T>::fix_remove(tree_node *node)
+void red_black_tree<T>::fix_remove(typename binary_search_tree<T,red_black_label>::tree_node *node)
 {
     //待删除节点为黑色叶子节点
     auto parent = node->parent;
@@ -367,8 +367,7 @@ void red_black_tree<T>::fix_remove(tree_node *node)
         set_color(nephew_c, BLACK);
 
         brother = parent->left == node ? parent->right : parent->left;
-        nephew_c = parent->left == node ? brother->left : brother->right;
-        nephew_d = parent->left == node ? brother->right : brother->left;
+        //侄子后面没有使用，不需要更新
     }
 
     // Case 5 : 若兄弟节点是黑色，且与N反向的侄节点D为红色，父节点既可为红色又可为黑色。
