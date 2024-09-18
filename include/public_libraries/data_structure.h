@@ -20,4 +20,14 @@
  */
 #include "tree.h" //Tons of shit!!!
 
+/**
+ * Map Data structure class
+ */
+#include "map.h"
+
+/**
+ * Set Data structure class
+ */
+#include "set.h"
+
 #endif //DATA_STRUCTURE_H
