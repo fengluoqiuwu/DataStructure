@@ -30,8 +30,8 @@ using namespace TreeData;
  * @tparam T The type of the data stored in the tree nodes.
  * @tparam D Label type for extend
  */
-template <typename T,typename D = void>
-class binary_tree //TODO,Add level traversal
+template <typename T, typename D = void>
+class binary_tree // TODO,Add level traversal
 {
 protected:
     /**
@@ -42,10 +42,10 @@ protected:
      */
     struct tree_node
     {
-        T data;                          ///< The data stored in the node.
-        tree_node *left = nullptr;       ///< Pointer to the left child node.
-        tree_node *right = nullptr;      ///< Pointer to the right child node.
-        tree_node *parent = nullptr;    ///< Pointer to the parent node.
+        T data; ///< The data stored in the node.
+        tree_node *left = nullptr; ///< Pointer to the left child node.
+        tree_node *right = nullptr; ///< Pointer to the right child node.
+        tree_node *parent = nullptr; ///< Pointer to the parent node.
         std::conditional_t<!std::is_void_v<D>, D, char> label; ///< label of the node only use
     };
 
@@ -56,9 +56,9 @@ protected:
      *
      * @param node The node to start the search from.
      * @param value The value to search for.
-     * @return True if the value is found, false otherwise.
+     * @return Node pointer if the value is found, nullptr otherwise.
      */
-    virtual bool searchRec(tree_node *node, const T &value) const;
+    virtual tree_node *searchRec(tree_node *node, const T &value) const;
 
 public:
     /**
@@ -164,7 +164,7 @@ public:
      * @param value The value to search for.
      * @return True if the value is found, false otherwise.
      */
-    bool search(const T &value) const;
+    virtual bool search(const T &value) const;
 
     /**
      * @brief Performs an in-order traversal of the tree.
@@ -192,7 +192,7 @@ public:
      *
      * @param doSomething A function to apply to each node's data during traversal.
      */
-    void clear(std::function<void(const T &)> doSomething=[](const T &) {});
+    void clear(std::function<void(const T &)> doSomething = [](const T &) {});
 
     /**
      * @brief Checks if the tree is empty.
@@ -222,6 +222,17 @@ public:
      */
     [[nodiscard]] std::string to_string(traversal type = PREORDER) const;
 
+protected:
+
+    /**
+     * change data type of the tree to another type
+     * @tparam NewType new data type
+     * @param doSomething type changing function
+     * @return new binary tree.
+     */
+    template <typename NewType>
+    binary_tree<NewType> change_type(std::function<NewType(const T &)> doSomething) const;
+
 private:
     /**
      * @brief Constructor with root.
@@ -238,7 +249,7 @@ private:
      * @param node The node to start destruction from.
      * @param doSomething A function to apply to each node's data during destruction.
      */
-    static void destroyRec(tree_node *node, std::function<void(const T &)> doSomething=[](const T &) {});
+    static void destroyRec(tree_node *node, std::function<void(const T &)> doSomething = [](const T &) {});
 
     /**
      * @brief Recursively performs an in-order traversal.
@@ -246,7 +257,7 @@ private:
      * @param node The node to start traversal from.
      * @param doSomething A function to apply to each node's data during traversal.
      */
-    static void inorderRec(tree_node *node, std::function<void(const T &)> doSomething=[](const T &) {});
+    static void inorderRec(tree_node *node, std::function<void(const T &)> doSomething = [](const T &) {});
 
     /**
      * @brief Recursively performs a pre-order traversal.
@@ -254,7 +265,7 @@ private:
      * @param node The node to start traversal from.
      * @param doSomething A function to apply to each node's data during traversal.
      */
-    static void preorderRec(tree_node *node, std::function<void(const T &)> doSomething=[](const T &) {});
+    static void preorderRec(tree_node *node, std::function<void(const T &)> doSomething = [](const T &) {});
 
     /**
      * @brief Recursively performs a post-order traversal.
@@ -262,7 +273,7 @@ private:
      * @param node The node to start traversal from.
      * @param doSomething A function to apply to each node's data during traversal.
      */
-    static void postorderRec(tree_node *node, std::function<void(const T &)> doSomething=[](const T &) {});
+    static void postorderRec(tree_node *node, std::function<void(const T &)> doSomething = [](const T &) {});
 
     /**
      * @brief Recursively builds the tree with an inorder list with end_label.
@@ -309,6 +320,17 @@ private:
      * @param other_node The tree to be copied.
      */
     static void copyRec(tree_node *parent, tree_node *&node, const tree_node *other_node);
+
+    /**
+     * @brief Recursively copies nodes from another tree.
+     *
+     * @param parent Parent of the node,only for recursive.
+     * @param node The node to start copying from.
+     * @param other_node The tree to be copied.
+     * @param doSomething type changing function
+     */
+    template <typename OldType>
+    static void change_typeRec(tree_node *parent, tree_node *&node, typename binary_tree<OldType,D>::tree_node *other_node, std::function<T(const OldType &)> doSomething);
 
     /**
      * Get the first node of subtree in specific traversal type
@@ -486,7 +508,8 @@ public:
          * @param outer reference of binary tree
          * @param type iterator traversal type
          */
-        explicit Iterator(tree_node *node, const binary_tree &outer, const traversal type = PREORDER) : outer(outer), it_type(type)
+        explicit Iterator(tree_node *node, const binary_tree &outer, const traversal type = PREORDER) :
+            outer(outer), it_type(type)
         {
             this->current = node;
         }

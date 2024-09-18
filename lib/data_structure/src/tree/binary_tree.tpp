@@ -818,18 +818,23 @@ typename binary_tree<T,D>::tree_node* binary_tree<T,D>::ConstIterator::get_node(
 }
 
 template <typename T, typename D>
-bool binary_tree<T,D>::searchRec(tree_node* node, const T& value) const
+typename binary_tree<T, D>::tree_node * binary_tree<T,D>::searchRec(tree_node* node, const T& value) const
 {
     if (node == nullptr)
     {
-        return false;
+        return nullptr;
     }
     if (node->data == value)
     {
-        return true;
+        return node;
     }
 
-    return searchRec(node->left,value)||searchRec(node->right,value);
+    auto temp=searchRec(node->left,value);
+    if (temp!=nullptr)
+    {
+        return temp;
+    }
+    return searchRec(node->right,value);
 }
 
 template <typename T, typename D>
@@ -928,7 +933,7 @@ bool binary_tree<T,D>::operator==(const binary_tree& other) const
 template <typename T, typename D>
 bool binary_tree<T,D>::search(const T& value) const
 {
-    return searchRec(root,value);
+    return searchRec(root,value)!=nullptr;
 }
 
 template <typename T, typename D>
@@ -1008,6 +1013,17 @@ std::string binary_tree<T,D>::to_string(const traversal type) const
 
     std::string result = ss.str();
     result.pop_back();
+
+    return result;
+}
+
+template <typename T, typename D>
+template <typename NewType>
+binary_tree<NewType> binary_tree<T, D>::change_type(std::function<NewType(const T &)> doSomething) const
+{
+    binary_tree<NewType> result;
+
+    result.template change_type<T>(nullptr,result.root,root, doSomething);
 
     return result;
 }
@@ -1169,6 +1185,32 @@ void binary_tree<T,D>::copyRec(tree_node* parent,tree_node*& node,const tree_nod
 
     copyRec(node,node->left,other_node->left);
     copyRec(node,node->right,other_node->right);
+}
+
+template <typename T, typename D>
+template <typename OldType>
+void binary_tree<T,D>::change_typeRec(tree_node *parent, tree_node *&node, typename binary_tree<OldType,D>::tree_node *other_node, std::function<T(const OldType &)> doSomething)
+{
+    if (node != nullptr)
+    {
+        throw std::invalid_argument("copyRec: node already exists");
+    }
+    if(other_node == nullptr)
+    {
+        return;
+    }
+
+    if constexpr (std::is_void_v<D>)
+    {
+        node = new tree_node(doSomething(other_node->data),nullptr,nullptr,parent);
+    }
+    else
+    {
+        node = new tree_node(doSomething(other_node->data),nullptr,nullptr,parent,other_node->label);
+    }
+
+    change_typeRec(node,node->left,other_node->left);
+    change_typeRec(node,node->right,other_node->right);
 }
 
 template <typename T, typename D>

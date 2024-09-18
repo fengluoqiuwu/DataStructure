@@ -157,6 +157,73 @@ void red_black_tree<T>::insertRec(typename binary_search_tree<T,red_black_label>
 }
 
 template <typename T>
+std::optional<T> red_black_tree<T>::try_insert(const T &value)
+{
+    if (root == nullptr)
+    {
+        root = new typename binary_search_tree<T, red_black_label>::tree_node(value);
+        set_color(root, BLACK);
+        return std::nullopt;
+    }
+    return insertRec(root, value);
+}
+
+template <typename T>
+std::optional<T> red_black_tree<T>::try_remove(const T &value)
+{
+    auto temp = root;
+
+    while (temp->data!=value&&temp!=nullptr)
+    {
+        temp= value > temp->data ?temp->right:temp->left;
+    }
+
+    if (temp==nullptr)
+    {
+        return std::nullopt;
+    }
+    auto result = std::optional<T>(temp->data);
+
+    remove(temp);
+
+    return result;
+}
+
+template <typename T>
+std::optional<T> red_black_tree<T>::try_insertRec(typename binary_search_tree<T,red_black_label>::tree_node *node, const T &value)
+{
+    if (node == nullptr)
+    {
+        throw std::invalid_argument("Node is null");
+    }
+
+    if (value == node->data)
+    {
+        auto temp = node->data;
+        node->data = value;
+        return std::optional<T>(temp);
+    }
+
+    if (value < node->data)
+    {
+        if (node->left == nullptr)
+        {
+            node->left = new typename binary_search_tree<T, red_black_label>::tree_node(value, nullptr, nullptr, node);
+            fix_insert(node->left);
+            return std::nullopt;
+        }
+        return insertRec(node->left, value);
+    }
+    if (node->right == nullptr)
+    {
+        node->right = new typename binary_search_tree<T, red_black_label>::tree_node(value, nullptr, nullptr, node);
+        fix_insert(node->right);
+        return std::nullopt;
+    }
+    return insertRec(node->right, value);
+}
+
+template <typename T>
 Color red_black_tree<T>::get_color(typename binary_search_tree<T,red_black_label>::tree_node *node)
 {
     if (node == nullptr)

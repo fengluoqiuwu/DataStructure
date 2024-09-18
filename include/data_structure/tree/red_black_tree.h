@@ -6,6 +6,7 @@
 #define RED_BLACK_TREE_H
 
 #include "binary_search_tree.h"
+#include <optional>
 
 namespace TreeData
 {
@@ -34,7 +35,7 @@ using namespace TreeData;
  * @tparam T Type of elements stored in the tree.
  */
 template <typename T>
-class red_black_tree : protected binary_search_tree<T,red_black_label>
+class red_black_tree : protected binary_search_tree<T, red_black_label>
 {
 public:
     /**
@@ -280,6 +281,35 @@ protected:
      * @param value The value to insert.
      */
     void insertRec(typename binary_search_tree<T, red_black_label>::tree_node *node, const T &value) override;
+
+    /**
+     * @brief Try to insert a value into the tree.
+     *
+     * The red-black properties will be maintained after the insertion.
+     *
+     * @param value The value to insert.
+     * @return std::optional<T> The previous value associated with key, or std::nullopt if there was no mapping for key.
+     */
+    std::optional<T> try_insert(const T &value);
+
+    /**
+     * @brief Try to remove a value into the tree.
+     *
+     * The red-black properties will be maintained after the remove.
+     *
+     * @param value The value to remove.
+     * @return std::optional<ValueType> The previous value associated with key, or std::nullopt if there was no mapping for key.
+     */
+    std::optional<T> try_remove(const T &value);
+
+    /**
+     * @brief Recursively try to insert a value in the red-black tree, while maintaining balance.
+     *
+     * @param node The node to start the insert from.
+     * @param value The value to insert.
+     * @return std::optional<T> The previous value associated with key, or std::nullopt if there was no mapping for key.
+     */
+    std::optional<T> try_insertRec(typename binary_search_tree<T, red_black_label>::tree_node *node, const T &value);
 
 private:
     /**

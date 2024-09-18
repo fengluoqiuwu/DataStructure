@@ -5,8 +5,26 @@
 #ifndef MAP_INTERFACE_H
 #define MAP_INTERFACE_H
 
-#include <utility>  // For std::pair
 #include <optional> // For std::optional
+#include <utility> // For std::pair
+
+#include "set_interface.h"
+
+
+/**
+ * @brief A pair for map.
+ *
+ * @tparam KeyType Type of the key used in the map.
+ * @tparam ValueType Type of the value stored in the map.
+ */
+template <typename KeyType, typename ValueType>
+class Pair
+{
+public:
+    KeyType key;
+    ValueType value;
+    bool operator<=>(const Pair &other) const { return key <=> other.key; }
+};
 
 /**
  * @brief A generic map interface similar to Java's Map.
@@ -56,7 +74,7 @@ public:
      * @return true If this map contains a mapping for the specified key.
      * @return false If this map does not contain a mapping for the specified key.
      */
-    virtual bool containsKey(const KeyType& key) const = 0;
+    virtual bool contains_key(const KeyType& key) const = 0;
 
     /**
      * @brief Returns true if this map contains no key-value mappings.
@@ -64,14 +82,14 @@ public:
      * @return true If this map contains no key-value mappings.
      * @return false If this map contains one or more key-value mappings.
      */
-    [[nodiscard]] virtual bool isEmpty() const = 0;
+    [[nodiscard]] virtual bool is_empty() const = 0;
 
     /**
      * @brief Returns the number of key-value mappings in this map.
      *
      * @return std::size_t The number of key-value mappings in this map.
      */
-    [[nodiscard]] virtual std::size_t size() const = 0;
+    [[nodiscard]] virtual std::size_t get_size() const = 0;
 
     /**
      * @brief Removes all the mappings from this map.
@@ -83,23 +101,23 @@ public:
     /**
      * @brief Returns a vector containing all the keys in this map.
      *
-     * @return std::vector<KeyType> A vector view of the keys contained in this map.
+     * @return Set<KeyType> A set view of the keys contained in this map.
      */
-    [[nodiscard]] virtual std::vector<KeyType> keySet() const = 0;
+    [[nodiscard]] virtual Set<KeyType> key_set() const = 0;
 
     /**
      * @brief Returns a vector containing all the values in this map.
      *
-     * @return std::vector<ValueType> A vector view of the values contained in this map.
+     * @return Set<KeyType> A set view of the values contained in this map.
      */
-    [[nodiscard]] virtual std::vector<ValueType> values() const = 0;
+    [[nodiscard]] virtual Set<ValueType> values() const = 0;
 
     /**
      * @brief Returns a vector containing all the key-value pairs in this map.
      *
-     * @return std::vector<std::pair<KeyType, ValueType>> A vector view of the key-value pairs contained in this map.
+     * @return Set<std::pair<KeyType, ValueType>> A set view of the key-value pairs contained in this map.
      */
-    [[nodiscard]] virtual std::vector<std::pair<KeyType, ValueType>> entrySet() const = 0;
+    [[nodiscard]] virtual Set<std::pair<KeyType, ValueType>> entry_set() const = 0;
 };
 
 #endif // MAP_INTERFACE_H

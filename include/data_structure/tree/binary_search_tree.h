@@ -168,7 +168,7 @@ public:
      *
      * @param value The value to search for.
      */
-    using binary_tree<T, D>::search;
+    bool search(const T &value) const override;
 
     /**
      * @brief Removes a value from the binary search tree.
@@ -252,15 +252,14 @@ protected:
      */
     virtual void insertRec(typename binary_tree<T, D>::tree_node *node, const T &value);
 
-private:
     /**
      * @brief Recursively searches for a value in the binary tree.
      *
      * @param node The node to start the search from.
      * @param value The value to search for.
-     * @return True if the value is found, false otherwise.
+     * @return Node pointer if the value is found, nullptr otherwise.
      */
-    bool searchRec(typename binary_tree<T, D>::tree_node *node, const T &value) const override;
+    typename binary_tree<T, D>::tree_node* searchRec(typename binary_tree<T, D>::tree_node *node, const T &value) const final;
 };
 
 #include "binary_search_tree.tpp"

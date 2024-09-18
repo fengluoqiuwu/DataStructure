@@ -6,6 +6,8 @@ project(DataStructure)
 file(GLOB SRC
         src/linear/*.cpp
         src/tree/*.cpp
+        src/map/*.cpp
+        src/set/*.cpp
 )
 
 # 定义库

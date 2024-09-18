@@ -74,7 +74,7 @@ public:
      *
      * @return std::vector<ValueType> A vector view of the elements contained in this set.
      */
-    virtual std::vector<ValueType> toVector() const = 0;
+    virtual std::vector<ValueType> toVector() const = 0; // TODO,将其改为list的接口
 };
 
 #endif // SET_INTERFACE_H

@@ -86,6 +86,13 @@ void binary_search_tree<T, D>::insert(const T &value)
 }
 
 template <typename T, typename D>
+bool binary_search_tree<T, D>::search(const T &value) const
+{
+    return searchRec(root,value)==nullptr;
+}
+
+
+template <typename T, typename D>
 void binary_search_tree<T, D>::remove(const T &value, std::function<void(const T &)> doSomething)
 {
     auto temp = root;
@@ -260,16 +267,16 @@ void binary_search_tree<T, D>::rotate_right(typename binary_tree<T, D>::tree_nod
 }
 
 template <typename T, typename D>
-bool binary_search_tree<T, D>::searchRec(typename binary_tree<T, D>::tree_node *node, const T &value) const
+typename binary_tree<T, D>::tree_node* binary_search_tree<T, D>::searchRec(typename binary_tree<T, D>::tree_node *node, const T &value) const
 {
     if (node == nullptr)
     {
-        return false;
+        return nullptr;
     }
 
     if (node->data == value)
     {
-        return true;
+        return node;
     }
 
     if (value > node->data)
