@@ -199,7 +199,7 @@ public:
      *
      * @return True if the tree is empty, false otherwise.
      */
-    [[nodiscard]] bool is_empty() const;
+    [[nodiscard]] virtual bool is_empty() const;
 
     /**
      * @brief Gets the depth of the tree.
@@ -213,7 +213,7 @@ public:
      *
      * @return The size of the tree.
      */
-    [[nodiscard]] size_t get_size() const;
+    [[nodiscard]] virtual size_t get_size() const;
 
     /**
      * transform binary tree to string

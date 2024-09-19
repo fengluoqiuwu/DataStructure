@@ -4,6 +4,7 @@
 #pragma once
 
 #include "tree_map.h"
+#include "tree_set.h"
 
 template <typename KeyType, typename ValueType>
 tree_map<KeyType, ValueType>::tree_map() : red_black_tree<Pair<KeyType, ValueType>>()
@@ -39,6 +40,9 @@ tree_map<KeyType, ValueType>::tree_map(tree_map &&other) noexcept : red_black_tr
 }
 
 template <typename KeyType, typename ValueType>
+tree_map<KeyType, ValueType>::~tree_map() = default;
+
+template <typename KeyType, typename ValueType>
 tree_map<KeyType, ValueType> &tree_map<KeyType, ValueType>::operator=(const tree_map &other) noexcept {
     if (this != &other)
     {
@@ -51,13 +55,10 @@ template <typename KeyType, typename ValueType>
 tree_map<KeyType, ValueType> &tree_map<KeyType, ValueType>::operator=(tree_map &&other) noexcept {
     if (this != &other)
     {
-        red_black_tree<Pair<KeyType, ValueType>>::operator=(std::move(other));
+        typename red_black_tree<Pair<KeyType, ValueType>>::operator=std::move(other);
     }
     return *this;
 }
-
-template <typename KeyType, typename ValueType>
-tree_map<KeyType, ValueType>::~tree_map() = default;
 
 template <typename KeyType, typename ValueType>
 std::optional<ValueType> tree_map<KeyType, ValueType>::put(const KeyType &key, const ValueType &value)
@@ -102,19 +103,44 @@ bool tree_map<KeyType, ValueType>::contains_key(const KeyType &key) const
 }
 
 template <typename KeyType, typename ValueType>
+bool tree_map<KeyType, ValueType>::is_empty() const
+{
+    return red_black_tree<Pair<KeyType, ValueType>>::is_empty;
+}
+
+template <typename KeyType, typename ValueType>
+std::size_t tree_map<KeyType, ValueType>::get_size() const
+{
+    return red_black_tree<Pair<KeyType, ValueType>>::get_size;
+}
+
+template <typename KeyType, typename ValueType>
+void tree_map<KeyType, ValueType>::clear()
+{
+    return red_black_tree<Pair<KeyType, ValueType>>::clear;
+}
+
+template <typename KeyType, typename ValueType>
 Set<KeyType> tree_map<KeyType, ValueType>::key_set() const
 {
-
+    return dynamic_cast<tree_set<KeyType>>(red_black_tree<Pair<KeyType, ValueType>>::template change_type<KeyType>(
+        [](const Pair<KeyType, ValueType> pair)->KeyType {return pair.key;}
+        ));
 }
 
 template <typename KeyType, typename ValueType>
 Set<ValueType> tree_map<KeyType, ValueType>::values() const
 {
-
+    return dynamic_cast<tree_set<ValueType>>(red_black_tree<Pair<KeyType, ValueType>>::template change_type<ValueType>(
+            [](const Pair<KeyType, ValueType> pair)->ValueType {return pair.value;}
+        ));
 }
 
 template <typename KeyType, typename ValueType>
 Set<std::pair<KeyType, ValueType>> tree_map<KeyType, ValueType>::entry_set() const
 {
-
+    return dynamic_cast<tree_set<std::pair<KeyType, ValueType>>>(red_black_tree<Pair<KeyType, ValueType>>::template change_type<std::pair<KeyType, ValueType>>(
+            [](const Pair<KeyType, ValueType> pair)->std::pair<KeyType, ValueType>
+            {return std::pair<KeyType, ValueType>(pair.key,pair.value);}
+        ));
 }

@@ -53,14 +53,14 @@ public:
      * @return true If this set contains no elements.
      * @return false If this set contains one or more elements.
      */
-    [[nodiscard]] virtual bool isEmpty() const = 0;
+    [[nodiscard]] virtual bool is_empty() const = 0;
 
     /**
      * @brief Returns the number of elements in this set (its cardinality).
      *
      * @return std::size_t The number of elements in this set.
      */
-    [[nodiscard]] virtual std::size_t size() const = 0;
+    [[nodiscard]] virtual std::size_t get_size() const = 0;
 
     /**
      * @brief Removes all the elements from this set.
@@ -70,11 +70,11 @@ public:
     virtual void clear() = 0;
 
     /**
-     * @brief Returns a vector containing all the elements in this set.
+     * @brief Returns a list containing all the elements in this set.
      *
-     * @return std::vector<ValueType> A vector view of the elements contained in this set.
+     * @return linked_list<ValueType> A list view of the elements contained in this set.
      */
-    virtual std::vector<ValueType> toVector() const = 0; // TODO,将其改为list的接口
+    virtual linked_list<ValueType> to_list() const = 0; // TODO,将其改为list的接口
 };
 
 #endif // SET_INTERFACE_H

@@ -16,7 +16,7 @@
  * @tparam ValueType Type of the value stored in the map.
  */
 template <typename KeyType, typename ValueType>
-class tree_map : public Map<KeyType, ValueType> , red_black_tree<Pair<KeyType, ValueType>>
+class tree_map : public Map<KeyType, ValueType>, protected red_black_tree<Pair<KeyType, ValueType>>
 {
 public:
     tree_map();
@@ -24,16 +24,16 @@ public:
     explicit tree_map(linked_list<std::pair<KeyType, ValueType>> initialize_list);
     tree_map(const tree_map &other);
     tree_map(tree_map &&other) noexcept;
+    ~tree_map() override;
     tree_map &operator=(const tree_map &other);
     tree_map &operator=(tree_map &&other) noexcept;
-    ~tree_map() override;
     std::optional<ValueType> put(const KeyType &key, const ValueType &value) override;
     std::optional<ValueType> get(const KeyType &key) const override;
     std::optional<ValueType> remove(const KeyType &key) override;
     bool contains_key(const KeyType &key) const override;
-    using red_black_tree<Pair<KeyType, ValueType>>::is_empty;
-    using red_black_tree<Pair<KeyType, ValueType>>::get_size;
-    using red_black_tree<Pair<KeyType, ValueType>>::clear;
+    [[nodiscard]] bool is_empty() const override;
+    [[nodiscard]] std::size_t get_size() const override;
+    void clear() override;
     [[nodiscard]] Set<KeyType> key_set() const override;
     [[nodiscard]] Set<ValueType> values() const override;
     [[nodiscard]] Set<std::pair<KeyType, ValueType>> entry_set() const override;
