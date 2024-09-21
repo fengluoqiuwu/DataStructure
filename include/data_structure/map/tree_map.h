@@ -15,15 +15,15 @@
  * @tparam KeyType Type of the key used in the map.
  * @tparam ValueType Type of the value stored in the map.
  */
-template <typename KeyType, typename ValueType>
-class tree_map : public Map<KeyType, ValueType>, protected red_black_tree<Pair<KeyType, ValueType>>
+template <typename KeyType, typename ValueType=char>
+class basic_tree_map : public Map<KeyType, ValueType>, protected red_black_tree<Pair<KeyType, ValueType>>
 {
 public:
     /**
      * @brief Default constructor for tree_map.
      * Initializes an empty tree_map.
      */
-    tree_map();
+    basic_tree_map();
 
     /**
      * @brief Constructor that initializes the tree_map with a list of key-value pairs.
@@ -31,14 +31,14 @@ public:
      * @param initialize_list An array of key-value pairs to initialize the map.
      * @param size The size of the initialize_list.
      */
-    tree_map(std::pair<KeyType, ValueType> *initialize_list, size_t size);
+    basic_tree_map(std::pair<KeyType, ValueType> *initialize_list, size_t size);
 
     /**
      * @brief Constructor that initializes the tree_map from a linked list of key-value pairs.
      *
      * @param initialize_list A linked list of key-value pairs.
      */
-    explicit tree_map(linked_list<std::pair<KeyType, ValueType>> initialize_list);
+    explicit basic_tree_map(linked_list<std::pair<KeyType, ValueType>> initialize_list);
 
     /**
      * @brief Copy constructor.
@@ -46,7 +46,7 @@ public:
      *
      * @param other The tree_map to copy from.
      */
-    tree_map(const tree_map &other);
+    basic_tree_map(const basic_tree_map &other);
 
     /**
      * @brief Move constructor.
@@ -54,13 +54,13 @@ public:
      *
      * @param other The tree_map to move from.
      */
-    tree_map(tree_map &&other) noexcept;
+    basic_tree_map(basic_tree_map &&other) noexcept;
 
     /**
      * @brief Destructor for the tree_map.
      * Cleans up all resources used by the tree_map.
      */
-    ~tree_map() override;
+    ~basic_tree_map() override;
 
     /**
      * @brief Copy assignment operator.
@@ -69,7 +69,7 @@ public:
      * @param other The tree_map to assign from.
      * @return tree_map& A reference to this tree_map.
      */
-    tree_map &operator=(const tree_map &other);
+    basic_tree_map &operator=(const basic_tree_map &other);
 
     /**
      * @brief Move assignment operator.
@@ -78,7 +78,7 @@ public:
      * @param other The tree_map to move from.
      * @return tree_map& A reference to this tree_map.
      */
-    tree_map &operator=(tree_map &&other) noexcept;
+    basic_tree_map &operator=(basic_tree_map &&other) noexcept;
 
     /**
      * @brief Associates the specified value with the specified key in the map.
@@ -141,23 +141,50 @@ public:
     /**
      * @brief Returns a vector containing all the keys in this map.
      *
-     * @return Set<KeyType> A set view of the keys contained in this map.
+     * @return std::unique_ptr<Set<KeyType>> A set view of the keys contained in this map.
      */
-    [[nodiscard]] Set<KeyType> key_set() const override;
+    [[nodiscard]] std::unique_ptr<Set<KeyType>> key_set() const override;
 
     /**
      * @brief Returns a vector containing all the values in this map.
      *
-     * @return Set<KeyType> A set view of the values contained in this map.
+     * @return std::unique_ptr<Set<ValueType>> A set view of the values contained in this map.
      */
-    [[nodiscard]] Set<ValueType> values() const override;
+    [[nodiscard]] std::unique_ptr<Set<ValueType>> values() const override;
 
     /**
      * @brief Returns a vector containing all the key-value pairs in this map.
      *
-     * @return Set<std::pair<KeyType, ValueType>> A set view of the key-value pairs contained in this map.
+     * @return std::unique_ptr<Set<std::pair<KeyType, ValueType>>> A set view of the key-value pairs contained in this map.
      */
-    [[nodiscard]] Set<std::pair<KeyType, ValueType>> entry_set() const override;
+    [[nodiscard]] std::unique_ptr<Set<std::pair<KeyType, ValueType>>> entry_set() const override;
+};
+
+template <typename KeyType, typename ValueType=char>
+class tree_map : public basic_tree_map<KeyType, ValueType>
+{
+    using basic_tree_map<KeyType, ValueType>::basic_tree_map;
+
+    /**
+     * @brief Returns a vector containing all the keys in this map.
+     *
+     * @return std::unique_ptr<Set<KeyType>> A set view of the keys contained in this map.
+     */
+    [[nodiscard]] std::unique_ptr<Set<KeyType>> key_set() const override;
+
+    /**
+     * @brief Returns a vector containing all the values in this map.
+     *
+     * @return std::unique_ptr<Set<ValueType>> A set view of the values contained in this map.
+     */
+    [[nodiscard]] std::unique_ptr<Set<ValueType>> values() const override;
+
+    /**
+     * @brief Returns a vector containing all the key-value pairs in this map.
+     *
+     * @return std::unique_ptr<Set<std::pair<KeyType, ValueType>>> A set view of the key-value pairs contained in this map.
+     */
+    [[nodiscard]] std::unique_ptr<Set<std::pair<KeyType, ValueType>>> entry_set() const override;
 };
 
 #include "tree_map.tpp"

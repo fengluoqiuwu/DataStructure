@@ -33,6 +33,8 @@ using namespace TreeData;
 template <typename T, typename D = void>
 class binary_tree // TODO,Add level traversal
 {
+    template <typename U, typename V>
+    friend class binary_tree;
 protected:
     /**
      * @brief A node in the binary tree.
@@ -223,7 +225,6 @@ public:
     [[nodiscard]] std::string to_string(traversal type = PREORDER) const;
 
 protected:
-
     /**
      * change data type of the tree to another type
      * @tparam NewType new data type
@@ -231,7 +232,7 @@ protected:
      * @return new binary tree.
      */
     template <typename NewType>
-    binary_tree<NewType> change_type(std::function<NewType(const T &)> doSomething) const;
+    binary_tree<NewType, D> change_type(std::function<NewType(const T &)> doSomething) const;
 
 private:
     /**
@@ -322,15 +323,29 @@ private:
     static void copyRec(tree_node *parent, tree_node *&node, const tree_node *other_node);
 
     /**
-     * @brief Recursively copies nodes from another tree.
+     * Constructor to copies nodes and change their type.
      *
+     * @tparam OldType Old data type.
+     * @param other_node The tree to be copied.
+     * @param doSomething type changing function
+     */
+    template <typename OldType>
+    binary_tree(typename binary_tree<OldType, D>::tree_node *other_node,
+                std::function<T(const OldType &)> doSomething);
+
+    /**
+     * @brief Recursively copies nodes from another tree and change their type.
+     *
+     * @tparam OldType Old data type.
      * @param parent Parent of the node,only for recursive.
      * @param node The node to start copying from.
      * @param other_node The tree to be copied.
      * @param doSomething type changing function
      */
     template <typename OldType>
-    static void change_typeRec(tree_node *parent, tree_node *&node, typename binary_tree<OldType,D>::tree_node *other_node, std::function<T(const OldType &)> doSomething);
+    static void change_typeRec(tree_node *parent, tree_node *&node,
+                               typename binary_tree<OldType, D>::tree_node *other_node,
+                               std::function<T(const OldType &)> doSomething);
 
     /**
      * Get the first node of subtree in specific traversal type

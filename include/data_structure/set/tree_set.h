@@ -6,7 +6,6 @@
 #define TREE_SET_H
 
 #include "set_interface.h"
-#include "tree_map.h"
 
 /**
  * @brief A generic set interface similar to Java's TreeSet, which implement from Set.
@@ -14,7 +13,7 @@
  * @tparam ValueType Type of the value stored in the set.
  */
 template <typename ValueType>
-class tree_set : public Set<ValueType>, protected tree_map<ValueType, char>
+class tree_set : public Set<ValueType>, protected basic_tree_map<ValueType, char>
 {
 public:
     /**
@@ -88,7 +87,7 @@ public:
      * @return true If the set contained the specified element.
      * @return false If the set did not contain the specified element.
      */
-    bool remove(const ValueType &value) override;
+    bool erase(const ValueType &value) override;
 
     /**
      * @brief Returns true if this set contains the specified element.

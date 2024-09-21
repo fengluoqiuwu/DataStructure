@@ -7,12 +7,12 @@
 #include "tree_set.h"
 
 template <typename KeyType, typename ValueType>
-tree_map<KeyType, ValueType>::tree_map() : red_black_tree<Pair<KeyType, ValueType>>()
+basic_tree_map<KeyType, ValueType>::basic_tree_map() : red_black_tree<Pair<KeyType, ValueType>>()
 {
 }
 
 template <typename KeyType, typename ValueType>
-tree_map<KeyType, ValueType>::tree_map(std::pair<KeyType, ValueType> *initialize_list, const size_t size) : red_black_tree<Pair<KeyType, ValueType>>()
+basic_tree_map<KeyType, ValueType>::basic_tree_map(std::pair<KeyType, ValueType> *initialize_list, const size_t size) : red_black_tree<Pair<KeyType, ValueType>>()
 {
     for (size_t i = 0; i < size; i++)
     {
@@ -21,7 +21,7 @@ tree_map<KeyType, ValueType>::tree_map(std::pair<KeyType, ValueType> *initialize
 }
 
 template <typename KeyType, typename ValueType>
-tree_map<KeyType, ValueType>::tree_map(linked_list<std::pair<KeyType, ValueType>> initialize_list) : red_black_tree<Pair<KeyType, ValueType>>()
+basic_tree_map<KeyType, ValueType>::basic_tree_map(linked_list<std::pair<KeyType, ValueType>> initialize_list) : red_black_tree<Pair<KeyType, ValueType>>()
 {
     for (auto it = initialize_list.begin(); it != initialize_list.end(); ++it)
     {
@@ -30,20 +30,20 @@ tree_map<KeyType, ValueType>::tree_map(linked_list<std::pair<KeyType, ValueType>
 }
 
 template <typename KeyType, typename ValueType>
-tree_map<KeyType, ValueType>::tree_map(const tree_map &other) : red_black_tree<Pair<KeyType, ValueType>>(other)
+basic_tree_map<KeyType, ValueType>::basic_tree_map(const basic_tree_map &other) : red_black_tree<Pair<KeyType, ValueType>>(other)
 {
 }
 
 template <typename KeyType, typename ValueType>
-tree_map<KeyType, ValueType>::tree_map(tree_map &&other) noexcept : red_black_tree<Pair<KeyType, ValueType>>(std::move(other))
+basic_tree_map<KeyType, ValueType>::basic_tree_map(basic_tree_map &&other) noexcept : red_black_tree<Pair<KeyType, ValueType>>(std::move(other))
 {
 }
 
 template <typename KeyType, typename ValueType>
-tree_map<KeyType, ValueType>::~tree_map() = default;
+basic_tree_map<KeyType, ValueType>::~basic_tree_map() = default;
 
 template <typename KeyType, typename ValueType>
-tree_map<KeyType, ValueType> &tree_map<KeyType, ValueType>::operator=(const tree_map &other) noexcept {
+basic_tree_map<KeyType, ValueType> &basic_tree_map<KeyType, ValueType>::operator=(const basic_tree_map &other) {
     if (this != &other)
     {
         red_black_tree<Pair<KeyType, ValueType>>::operator=(other);
@@ -52,19 +52,19 @@ tree_map<KeyType, ValueType> &tree_map<KeyType, ValueType>::operator=(const tree
 }
 
 template <typename KeyType, typename ValueType>
-tree_map<KeyType, ValueType> &tree_map<KeyType, ValueType>::operator=(tree_map &&other) noexcept {
+basic_tree_map<KeyType, ValueType> &basic_tree_map<KeyType, ValueType>::operator=(basic_tree_map &&other) noexcept {
     if (this != &other)
     {
-        typename red_black_tree<Pair<KeyType, ValueType>>::operator=std::move(other);
+        red_black_tree<Pair<KeyType, ValueType>>::operator=(std::move(other));
     }
     return *this;
 }
 
 template <typename KeyType, typename ValueType>
-std::optional<ValueType> tree_map<KeyType, ValueType>::put(const KeyType &key, const ValueType &value)
+std::optional<ValueType> basic_tree_map<KeyType, ValueType>::put(const KeyType &key, const ValueType &value)
 {
     auto temp = Pair<KeyType, ValueType>(key, value);
-    if (auto result = try_insert(temp); result.has_value())
+    if (auto result = this->try_insert(temp); result.has_value())
     {
         return result.value().value;
     }
@@ -72,10 +72,10 @@ std::optional<ValueType> tree_map<KeyType, ValueType>::put(const KeyType &key, c
 }
 
 template <typename KeyType, typename ValueType>
-std::optional<ValueType> tree_map<KeyType, ValueType>::get(const KeyType &key) const
+std::optional<ValueType> basic_tree_map<KeyType, ValueType>::get(const KeyType &key) const
 {
-    auto temp = Pair(key);
-    auto result = searchRec(this->root,temp);
+    auto temp = Pair<KeyType,ValueType>(key);
+    auto result = this->searchRec(this->root,temp);
     if (result!=nullptr)
     {
         return std::optional<ValueType>(result->data.value);
@@ -84,63 +84,95 @@ std::optional<ValueType> tree_map<KeyType, ValueType>::get(const KeyType &key) c
 }
 
 template <typename KeyType, typename ValueType>
-std::optional<ValueType> tree_map<KeyType, ValueType>::remove(const KeyType &key)
+std::optional<ValueType> basic_tree_map<KeyType, ValueType>::remove(const KeyType &key)
 {
-    auto temp = Pair(key);
-    auto result = try_remove(this->root,temp);
-    if (result!=nullptr)
+    auto temp = Pair<KeyType,ValueType>(key);
+    auto result = this->try_remove(temp);
+    if (result!=std::nullopt)
     {
-        return std::optional<ValueType>(result->data.value);
+        return std::optional<ValueType>(result.value().value);
     }
     return std::nullopt;
 }
 
 template <typename KeyType, typename ValueType>
-bool tree_map<KeyType, ValueType>::contains_key(const KeyType &key) const
+bool basic_tree_map<KeyType, ValueType>::contains_key(const KeyType &key) const
 {
-    auto temp = Pair(key);
-    return search(temp);
+    auto temp = Pair<KeyType,ValueType>(key);
+    return this->search(temp);
 }
 
 template <typename KeyType, typename ValueType>
-bool tree_map<KeyType, ValueType>::is_empty() const
+bool basic_tree_map<KeyType, ValueType>::is_empty() const
 {
-    return red_black_tree<Pair<KeyType, ValueType>>::is_empty;
+    return red_black_tree<Pair<KeyType, ValueType>>::is_empty();
 }
 
 template <typename KeyType, typename ValueType>
-std::size_t tree_map<KeyType, ValueType>::get_size() const
+std::size_t basic_tree_map<KeyType, ValueType>::get_size() const
 {
-    return red_black_tree<Pair<KeyType, ValueType>>::get_size;
+    return red_black_tree<Pair<KeyType, ValueType>>::get_size();
 }
 
 template <typename KeyType, typename ValueType>
-void tree_map<KeyType, ValueType>::clear()
+void basic_tree_map<KeyType, ValueType>::clear()
 {
-    return red_black_tree<Pair<KeyType, ValueType>>::clear;
+    red_black_tree<Pair<KeyType, ValueType>>::clear();
 }
 
 template <typename KeyType, typename ValueType>
-Set<KeyType> tree_map<KeyType, ValueType>::key_set() const
+std::unique_ptr<Set<KeyType>> basic_tree_map<KeyType, ValueType>::key_set() const
 {
-    return dynamic_cast<tree_set<KeyType>>(red_black_tree<Pair<KeyType, ValueType>>::template change_type<KeyType>(
-        [](const Pair<KeyType, ValueType> pair)->KeyType {return pair.key;}
-        ));
+    return nullptr;
 }
 
 template <typename KeyType, typename ValueType>
-Set<ValueType> tree_map<KeyType, ValueType>::values() const
+std::unique_ptr<Set<ValueType>> basic_tree_map<KeyType, ValueType>::values() const
 {
-    return dynamic_cast<tree_set<ValueType>>(red_black_tree<Pair<KeyType, ValueType>>::template change_type<ValueType>(
-            [](const Pair<KeyType, ValueType> pair)->ValueType {return pair.value;}
-        ));
+    return nullptr;
 }
 
 template <typename KeyType, typename ValueType>
-Set<std::pair<KeyType, ValueType>> tree_map<KeyType, ValueType>::entry_set() const
+std::unique_ptr<Set<std::pair<KeyType, ValueType>>> basic_tree_map<KeyType, ValueType>::entry_set() const
 {
-    return dynamic_cast<tree_set<std::pair<KeyType, ValueType>>>(red_black_tree<Pair<KeyType, ValueType>>::template change_type<std::pair<KeyType, ValueType>>(
-            [](const Pair<KeyType, ValueType> pair)->std::pair<KeyType, ValueType>
-            {return std::pair<KeyType, ValueType>(pair.key,pair.value);}
-        ));
+    return nullptr;
+}
+
+template <typename KeyType, typename ValueType>
+std::unique_ptr<Set<KeyType>> tree_map<KeyType, ValueType>::key_set() const
+{
+    auto result = std::make_unique<tree_set<KeyType>>();
+
+    for (auto it=this->begin(PREORDER);it!=this->end(PREORDER);++it)
+    {
+        result->add(it->key);
+    }
+
+    return result;
+}
+
+template <typename KeyType, typename ValueType>
+std::unique_ptr<Set<ValueType>> tree_map<KeyType, ValueType>::values() const
+{
+    auto result = std::make_unique<tree_set<ValueType>>();
+
+    for (auto it=this->begin(PREORDER);it!=this->end(PREORDER);++it)
+    {
+        result->add(it->value);
+    }
+
+    return result;
+}
+
+template <typename KeyType, typename ValueType>
+std::unique_ptr<Set<std::pair<KeyType, ValueType>>> tree_map<KeyType, ValueType>::entry_set() const
+{
+    auto result = std::make_unique<tree_set<std::pair<KeyType, ValueType>>>();
+
+    for (auto it=this->begin(PREORDER);it!=this->end(PREORDER);++it)
+    {
+        result->add(std::make_pair(it->key,it->value));
+    }
+
+    return result;
 }

@@ -23,7 +23,7 @@ binary_search_tree<T, D>::binary_search_tree(const T *initialize_list, const siz
 
     for (size_t i = 0; i < size; i++)
     {
-        insert(initialize_list[i]);
+        binary_search_tree<T, D>::insert(initialize_list[i]);
     }
 }
 
@@ -33,7 +33,7 @@ binary_search_tree<T, D>::binary_search_tree(const linked_list<T> &initialize_li
     root = nullptr;
     for (auto it = initialize_list.begin(); it != initialize_list.end(); ++it)
     {
-        insert(*it);
+        binary_search_tree<T, D>::insert(*it);
     }
 }
 
@@ -88,7 +88,7 @@ void binary_search_tree<T, D>::insert(const T &value)
 template <typename T, typename D>
 bool binary_search_tree<T, D>::search(const T &value) const
 {
-    return searchRec(root,value)==nullptr;
+    return searchRec(root,value)!=nullptr;
 }
 
 
@@ -199,13 +199,13 @@ const T &binary_search_tree<T, D>::get_max()
 template <typename T, typename D>
 typename binary_tree<T, D>::ConstIterator binary_search_tree<T, D>::begin(const traversal type) const
 {
-    return binary_tree<T, D>::begin();
+    return binary_tree<T, D>::begin(type);
 }
 
 template <typename T, typename D>
 typename binary_tree<T, D>::ConstIterator binary_search_tree<T, D>::end(const traversal type) const
 {
-    return binary_tree<T, D>::end();
+    return binary_tree<T, D>::end(type);
 }
 
 template <typename T, typename D>
@@ -281,10 +281,10 @@ typename binary_tree<T, D>::tree_node* binary_search_tree<T, D>::searchRec(typen
 
     if (value > node->data)
     {
-        return searchRec(node->left, value);
+        return searchRec(node->right, value);
     }
 
-    return searchRec(node->right, value);
+    return searchRec(node->left, value);
 }
 
 template <typename T, typename D>

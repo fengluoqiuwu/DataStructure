@@ -10,4 +10,14 @@
  */
 #include "map_interface.h"
 
+/**
+ * Tree Map
+ */
+#include "tree_map.h"
+
+/**
+ * Hash Map
+ */
+// #include "hash_map.h"
+
 #endif //MAP_H

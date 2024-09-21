@@ -10,4 +10,14 @@
  */
 #include "set_interface.h"
 
+/**
+ * Tree Set
+ */
+#include "tree_set.h"
+
+/**
+ * Hash Set
+ */
+// #include "hash_set.h"
+
 #endif //SET_H

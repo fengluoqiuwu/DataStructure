@@ -6,25 +6,8 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
-include(FetchContent)
-
-# 下载 nlohmann_json
-FetchContent_Declare(
-        nlohmann_json
-        GIT_REPOSITORY git@github.com:nlohmann/json.git
-        GIT_TAG v3.11.3  # 可以根据需要设置特定版本或使用最新的 release 标签
-)
-
-FetchContent_MakeAvailable(nlohmann_json)
-
-# 下载GoogleTest
-FetchContent_Declare(
-        googletest
-        GIT_REPOSITORY git@github.com:google/googletest.git
-        GIT_TAG main  # 使用最新主分支
-)
-
-FetchContent_MakeAvailable(googletest)
+add_subdirectory(external_libraries/json-master)
+add_subdirectory(external_libraries/googletest-main)
 
 # 包含子目录
 #add_subdirectory(lib/algorithms)  # 添加库

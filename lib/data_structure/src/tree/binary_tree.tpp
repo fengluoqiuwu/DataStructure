@@ -1019,13 +1019,9 @@ std::string binary_tree<T,D>::to_string(const traversal type) const
 
 template <typename T, typename D>
 template <typename NewType>
-binary_tree<NewType> binary_tree<T, D>::change_type(std::function<NewType(const T &)> doSomething) const
+binary_tree<NewType,D> binary_tree<T, D>::change_type(std::function<NewType(const T &)> doSomething) const
 {
-    binary_tree<NewType> result;
-
-    result.template change_type<T>(nullptr,result.root,root, doSomething);
-
-    return result;
+    return binary_tree<NewType, D>(root,doSomething);
 }
 
 template <typename T, typename D>
@@ -1189,7 +1185,18 @@ void binary_tree<T,D>::copyRec(tree_node* parent,tree_node*& node,const tree_nod
 
 template <typename T, typename D>
 template <typename OldType>
-void binary_tree<T,D>::change_typeRec(tree_node *parent, tree_node *&node, typename binary_tree<OldType,D>::tree_node *other_node, std::function<T(const OldType &)> doSomething)
+binary_tree<T, D>::binary_tree(typename binary_tree<OldType, D>::tree_node *other_node,
+                                    std::function<T(const OldType &)> doSomething)
+{
+    root=nullptr;
+    change_typeRec(nullptr,root,other_node,doSomething);
+}
+
+template <typename T, typename D>
+template <typename OldType>
+void binary_tree<T,D>::change_typeRec(tree_node *parent, tree_node *&node,
+                                      typename binary_tree<OldType,D>::tree_node *other_node,
+                                      std::function<T(const OldType &)> doSomething)
 {
     if (node != nullptr)
     {

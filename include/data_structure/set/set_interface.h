@@ -5,8 +5,6 @@
 #ifndef SET_INTERFACE_H
 #define SET_INTERFACE_H
 
-#include <vector>
-
 /**
  * @brief A generic set interface similar to Java's Set.
  *
@@ -36,7 +34,7 @@ public:
      * @return true If the set contained the specified element.
      * @return false If the set did not contain the specified element.
      */
-    virtual bool remove(const ValueType& value) = 0;
+    virtual bool erase(const ValueType& value) = 0;
 
     /**
      * @brief Returns true if this set contains the specified element.

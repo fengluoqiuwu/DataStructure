@@ -101,7 +101,7 @@ void red_black_tree<T>::remove(const T &value, std::function<void(const T &)> do
 {
     auto temp = root;
 
-    while (temp->data!=value&&temp!=nullptr)
+    while (temp!=nullptr&&temp->data!=value)
     {
         temp= value > temp->data ?temp->right:temp->left;
     }
@@ -165,7 +165,7 @@ std::optional<T> red_black_tree<T>::try_insert(const T &value)
         set_color(root, BLACK);
         return std::nullopt;
     }
-    return insertRec(root, value);
+    return try_insertRec(root, value);
 }
 
 template <typename T>
@@ -173,7 +173,7 @@ std::optional<T> red_black_tree<T>::try_remove(const T &value)
 {
     auto temp = root;
 
-    while (temp->data!=value&&temp!=nullptr)
+    while (temp!=nullptr&&temp->data!=value)
     {
         temp= value > temp->data ?temp->right:temp->left;
     }
@@ -212,7 +212,7 @@ std::optional<T> red_black_tree<T>::try_insertRec(typename binary_search_tree<T,
             fix_insert(node->left);
             return std::nullopt;
         }
-        return insertRec(node->left, value);
+        return try_insertRec(node->left, value);
     }
     if (node->right == nullptr)
     {
@@ -220,7 +220,7 @@ std::optional<T> red_black_tree<T>::try_insertRec(typename binary_search_tree<T,
         fix_insert(node->right);
         return std::nullopt;
     }
-    return insertRec(node->right, value);
+    return try_insertRec(node->right, value);
 }
 
 template <typename T>

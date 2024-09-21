@@ -7,7 +7,7 @@
 
 
 template <typename ValueType>
-tree_set<ValueType>::tree_set() : tree_map<ValueType,char>()
+tree_set<ValueType>::tree_set() : basic_tree_map<ValueType,char>()
 {
 }
 
@@ -16,7 +16,7 @@ tree_set<ValueType>::tree_set(ValueType *initialize_list, size_t size)
 {
     for (size_t i = 0; i < size; i++)
     {
-        this->insert(Pair(initialize_list[i]));
+        this->insert(Pair<ValueType,char>(initialize_list[i]));
     }
 }
 
@@ -25,17 +25,17 @@ tree_set<ValueType>::tree_set(linked_list<ValueType> initialize_list)
 {
     for (auto it = initialize_list.begin(); it != initialize_list.end(); ++it)
     {
-        this->insert(Pair(*it));
+        this->insert(Pair<ValueType,char>(*it));
     }
 }
 
 template <typename ValueType>
-tree_set<ValueType>::tree_set(const tree_set &other) : tree_map<ValueType,char>(other)
+tree_set<ValueType>::tree_set(const tree_set &other) : basic_tree_map<ValueType,char>(other)
 {
 }
 
 template <typename ValueType>
-tree_set<ValueType>::tree_set(tree_set &&other) noexcept : tree_map<ValueType,char>(std::move(other))
+tree_set<ValueType>::tree_set(tree_set &&other) noexcept : basic_tree_map<ValueType,char>(std::move(other))
 {
 }
 
@@ -47,7 +47,7 @@ tree_set<ValueType> &tree_set<ValueType>::operator=(const tree_set &other)
 {
     if (this != &other)
     {
-        tree_map<ValueType, char>::operator=(other);
+        basic_tree_map<ValueType, char>::operator=(other);
     }
     return *this;
 }
@@ -57,7 +57,7 @@ tree_set<ValueType> &tree_set<ValueType>::operator=(tree_set &&other) noexcept
 {
     if (this != &other)
     {
-        typename tree_map<ValueType, char>::operator=std::move(other);
+        basic_tree_map<ValueType, char>::operator=(std::move(other));
     }
     return *this;
 }
@@ -65,37 +65,37 @@ tree_set<ValueType> &tree_set<ValueType>::operator=(tree_set &&other) noexcept
 template <typename ValueType>
 bool tree_set<ValueType>::add(const ValueType &value)
 {
-    return typename tree_map<ValueType, char>::put(value,'\0')==std::nullopt;
+    return basic_tree_map<ValueType, char>::put(value,'\0')==std::nullopt;
 }
 
 template <typename ValueType>
-bool tree_set<ValueType>::remove(const ValueType &value)
+bool tree_set<ValueType>::erase(const ValueType &value)
 {
-    return tree_map<ValueType, char>::remove(value);
+    return basic_tree_map<ValueType, char>::remove(value)!=std::nullopt;
 }
 
 template <typename ValueType>
 bool tree_set<ValueType>::contains(const ValueType &value) const
 {
-    return tree_map<ValueType, char>::contains_key(value);
+    return basic_tree_map<ValueType, char>::contains_key(value);
 }
 
 template <typename ValueType>
     std::size_t tree_set<ValueType>::get_size() const
 {
-    return tree_map<ValueType, char>::get_size();
+    return basic_tree_map<ValueType, char>::get_size();
 }
 
 template <typename ValueType>
 bool tree_set<ValueType>::is_empty() const
 {
-    return tree_map<ValueType, char>::is_empty();
+    return basic_tree_map<ValueType, char>::is_empty();
 }
 
 template <typename ValueType>
 void tree_set<ValueType>::clear()
 {
-    tree_map<ValueType, char>::clear();
+    basic_tree_map<ValueType, char>::clear();
 }
 
 

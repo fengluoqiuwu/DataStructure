@@ -17,13 +17,35 @@
  * @tparam KeyType Type of the key used in the map.
  * @tparam ValueType Type of the value stored in the map.
  */
-template <typename KeyType, typename ValueType>
+template <typename KeyType, typename ValueType=char>
 class Pair
 {
 public:
     KeyType key;
     ValueType value;
-    bool operator<=>(const Pair &other) const { return key <=> other.key; }
+
+    explicit Pair(const KeyType &key) : key(key) {}
+    explicit Pair(const KeyType &key, const ValueType &value) : key(key), value(value) {}
+
+    bool operator==(const Pair &other) const {
+        return key == other.key;
+    }
+
+    bool operator<(const Pair &other) const {
+        return key < other.key;
+    }
+
+    bool operator<=(const Pair &other) const {
+        return (*this < other) || (*this == other);
+    }
+
+    bool operator>(const Pair &other) const {
+        return !(*this <= other);
+    }
+
+    bool operator>=(const Pair &other) const {
+        return !(*this < other);
+    }
 };
 
 /**
@@ -101,23 +123,23 @@ public:
     /**
      * @brief Returns a vector containing all the keys in this map.
      *
-     * @return Set<KeyType> A set view of the keys contained in this map.
+     * @return std::unique_ptr<Set<KeyType>> A unique_ptr of set view of the keys contained in this map.
      */
-    [[nodiscard]] virtual Set<KeyType> key_set() const = 0;
+    [[nodiscard]] virtual std::unique_ptr<Set<KeyType>> key_set() const = 0;
 
     /**
      * @brief Returns a vector containing all the values in this map.
      *
-     * @return Set<KeyType> A set view of the values contained in this map.
+     * @return std::unique_ptr<Set<ValueType>> A unique_ptr of set view of the values contained in this map.
      */
-    [[nodiscard]] virtual Set<ValueType> values() const = 0;
+    [[nodiscard]] virtual std::unique_ptr<Set<ValueType>> values() const = 0;
 
     /**
      * @brief Returns a vector containing all the key-value pairs in this map.
      *
-     * @return Set<std::pair<KeyType, ValueType>> A set view of the key-value pairs contained in this map.
+     * @return std::unique_ptr<Set<std::pair<KeyType, ValueType>>> A unique_ptr of set view of the key-value pairs contained in this map.
      */
-    [[nodiscard]] virtual Set<std::pair<KeyType, ValueType>> entry_set() const = 0;
+    [[nodiscard]] virtual std::unique_ptr<Set<std::pair<KeyType, ValueType>>> entry_set() const = 0;
 };
 
 #endif // MAP_INTERFACE_H
