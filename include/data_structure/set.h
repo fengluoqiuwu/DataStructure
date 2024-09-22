@@ -18,6 +18,6 @@
 /**
  * Hash Set
  */
-// #include "hash_set.h"
+#include "hash_set.h"
 
 #endif //SET_H

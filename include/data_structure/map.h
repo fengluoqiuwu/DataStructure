@@ -18,6 +18,6 @@
 /**
  * Hash Map
  */
-// #include "hash_map.h"
+#include "hash_map.h"
 
 #endif //MAP_H
