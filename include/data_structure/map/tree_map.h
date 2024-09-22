@@ -163,7 +163,21 @@ public:
 template <typename KeyType, typename ValueType=char>
 class tree_map : public basic_tree_map<KeyType, ValueType>
 {
+public:
+
     using basic_tree_map<KeyType, ValueType>::basic_tree_map;
+    tree_map(const tree_map &other) : basic_tree_map<KeyType, ValueType>(other) {}
+    tree_map(tree_map &&other) noexcept : basic_tree_map<KeyType, ValueType>(std::move(other)) {}
+    tree_map &operator=(const tree_map &other)
+    {
+        basic_tree_map<KeyType, ValueType>::operator=(other);
+        return *this;
+    }
+    tree_map &operator=(tree_map &&other) noexcept
+    {
+        basic_tree_map<KeyType, ValueType>::operator=(std::move(other));
+        return *this;
+    }
 
     /**
      * @brief Returns a vector containing all the keys in this map.

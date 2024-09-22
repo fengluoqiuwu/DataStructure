@@ -44,19 +44,13 @@ basic_tree_map<KeyType, ValueType>::~basic_tree_map() = default;
 
 template <typename KeyType, typename ValueType>
 basic_tree_map<KeyType, ValueType> &basic_tree_map<KeyType, ValueType>::operator=(const basic_tree_map &other) {
-    if (this != &other)
-    {
-        red_black_tree<Pair<KeyType, ValueType>>::operator=(other);
-    }
+    red_black_tree<Pair<KeyType, ValueType>> ::operator=(other);
     return *this;
 }
 
 template <typename KeyType, typename ValueType>
 basic_tree_map<KeyType, ValueType> &basic_tree_map<KeyType, ValueType>::operator=(basic_tree_map &&other) noexcept {
-    if (this != &other)
-    {
-        red_black_tree<Pair<KeyType, ValueType>>::operator=(std::move(other));
-    }
+    red_black_tree<Pair<KeyType, ValueType>> ::operator=(std::move(other));
     return *this;
 }
 
