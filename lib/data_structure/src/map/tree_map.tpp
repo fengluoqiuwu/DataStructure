@@ -127,9 +127,67 @@ std::unique_ptr<Set<ValueType>> basic_tree_map<KeyType, ValueType>::values() con
 }
 
 template <typename KeyType, typename ValueType>
-std::unique_ptr<Set<std::pair<KeyType, ValueType>>> basic_tree_map<KeyType, ValueType>::entry_set() const
+std::unique_ptr<Set<Pair<KeyType, ValueType>>> basic_tree_map<KeyType, ValueType>::entry_set() const
 {
     return nullptr;
+}
+
+template <typename KeyType, typename ValueType>
+basic_tree_map<KeyType, ValueType>::ConstIterator::ConstIterator(const ConstIterator &other)
+{
+    m_it=other.m_it;
+}
+
+template <typename KeyType, typename ValueType>
+const Pair<KeyType, ValueType> &basic_tree_map<KeyType, ValueType>::ConstIterator::operator*() const
+{
+    return *m_it;
+}
+
+template <typename KeyType, typename ValueType>
+const Pair<KeyType, ValueType> *basic_tree_map<KeyType, ValueType>::ConstIterator::operator->() const
+{
+    return &(*m_it);
+}
+
+template <typename KeyType, typename ValueType>
+typename basic_tree_map<KeyType, ValueType>::ConstIterator &
+basic_tree_map<KeyType, ValueType>::ConstIterator::operator=(const ConstIterator &other)=default;
+
+template <typename KeyType, typename ValueType>
+bool basic_tree_map<KeyType, ValueType>::ConstIterator::operator==(const ConstIterator &other) const
+{
+    return m_it == other.m_it;
+}
+
+template <typename KeyType, typename ValueType>
+bool basic_tree_map<KeyType, ValueType>::ConstIterator::operator!=(const ConstIterator &other) const
+{
+    return m_it != other.m_it;
+}
+
+template <typename KeyType, typename ValueType>
+typename basic_tree_map<KeyType, ValueType>::ConstIterator &
+basic_tree_map<KeyType, ValueType>::ConstIterator::operator++()
+{
+    ++m_it;
+    return *this;
+}
+
+template <typename KeyType, typename ValueType>
+basic_tree_map<KeyType, ValueType>::ConstIterator::ConstIterator(
+    const typename red_black_tree<Pair<KeyType, ValueType>>::ConstIterator &it) : m_it(it){}
+
+template <typename KeyType, typename ValueType>
+typename basic_tree_map<KeyType, ValueType>::ConstIterator basic_tree_map<KeyType, ValueType>::begin() const
+{
+    return ConstIterator(red_black_tree<Pair<KeyType, ValueType>>::begin());
+}
+
+template <typename KeyType, typename ValueType>
+typename basic_tree_map<KeyType, ValueType>::ConstIterator basic_tree_map<KeyType, ValueType>::end() const
+{
+    return ConstIterator(red_black_tree<Pair<KeyType, ValueType>>::end());
 }
 
 template <typename KeyType, typename ValueType>
@@ -137,7 +195,7 @@ std::unique_ptr<Set<KeyType>> tree_map<KeyType, ValueType>::key_set() const
 {
     auto result = std::make_unique<tree_set<KeyType>>();
 
-    for (auto it=this->begin(PREORDER);it!=this->end(PREORDER);++it)
+    for (auto it=this->begin();it!=this->end();++it)
     {
         result->add(it->key);
     }
@@ -150,7 +208,7 @@ std::unique_ptr<Set<ValueType>> tree_map<KeyType, ValueType>::values() const
 {
     auto result = std::make_unique<tree_set<ValueType>>();
 
-    for (auto it=this->begin(PREORDER);it!=this->end(PREORDER);++it)
+    for (auto it=this->begin();it!=this->end();++it)
     {
         result->add(it->value);
     }
@@ -159,13 +217,13 @@ std::unique_ptr<Set<ValueType>> tree_map<KeyType, ValueType>::values() const
 }
 
 template <typename KeyType, typename ValueType>
-std::unique_ptr<Set<std::pair<KeyType, ValueType>>> tree_map<KeyType, ValueType>::entry_set() const
+std::unique_ptr<Set<Pair<KeyType, ValueType>>> tree_map<KeyType, ValueType>::entry_set() const
 {
-    auto result = std::make_unique<tree_set<std::pair<KeyType, ValueType>>>();
+    auto result = std::make_unique<tree_set<Pair<KeyType, ValueType>>>();
 
-    for (auto it=this->begin(PREORDER);it!=this->end(PREORDER);++it)
+    for (auto it=this->begin();it!=this->end();++it)
     {
-        result->add(std::make_pair(it->key,it->value));
+        result->add(Pair(it->key,it->value));
     }
 
     return result;

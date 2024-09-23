@@ -14,6 +14,9 @@
 template <typename KeyType, typename ValueType>
 class basic_hash_map;
 
+template <typename KeyType, typename ValueType>
+class hash_map;
+
 /**
  * @brief hash_node of basic_hash_map.
  *
@@ -38,8 +41,15 @@ public:
      */
     hash_node& operator=(const hash_node &other);
 
+    /**
+     * @brief check if it data structure is list or not
+     * @return if it data structure is list or not
+     */
+    bool is_list(){ return map==nullptr;}
+
 private:
     friend class basic_hash_map<KeyType, ValueType>;
+    friend class hash_map<KeyType, ValueType>;
     size_t size = 0; /** size of hash node */
     linked_list<Pair<KeyType, ValueType>> *list =
         new linked_list<Pair<KeyType, ValueType>>; /** pointer of list of data */
@@ -124,11 +134,11 @@ private:
     void get_values(ValueType *ptr) const;
 
     /**
-     * @brief write all pairs to array of std::pair<KeyType,ValueType>
+     * @brief write all pairs to array of Pair<KeyType,ValueType>
      *
      * @param ptr pointer begin to write
      */
-    void get_pairs(std::pair<KeyType, ValueType> *ptr) const;
+    void get_pairs(Pair<KeyType, ValueType> *ptr) const;
 
     /**
      * @brief check should it change between linked list and tree_map
@@ -148,7 +158,6 @@ template <typename KeyType, typename ValueType = char>
 class basic_hash_map : public Map<KeyType, ValueType>
 {
     static_assert(utils::has_hash<KeyType>::value, "KeyType must support std::hash");
-
 public:
     /**
      * @brief Default constructor for hash_map.
@@ -282,14 +291,14 @@ public:
      *
      * @return std::unique_ptr<Set<KeyType>> A set view of the keys contained in this map.
      */
-    [[nodiscard]] std::unique_ptr<Set<KeyType>> key_set() const override { return std::nullopt; }
+    [[nodiscard]] std::unique_ptr<Set<KeyType>> key_set() const override { return nullptr; }
 
     /**
      * @brief Returns a vector containing all the values in this map.
      *
      * @return std::unique_ptr<Set<ValueType>> A set view of the values contained in this map.
      */
-    [[nodiscard]] std::unique_ptr<Set<ValueType>> values() const override { return std::nullopt; }
+    [[nodiscard]] std::unique_ptr<Set<ValueType>> values() const override { return nullptr; }
 
     /**
      * @brief Returns a vector containing all the key-value pairs in this map.
@@ -297,12 +306,12 @@ public:
      * @return std::unique_ptr<Set<std::pair<KeyType, ValueType>>> A set view of the key-value pairs contained in this
      * map.
      */
-    [[nodiscard]] std::unique_ptr<Set<std::pair<KeyType, ValueType>>> entry_set() const override
+    [[nodiscard]] std::unique_ptr<Set<Pair<KeyType, ValueType>>> entry_set() const override
     {
-        return std::nullopt;
+        return nullptr;
     }
 
-private:
+protected:
     size_t size = 0; /** size of hash map */
     size_t length = 16; /** length of hash table */
     double alpha; /** load factor */
@@ -320,6 +329,107 @@ private:
      * @brief fix (resize) hash table to double length
      */
     void fix_load_factor();
+
+    /**
+     * @brief get linked list of key
+     * @return linked list of key in the map
+     */
+    linked_list<KeyType> get_keys() const;
+
+public:
+    friend class ConstIterator;
+    /**
+     * @brief Const forward iterator for the hash map.
+     *
+     * This iterator provides forward traversal capabilities for the hash map,
+     * with read-only access to the data.
+     */
+    class ConstIterator
+    {
+    public:
+        static constexpr iterator::type type = iterator::FORWARD;
+
+        /**
+         * @brief copy constructor
+         * Complexity:O(1)
+         * @param other other iterator
+         */
+        ConstIterator(const ConstIterator& other);
+
+        /**
+         * This method allows you to access and modify the value at the current position of the iterator.
+         * @return A reference to the Pair pointed to by the iterator
+         */
+        const Pair<KeyType, ValueType> &operator*() const;
+
+        /**
+         * This method provides access to the value pointed to by the iterator, similar to dereferencing the iterator.
+         * @return A pointer to the Pair pointed to by the iterator.
+         */
+        const Pair<KeyType, ValueType> *operator->() const;
+
+        /**
+         * This method copy data from another ConstIterator.
+         * @param other other iterator
+         * @return self
+         */
+        ConstIterator &operator=(const ConstIterator &other);
+
+        /**
+         * This method checks if two iterators are pointing to the same element.
+         * @param other other iterator
+         * @return true if the current iterator is equal to the other iterator (i.e., they point to the same position);
+         * otherwise, false.
+         */
+        bool operator==(const ConstIterator &other) const;
+
+        /**
+         * This method checks if two iterators are pointing to different elements.
+         * @param other other iterator
+         * @return true if the current iterator is not equal to the other iterator (i.e., they point to different
+         * positions); otherwise, false.
+         */
+        bool operator!=(const ConstIterator &other) const;
+
+        /**
+         * This is the pre-increment operator. It advances the iterator by one position and returns a reference to the
+         * modified iterator itself.
+         * @return A reference to the updated iterator after it has been incremented.
+         */
+        ConstIterator &operator++();
+
+    private:
+        size_t current_index;                                                   /** current index in hash table */
+        const basic_hash_map &outer;                                            /** outer class object */
+        typename linked_list<Pair<KeyType, ValueType>>::ConstIterator list_it;  /** iterator of linked list */
+        typename linked_list<Pair<KeyType, ValueType>>::ConstIterator list_end; /** end iterator of linked list */
+        typename tree_map<KeyType, ValueType>::ConstIterator tree_it;           /** iterator of tree map */
+        typename tree_map<KeyType, ValueType>::ConstIterator tree_end;          /** end iterator of tree map */
+
+        explicit ConstIterator(const basic_hash_map &outer, const size_t &current_index=0);
+        ConstIterator(const basic_hash_map &other,
+                      const typename linked_list<Pair<KeyType, ValueType>>::ConstIterator &it,
+                      const typename linked_list<Pair<KeyType, ValueType>>::ConstIterator &end_it,
+                      size_t current_index = 0);
+        ConstIterator(const basic_hash_map &other,
+                      const typename tree_map<KeyType, ValueType>::ConstIterator &it,
+                      const typename tree_map<KeyType, ValueType>::ConstIterator &end_it,
+                      size_t current_index = 0);
+    };
+
+    /**
+     * @brief Returns an iterator to the beginning of the hash map traversal.
+     *
+     * @return An iterator to the beginning of the traversal.
+     */
+    ConstIterator begin() const;
+
+    /**
+     * @brief Returns an iterator to the ending of the hash map traversal.
+     *
+     * @return An iterator to the ending of the traversal.
+     */
+    ConstIterator end() const;
 };
 
 template <typename KeyType, typename ValueType=char>
@@ -390,7 +500,7 @@ public:
      *
      * @return std::unique_ptr<Set<std::pair<KeyType, ValueType>>> A set view of the key-value pairs contained in this map.
      */
-    [[nodiscard]] std::unique_ptr<Set<std::pair<KeyType, ValueType>>> entry_set() const override;
+    [[nodiscard]] std::unique_ptr<Set<Pair<KeyType, ValueType>>> entry_set() const override;
 };
 
 #include "hash_map.tpp"

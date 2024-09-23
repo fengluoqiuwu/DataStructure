@@ -5,10 +5,10 @@
 #include <gtest/gtest.h>
 #include "data_structure.h"
 
-class TreeMapTest : public ::testing::Test
+class HashMapTest : public ::testing::Test
 {
 protected:
-    tree_map<int,int> *test_map=nullptr;
+    hash_map<int,int> *test_map=nullptr;
     int a[10]={18, 42, 96, 80, 65, 56, 32, 64, 89, 85};
     std::pair<int,int> b[10];
 
@@ -18,7 +18,7 @@ protected:
             b[i]=std::make_pair(a[i],i);
         }
 
-        test_map = new tree_map<int,int>(b,10);
+        test_map = new hash_map<int,int>(b,10);
     }
 
     void TearDown() override {
@@ -26,14 +26,14 @@ protected:
     }
 };
 
-TEST_F(TreeMapTest,ConstructorDefaultTest)
+TEST_F(HashMapTest,ConstructorDefaultTest)
 {
-    const tree_map<int,int> map;
+    const hash_map<int,int> map;
     ASSERT_EQ(map.get_size(),0);
     ASSERT_TRUE(map.is_empty());
 }
 
-TEST_F(TreeMapTest,ConstructorWithArryTest)
+TEST_F(HashMapTest,ConstructorWithArryTest)
 {
     for(int i : a)
     {
@@ -42,10 +42,10 @@ TEST_F(TreeMapTest,ConstructorWithArryTest)
     ASSERT_EQ(test_map->get_size(),10);
 }
 
-TEST_F(TreeMapTest,ConstructorWithListTest)
+TEST_F(HashMapTest,ConstructorWithListTest)
 {
     const linked_list list(b, 10);
-    const tree_map<int,int> map(list);
+    const hash_map<int,int> map(list);
 
     for(int i : a)
     {
@@ -54,9 +54,9 @@ TEST_F(TreeMapTest,ConstructorWithListTest)
     ASSERT_EQ(map.get_size(),10);
 }
 
-TEST_F(TreeMapTest,ConstructorCopyTest)
+TEST_F(HashMapTest,ConstructorCopyTest)
 {
-    const tree_map map(*test_map);
+    const hash_map map(*test_map);
 
     for(int i : a)
     {
@@ -65,9 +65,9 @@ TEST_F(TreeMapTest,ConstructorCopyTest)
     ASSERT_EQ(map.get_size(),10);
 }
 
-TEST_F(TreeMapTest,ConstructorMoveTest)
+TEST_F(HashMapTest,ConstructorMoveTest)
 {
-    const tree_map map(std::move(*test_map));
+    const hash_map map(std::move(*test_map));
 
     for(int i : a)
     {
@@ -77,9 +77,9 @@ TEST_F(TreeMapTest,ConstructorMoveTest)
     ASSERT_TRUE(test_map->is_empty());
 }
 
-TEST_F(TreeMapTest,OperatorCopyTest)
+TEST_F(HashMapTest,OperatorCopyTest)
 {
-    tree_map map(*test_map);
+    hash_map map(*test_map);
     map=*test_map;
 
     for(int i : a)
@@ -89,9 +89,9 @@ TEST_F(TreeMapTest,OperatorCopyTest)
     ASSERT_EQ(map.get_size(),10);
 }
 
-TEST_F(TreeMapTest,OperatorMoveTest)
+TEST_F(HashMapTest,OperatorMoveTest)
 {
-    tree_map map(*test_map);
+    hash_map map(*test_map);
     map=std::move(*test_map);
 
     for(int i : a)
@@ -102,7 +102,7 @@ TEST_F(TreeMapTest,OperatorMoveTest)
     ASSERT_TRUE(test_map->is_empty());
 }
 
-TEST_F(TreeMapTest,FunctionPutTest)
+TEST_F(HashMapTest,FunctionPutTest)
 {
     ASSERT_EQ(test_map->get_size(),10);
     ASSERT_EQ(test_map->put(18,-1).value(),0);
@@ -114,7 +114,7 @@ TEST_F(TreeMapTest,FunctionPutTest)
     ASSERT_EQ(test_map->get(17).value(),1);
 }
 
-TEST_F(TreeMapTest,FunctionGetTest)
+TEST_F(HashMapTest,FunctionGetTest)
 {
     for(int i=0;i<10;i++)
     {
@@ -123,7 +123,7 @@ TEST_F(TreeMapTest,FunctionGetTest)
     ASSERT_EQ(test_map->get(0),std::nullopt);
 }
 
-TEST_F(TreeMapTest,FunctionRemoveTest)
+TEST_F(HashMapTest,FunctionRemoveTest)
 {
     ASSERT_EQ(test_map->get_size(),10);
     ASSERT_EQ(test_map->remove(18),0);
@@ -133,7 +133,7 @@ TEST_F(TreeMapTest,FunctionRemoveTest)
     ASSERT_EQ(test_map->get_size(),9);
 }
 
-TEST_F(TreeMapTest,FunctionContainsKeyTest)
+TEST_F(HashMapTest,FunctionContainsKeyTest)
 {
     for(int i : a)
     {
@@ -141,28 +141,28 @@ TEST_F(TreeMapTest,FunctionContainsKeyTest)
     }
 }
 
-TEST_F(TreeMapTest,FunctionIsEmptyTest)
+TEST_F(HashMapTest,FunctionIsEmptyTest)
 {
     ASSERT_FALSE(test_map->is_empty());
     test_map->clear();
     ASSERT_TRUE(test_map->is_empty());
 }
 
-TEST_F(TreeMapTest,FunctionGetSizeTest)
+TEST_F(HashMapTest,FunctionGetSizeTest)
 {
     ASSERT_EQ(test_map->get_size(),10);
     test_map->clear();
     ASSERT_EQ(test_map->get_size(),0);
 }
 
-TEST_F(TreeMapTest,FunctionClearTest)
+TEST_F(HashMapTest,FunctionClearTest)
 {
     ASSERT_EQ(test_map->get_size(),10);
     test_map->clear();
     ASSERT_EQ(test_map->get_size(),0);
 }
 
-TEST_F(TreeMapTest,FunctionKeySetTest)
+TEST_F(HashMapTest,FunctionKeySetTest)
 {
     const auto test_set =test_map->key_set();
 
@@ -172,7 +172,7 @@ TEST_F(TreeMapTest,FunctionKeySetTest)
     }
 }
 
-TEST_F(TreeMapTest,FunctionValuesTest)
+TEST_F(HashMapTest,FunctionValuesTest)
 {
     const auto test_set =test_map->values();
 
@@ -182,7 +182,7 @@ TEST_F(TreeMapTest,FunctionValuesTest)
     }
 }
 
-TEST_F(TreeMapTest,FunctionEntrySetTest)
+TEST_F(HashMapTest,FunctionEntrySetTest)
 {
     const auto test_set =test_map->entry_set();
 

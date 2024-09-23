@@ -376,6 +376,13 @@ public:
         static constexpr iterator::type type = iterator::BIDIRECTIONAL;
 
         /**
+         * @brief copy constructor
+         * Complexity:O(1)
+         * @param other other iterator
+         */
+        Iterator(const Iterator& other);
+
+        /**
          * @brief Checks if the iterator has a left child.
          *
          * @return True if the iterator has a left child, false otherwise.
@@ -474,6 +481,14 @@ public:
         T *operator->() const;
 
         /**
+         * @brief copy operator
+         * Complexity:O(1)
+         * @param other other iterator
+         * @return self
+         */
+        Iterator & operator=(const Iterator& other);
+
+        /**
          * Equal operator
          * @param other other iterator
          * @return true if their currents are equal else false
@@ -541,6 +556,13 @@ public:
     {
     public:
         static constexpr iterator::type type = iterator::BIDIRECTIONAL;
+
+        /**
+         * @brief copy constructor
+         * Complexity:O(1)
+         * @param other other iterator
+         */
+        ConstIterator(const ConstIterator& other);
 
         /**
          * @brief Checks if the iterator has a left child.
@@ -626,6 +648,14 @@ public:
          * @return Const pointer to the data in the current node.
          */
         const T *operator->() const;
+
+        /**
+         * @brief copy operator
+         * Complexity:O(1)
+         * @param other other iterator
+         * @return self
+         */
+        ConstIterator & operator=(const ConstIterator& other);
 
         /**
          * Equal operator

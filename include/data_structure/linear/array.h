@@ -175,6 +175,13 @@ public:
         static constexpr iterator::type type=iterator::RANDOM_ACCESS;
 
         /**
+         * @brief copy constructor
+         * Complexity:O(1)
+         * @param other other iterator
+         */
+        Iterator(const Iterator& other);
+
+        /**
          * This method allows you to access and modify the value at the current position of the iterator.
          * Complexity: O(1)
          * @return A reference to the value pointed to by the iterator
@@ -187,6 +194,14 @@ public:
          * @return A pointer to the value pointed to by the iterator.
          */
         int* operator->() const;
+
+        /**
+         * @brief copy operator
+         * Complexity:O(1)
+         * @param other other iterator
+         * @return self
+         */
+        Iterator & operator=(const Iterator& other);
 
         /**
          * Equal operator
@@ -331,6 +346,13 @@ public:
         static constexpr iterator::type type=iterator::RANDOM_ACCESS;
 
         /**
+         * @brief copy constructor
+         * Complexity:O(1)
+         * @param other other iterator
+         */
+        ConstIterator(const ConstIterator& other);
+
+        /**
          * This method allows you to access and modify the value at the current position of the iterator.
          * Complexity: O(1)
          * @return A reference to the value pointed to by the iterator
@@ -343,6 +365,14 @@ public:
          * @return A pointer to the value pointed to by the iterator.
          */
         const int* operator->() const;
+
+        /**
+         * @brief copy operator
+         * Complexity:O(1)
+         * @param other other iterator
+         * @return self
+         */
+        ConstIterator & operator=(const ConstIterator& other);
 
         /**
          * Equal operator

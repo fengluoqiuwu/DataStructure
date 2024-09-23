@@ -327,6 +327,13 @@ public:
         static constexpr iterator::type type = iterator::BIDIRECTIONAL;
 
         /**
+         * @brief copy constructor
+         * Complexity:O(1)
+         * @param other other iterator
+         */
+        Iterator(const Iterator& other);
+
+        /**
          * This method allows you to access and modify the value at the current position of the iterator.
          * Complexity: O(1)
          * @return A reference to the value pointed to by the iterator
@@ -405,6 +412,15 @@ public:
     class ConstIterator
     {
     public:
+        static constexpr iterator::type type = iterator::BIDIRECTIONAL;
+
+        /**
+         * @brief copy constructor
+         * Complexity:O(1)
+         * @param other other iterator
+         */
+        ConstIterator(const ConstIterator& other);
+
         /**
          * This method allows you to access and modify the value at the current position of the iterator.
          * Complexity: O(1)

@@ -11,11 +11,11 @@ hash_set<ValueType>::hash_set() : basic_hash_map<ValueType,char>()
 }
 
 template <typename ValueType>
-hash_set<ValueType>::hash_set(ValueType *initialize_list, size_t size)
+hash_set<ValueType>::hash_set(ValueType *initialize_list, const size_t size)
 {
     for (size_t i = 0; i < size; i++)
     {
-        this->insert(Pair<ValueType,char>(initialize_list[i]));
+        this->put(initialize_list[i],'\0');
     }
 }
 
@@ -24,7 +24,7 @@ hash_set<ValueType>::hash_set(linked_list<ValueType> initialize_list)
 {
     for (auto it = initialize_list.begin(); it != initialize_list.end(); ++it)
     {
-        this->insert(Pair<ValueType,char>(*it));
+        this->put(*it,'\0');
     }
 }
 
@@ -101,9 +101,5 @@ void hash_set<ValueType>::clear()
 template <typename ValueType>
 linked_list<ValueType> hash_set<ValueType>::to_list() const
 {
-    linked_list<ValueType> result;
-
-    //TODO
-
-    return result;
+    return basic_hash_map<ValueType, char>::get_keys();
 }

@@ -3,6 +3,9 @@
 //
 #pragma once
 
+#include <utility>
+
+
 #include "hash_map.h"
 #include "hash_set.h"
 
@@ -14,7 +17,7 @@ hash_node<KeyType,ValueType>& hash_node<KeyType, ValueType>::operator=(const has
         size=other.size;
         if constexpr(has_comparator) if (map != nullptr){
             delete map;
-            map = new hash_map<KeyType, ValueType>(*other.map);
+            map = new tree_map<KeyType, ValueType>(*other.map);
             return *this;
         }
 
@@ -147,7 +150,7 @@ void hash_node<KeyType, ValueType>::get_keys(KeyType *ptr) const
 {
     if constexpr(has_comparator) if (map != nullptr)
     {
-        for (auto it = map->begin(INORDER); it != map->end(INORDER); ++it)
+        for (auto it = map->begin(); it != map->end(); ++it)
         {
             *ptr = it->key;
             ++ptr;
@@ -167,7 +170,7 @@ void hash_node<KeyType, ValueType>::get_values(ValueType *ptr) const
 {
     if constexpr(has_comparator) if (map != nullptr)
     {
-        for (auto it = map->begin(INORDER); it != map->end(INORDER); ++it)
+        for (auto it = map->begin(); it != map->end(); ++it)
         {
             *ptr = it->value;
             ++ptr;
@@ -183,13 +186,13 @@ void hash_node<KeyType, ValueType>::get_values(ValueType *ptr) const
 }
 
 template <typename KeyType, typename ValueType>
-void hash_node<KeyType, ValueType>::get_pairs(std::pair<KeyType, ValueType> *ptr) const
+void hash_node<KeyType, ValueType>::get_pairs(Pair<KeyType, ValueType> *ptr) const
 {
     if constexpr(has_comparator) if (map != nullptr)
     {
-        for (auto it = map->begin(INORDER); it != map->end(INORDER); ++it)
+        for (auto it = map->begin(); it != map->end(); ++it)
         {
-            *ptr = std::make_pair(it->key, it->value);
+            *ptr = Pair(it->key, it->value);
             ++ptr;
         }
         return;
@@ -197,7 +200,7 @@ void hash_node<KeyType, ValueType>::get_pairs(std::pair<KeyType, ValueType> *ptr
 
     for (auto it = list->begin(); it != list->end(); ++it)
     {
-        *ptr = std::make_pair(it->key, it->value);
+        *ptr = Pair(it->key, it->value);
         ++ptr;
     }
 }
@@ -207,9 +210,9 @@ void hash_node<KeyType, ValueType>::check_type_change(const bool& add)
 {
     if constexpr(has_comparator)
     {
-        if constexpr(add)
+        if (add)
         {
-            if (map==nullptr&&size>up_limit)
+            if (map == nullptr && size > up_limit)
             {
                 map = new tree_map<KeyType, ValueType>();
                 for (auto it = list->begin(); it != list->end(); ++it)
@@ -219,22 +222,17 @@ void hash_node<KeyType, ValueType>::check_type_change(const bool& add)
                 delete list;
                 list = nullptr;
             }
+            return;
         }
-        else
+        if (map != nullptr && size < down_limit)
         {
-            if (map!=nullptr&&size<down_limit)
+            list = new linked_list<Pair<KeyType, ValueType>>;
+            for (auto it = map->begin(); it != map->end(); ++it)
             {
-                if (size < down_limit)
-                {
-                    list = new linked_list<Pair<KeyType, ValueType>>;
-                    for (auto it = map->begin(INORDER); it != map->end(INORDER); ++it)
-                    {
-                        list->add(Pair<KeyType, ValueType>(it->key, it->value));
-                    }
-                    delete map;
-                    map = nullptr;
-                }
+                list->add(Pair<KeyType, ValueType>(it->key, it->value));
             }
+            delete map;
+            map = nullptr;
         }
     }
 }
@@ -277,7 +275,7 @@ basic_hash_map<KeyType, ValueType>::basic_hash_map(linked_list<std::pair<KeyType
 
     for (auto it = initialize_list.begin(); it != initialize_list.end(); ++it)
     {
-        basic_hash_map::put(it->key, it->value);
+        basic_hash_map::put(it->first, it->second);
     }
 }
 
@@ -433,7 +431,7 @@ void basic_hash_map<KeyType, ValueType>::fix_load_factor()
     length*=2;
     auto *new_array = new hash_node<KeyType, ValueType>[length];
 
-    auto arr = new std::pair<KeyType, ValueType>[this->size];
+    auto arr = new Pair<KeyType, ValueType>[this->size];
     auto temp = arr;
     for (size_t i=0;i<temp_length;++i)
     {
@@ -442,12 +440,209 @@ void basic_hash_map<KeyType, ValueType>::fix_load_factor()
     }
     for (size_t i=0;i<this->size;++i)
     {
-        new_array[get_index(arr[i].first)].put(arr[i].first, arr[i].second);
+        new_array[get_index(arr[i].key)].put(arr[i].key, arr[i].value);
     }
     delete[] arr;
 
     delete[] array;
     array = new_array;
+}
+
+template <typename KeyType, typename ValueType>
+linked_list<KeyType> basic_hash_map<KeyType, ValueType>::get_keys() const
+{
+    auto arr = new KeyType[this->size];
+    auto temp = arr;
+    for (size_t i=0;i<this->length;++i)
+    {
+        this->array[i].get_keys(temp);
+        temp+=this->array[i].get_size();
+    }
+    auto result = linked_list<KeyType>(arr,this->size);
+    delete[] arr;
+    return result;
+}
+
+template <typename KeyType, typename ValueType>
+basic_hash_map<KeyType, ValueType>::ConstIterator::ConstIterator(const ConstIterator &other) : outer(other.outer)
+{
+    current_index=other.current_index;
+
+    if(outer.array[current_index].is_list())
+    {
+        list_it = other.list_it;
+        list_end = other.list_end;
+    }
+    else
+    {
+        tree_it = other.tree_it;
+        tree_end = other.tree_end;
+    }
+}
+
+template <typename KeyType, typename ValueType>
+const Pair<KeyType, ValueType> &basic_hash_map<KeyType, ValueType>::ConstIterator::operator*() const
+{
+    if(current_index==outer.length)
+    {
+        throw std::out_of_range("Iterator::operator*() it point to end iterator.");
+    }
+    if(outer.array[current_index].is_list())
+    {
+        return *list_it;
+    }
+    return *tree_it;
+}
+
+template <typename KeyType, typename ValueType>
+const Pair<KeyType, ValueType> *basic_hash_map<KeyType, ValueType>::ConstIterator::operator->() const
+{
+    if(current_index==outer.length)
+    {
+        throw std::out_of_range("Iterator::operator*() it point to end iterator.");
+    }
+    if(outer.array[current_index].is_list())
+    {
+        return &(*list_it);
+    }
+    return &(*tree_it);
+}
+
+template <typename KeyType, typename ValueType>
+typename basic_hash_map<KeyType, ValueType>::ConstIterator &
+basic_hash_map<KeyType, ValueType>::ConstIterator::operator=(const ConstIterator &other)
+{
+    if(&outer!=&other.outer)
+    {
+        throw std::invalid_argument("Attempt to change outer of Iterator.");
+    }
+
+    current_index = other.current_index;
+    if(outer.array[current_index].is_list())
+    {
+        list_it = other.list_it;
+        list_end = other.list_end;
+    }
+    else
+    {
+        tree_it = other.tree_it;
+        tree_end = other.tree_end;
+    }
+
+    return *this;
+}
+
+template <typename KeyType, typename ValueType>
+bool basic_hash_map<KeyType, ValueType>::ConstIterator::operator==(const ConstIterator &other) const
+{
+    if(&outer==&other.outer&&current_index==other.current_index&&current_index==outer.length)
+    {
+        return true;
+    }
+    if(outer.array[current_index].is_list())
+    {
+        return list_it==other.list_it;
+    }
+    return tree_it==other.tree_it;
+}
+
+template <typename KeyType, typename ValueType>
+bool basic_hash_map<KeyType, ValueType>::ConstIterator::operator!=(const ConstIterator &other) const
+{
+    if(&outer==&other.outer&&current_index==other.current_index&&current_index==outer.length)
+    {
+        return false;
+    }
+    if(outer.array[current_index].is_list())
+    {
+        return list_it!=other.list_it;
+    }
+    return tree_it!=other.tree_it;
+}
+
+template <typename KeyType, typename ValueType>
+typename basic_hash_map<KeyType, ValueType>::ConstIterator &
+basic_hash_map<KeyType, ValueType>::ConstIterator::operator++()
+{
+    if (outer.array[current_index].is_list())
+    {
+        ++list_it;
+        if (list_it == list_end)
+        {
+            while (current_index != outer.length && !outer[current_index].is_empty())
+            {
+                ++current_index;
+            }
+            if(current_index == outer.length)
+            {
+                return *this;
+            }
+
+            if(outer.array[current_index].is_list())
+            {
+                list_it = outer.array[current_index].list.begin();
+                list_end = outer.array[current_index].list.end();
+            }
+            else
+            {
+                tree_it = outer.array[current_index].tree_begin();
+                tree_end = outer.array[current_index].tree_end();
+            }
+        }
+    }
+    return *this;
+}
+
+template <typename KeyType, typename ValueType>
+basic_hash_map<KeyType, ValueType>::ConstIterator::ConstIterator(const basic_hash_map &outer, const size_t &current_index) : outer(outer)
+{
+    this->current_index = current_index;
+    while(array[this->current_index].is_empty()&&this->current_index<=outer.length)
+    {
+        ++this->current_index;
+    }
+    if(this->current_index==outer.length)
+    {
+        return;
+    }
+
+    if(outer.array[this->current_index].is_list())
+    {
+        list_it = outer.array[this->current_index].list.begin();
+        list_end = outer.array[this->current_index].list.end();
+    }
+}
+
+template <typename KeyType, typename ValueType>
+basic_hash_map<KeyType, ValueType>::ConstIterator::ConstIterator(
+    const basic_hash_map &other, const typename linked_list<Pair<KeyType, ValueType>>::ConstIterator &it,
+    const typename linked_list<Pair<KeyType, ValueType>>::ConstIterator &end_it, const size_t current_index) :
+    current_index(current_index), outer(other)
+{
+    list_it=it;
+    list_end=end_it;
+}
+
+template <typename KeyType, typename ValueType>
+basic_hash_map<KeyType, ValueType>::ConstIterator::ConstIterator(
+    const basic_hash_map &other, const typename tree_map<KeyType, ValueType>::ConstIterator &it,
+    const typename tree_map<KeyType, ValueType>::ConstIterator &end_it, const size_t current_index) :
+    current_index(current_index), outer(other)
+{
+    tree_it=it;
+    tree_end=end_it;
+}
+
+template <typename KeyType, typename ValueType>
+typename basic_hash_map<KeyType, ValueType>::ConstIterator basic_hash_map<KeyType, ValueType>::begin() const
+{
+    return ConstIterator(*this);
+}
+
+template <typename KeyType, typename ValueType>
+typename basic_hash_map<KeyType, ValueType>::ConstIterator basic_hash_map<KeyType, ValueType>::end() const
+{
+    return ConstIterator(*this,length);
 }
 
 template <typename KeyType, typename ValueType>
@@ -481,16 +676,16 @@ std::unique_ptr<Set<ValueType>> hash_map<KeyType, ValueType>::values() const
 }
 
 template <typename KeyType, typename ValueType>
-std::unique_ptr<Set<std::pair<KeyType, ValueType>>> hash_map<KeyType, ValueType>::entry_set() const
+std::unique_ptr<Set<Pair<KeyType, ValueType>>> hash_map<KeyType, ValueType>::entry_set() const
 {
-    auto arr = new std::pair<KeyType, ValueType>[this->size];
+    auto arr = new Pair<KeyType, ValueType>[this->size];
     auto temp = arr;
     for (size_t i=0;i<this->length;++i)
     {
         this->array[i].get_pairs(temp);
         temp+=this->array[i].get_size();
     }
-    auto result = std::make_unique<hash_set<std::pair<KeyType, ValueType>>>(arr,this->size);
+    auto result = std::make_unique<hash_set<Pair<KeyType, ValueType>>>(arr,this->size);
     delete[] arr;
     return result;
 }

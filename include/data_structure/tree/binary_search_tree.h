@@ -208,7 +208,7 @@ public:
      * @return An iterator to the beginning of the traversal.
      */
     // ReSharper disable once CppHidingFunction
-    typename binary_tree<T, D>::ConstIterator begin(traversal type = PREORDER) const;
+    typename binary_tree<T, D>::ConstIterator begin(traversal type = INORDER) const;
 
     /**
      * @brief Returns an iterator to the end of the tree traversal.
@@ -217,7 +217,7 @@ public:
      * @return An iterator to the end of the traversal.
      */
     // ReSharper disable once CppHidingFunction
-    typename binary_tree<T, D>::ConstIterator end(traversal type = PREORDER) const;
+    typename binary_tree<T, D>::ConstIterator end(traversal type = INORDER) const;
 
 protected:
     using binary_tree<T, D>::root; ///< Pointer to the root node of the tree.

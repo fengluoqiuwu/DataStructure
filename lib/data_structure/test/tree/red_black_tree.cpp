@@ -46,7 +46,7 @@ TEST_F(RedBlackTreeTest,ConstructorWithSingleValueTest)
 
 TEST_F(RedBlackTreeTest,ConstructorWithArrayOfValuesTest)
 {
-    ASSERT_EQ(*test_tree->begin(),42);
+    ASSERT_EQ(*test_tree->begin(),18);
 }
 
 TEST_F(RedBlackTreeTest,ConstructorWithLinkedListTest)

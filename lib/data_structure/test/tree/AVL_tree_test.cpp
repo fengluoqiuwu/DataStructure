@@ -46,7 +46,7 @@ TEST_F(AVLTreeTest,ConstructorWithSingleValueTest)
 
 TEST_F(AVLTreeTest,ConstructorWithArrayOfValuesTest)
 {
-    ASSERT_EQ(*test_tree->begin(),65);
+    ASSERT_EQ(*test_tree->begin(),18);
 }
 
 TEST_F(AVLTreeTest,ConstructorWithLinkedListTest)

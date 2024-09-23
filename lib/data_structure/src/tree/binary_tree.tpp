@@ -5,6 +5,12 @@
 #include "binary_tree.h"
 
 template <typename T, typename D>
+binary_tree<T, D>::Iterator::Iterator(const Iterator &other) : outer(other.outer), it_type(other.it_type)
+{
+    current = other.current;
+}
+
+template <typename T, typename D>
 bool binary_tree<T,D>::Iterator::has_left() const
 {
     if (current == nullptr)
@@ -242,6 +248,24 @@ T* binary_tree<T,D>::Iterator::operator->() const
 }
 
 template <typename T, typename D>
+typename binary_tree<T, D>::Iterator& binary_tree<T, D>::Iterator::operator=(const Iterator &other)
+{
+    if(this!=other)
+    {
+        if(&outer!=&other.outer)
+        {
+            throw std::invalid_argument("Attempt to change outer of Iterator.");
+        }
+        if(it_type!=other.it_type)
+        {
+            throw std::invalid_argument("Attempt to change it_type of Iterator.");
+        }
+        current=other.current;
+    }
+    return *this;
+}
+
+template <typename T, typename D>
 typename binary_tree<T,D>::Iterator& binary_tree<T,D>::Iterator::operator++()
 {
     if(current == nullptr)
@@ -429,6 +453,12 @@ template <typename T, typename D>
 typename binary_tree<T,D>::tree_node* binary_tree<T,D>::Iterator::get_node() const
 {
     return current;
+}
+
+template <typename T, typename D>
+binary_tree<T, D>::ConstIterator::ConstIterator(const ConstIterator &other) : outer(other.outer), it_type(other.it_type)
+{
+    current = other.current;
 }
 
 template <typename T, typename D>
@@ -625,6 +655,24 @@ const T* binary_tree<T,D>::ConstIterator::operator->() const
         throw std::invalid_argument("Error in operator->(),where current is nullptr.");
     }
     return &(current->data);
+}
+
+template <typename T, typename D>
+typename binary_tree<T,D>::ConstIterator& binary_tree<T,D>::ConstIterator::operator=(const ConstIterator& other)
+{
+    if (this != &other)
+    {
+        if (&outer != &other.outer)
+        {
+            throw std::invalid_argument("Attempt to change outer of Iterator.");
+        }
+        if (it_type!=other.it_type)
+        {
+            throw std::invalid_argument("Attempt to change it_type of Iterator.");
+        }
+        current = other.current;
+    }
+    return *this;
 }
 
 template <typename T, typename D>

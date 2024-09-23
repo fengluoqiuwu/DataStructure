@@ -14,6 +14,6 @@ namespace iterator
         BIDIRECTIONAL,
         RANDOM_ACCESS
     };
-}//TODO add copy operator
+}
 
 #endif //ITERATOR_H

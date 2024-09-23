@@ -6,10 +6,7 @@
 #define MAP_INTERFACE_H
 
 #include <optional> // For std::optional
-#include <utility> // For std::pair
-
 #include "set_interface.h"
-//TODO Add Iterator
 
 /**
  * @brief A pair for map.
@@ -24,6 +21,7 @@ public:
     KeyType key;
     ValueType value;
 
+    Pair()= default;
     explicit Pair(const KeyType &key) : key(key) {}
     explicit Pair(const KeyType &key, const ValueType &value) : key(key), value(value) {}
 
@@ -46,6 +44,12 @@ public:
     bool operator>=(const Pair &other) const {
         return !(*this < other);
     }
+};
+
+template <typename KeyType, typename ValueType>
+struct std::hash<Pair<KeyType, ValueType>>
+{
+    std::size_t operator()(const Pair<KeyType, ValueType> &s) const { return std::hash<KeyType>()(s.key); }
 };
 
 /**
@@ -139,7 +143,7 @@ public:
      *
      * @return std::unique_ptr<Set<std::pair<KeyType, ValueType>>> A unique_ptr of set view of the key-value pairs contained in this map.
      */
-    [[nodiscard]] virtual std::unique_ptr<Set<std::pair<KeyType, ValueType>>> entry_set() const = 0;
+    [[nodiscard]] virtual std::unique_ptr<Set<Pair<KeyType, ValueType>>> entry_set() const = 0;
 };
 
 #endif // MAP_INTERFACE_H

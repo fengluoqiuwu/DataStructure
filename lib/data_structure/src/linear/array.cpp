@@ -193,51 +193,68 @@ std::string array::to_string() const
     return oss.str();
 }
 
-array array::from_string(const std::string& str)
+array array::from_string(const std::string &str)
 {
     std::vector<int> arr;
     std::string number;
     bool isNumber = false;
     bool insideArray = false;
 
-    for (char c : str) {
-        if (c == '[') {
-            if (insideArray) {
+    for (char c : str)
+    {
+        if (c == '[')
+        {
+            if (insideArray)
+            {
                 throw std::runtime_error("Error: Nested arrays are not supported.");
             }
             insideArray = true;
-        } else if (c == ']') {
-            if (!insideArray) {
+        }
+        else if (c == ']')
+        {
+            if (!insideArray)
+            {
                 throw std::runtime_error("Error: Closing bracket ']' without opening bracket '['.");
             }
-            if (isNumber) {
+            if (isNumber)
+            {
                 arr.push_back(std::stoi(number));
                 number.clear();
                 isNumber = false;
             }
             insideArray = false;
-        } else if (isdigit(c) || c == '-') {
-            if (!insideArray) {
+        }
+        else if (isdigit(c) || c == '-')
+        {
+            if (!insideArray)
+            {
                 throw std::runtime_error("Error: Numbers found outside of an array.");
             }
             number += c;
             isNumber = true;
-        } else if (c == ',') {
-            if (!insideArray) {
+        }
+        else if (c == ',')
+        {
+            if (!insideArray)
+            {
                 throw std::runtime_error("Error: Comma found outside of an array.");
             }
-            if (!isNumber) {
+            if (!isNumber)
+            {
                 throw std::runtime_error("Error: Comma found without preceding number.");
             }
             arr.push_back(std::stoi(number));
             number.clear();
             isNumber = false;
-        } else if (!isspace(c)) {
+        }
+        else if (!isspace(c))
+        {
             throw std::runtime_error("Error: Invalid character found in JSON string.");
         }
     }
 
-    if (insideArray) {
+    if (insideArray)
+    {
         throw std::runtime_error("Error: Missing closing bracket ']' for array.");
     }
 
@@ -250,10 +267,14 @@ array array::from_string(const std::string& str)
 
     return {array, arr.size()};
 }
-
-int& array::Iterator::operator*() const
+array::Iterator::Iterator(const Iterator &other) : outer(other.outer)
 {
-    if (this->current<outer.data||this->current >= outer.data+outer.size)
+    current = other.current;
+}
+
+int &array::Iterator::operator*() const
+{
+    if (this->current < outer.data || this->current >= outer.data + outer.size)
     {
         throw std::runtime_error("Error: Iterator out of range.");
     }
@@ -261,7 +282,20 @@ int& array::Iterator::operator*() const
     return *(this->current);
 }
 
-int* array::Iterator::operator->() const
+array::Iterator &array::Iterator::operator=(const Iterator &other)
+{
+    if (this!=&other)
+    {
+        if (&outer != &other.outer)
+        {
+            throw std::invalid_argument("Attempt to change outer of Iterator.");
+        }
+        current = other.current;
+    }
+    return *this;
+}
+
+int * array::Iterator::operator->() const
 {
     if (this->current<outer.data||this->current>=outer.data+outer.size)
     {
@@ -409,22 +443,27 @@ bool array::Iterator::operator>=(const Iterator& other) const
     return this->current >= other.current;
 }
 
-size_t array::Iterator::operator-(const Iterator& other) const
+size_t array::Iterator::operator-(const Iterator &other) const
 {
-    if (&this->outer!=&other.outer)
+    if (&this->outer != &other.outer)
     {
         throw std::runtime_error("Error: Can not minus between different array.");
     }
-    if (this->current<outer.data||this->current>outer.data+outer.size)
+    if (this->current < outer.data || this->current > outer.data + outer.size)
     {
         throw std::runtime_error("Error: Iterator out of range.");
     }
-    if (other.current<other.outer.data||other.current>=other.outer.data+other.outer.size)
+    if (other.current < other.outer.data || other.current >= other.outer.data + other.outer.size)
     {
         throw std::runtime_error("Error: Input Iterator out of range.");
     }
 
     return static_cast<size_t>(this->current - other.current);
+}
+
+array::ConstIterator::ConstIterator(const ConstIterator &other) : outer(other.outer)
+{
+    current = other.current;
 }
 
 const int& array::ConstIterator::operator*() const
@@ -445,6 +484,20 @@ const int* array::ConstIterator::operator->() const
     }
 
     return this->current;
+}
+
+array::ConstIterator &array::ConstIterator::operator=(const ConstIterator &other)
+{
+    if(this!=&other)
+    {
+        if (&this->outer != &other.outer)
+        {
+            throw std::invalid_argument("Attempt to change outer of Iterator.");
+        }
+
+        this->current=other.current;
+    }
+    return *this;
 }
 
 array::ConstIterator& array::ConstIterator::operator++()

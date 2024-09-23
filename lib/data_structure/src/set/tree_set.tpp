@@ -104,7 +104,7 @@ linked_list<ValueType> tree_set<ValueType>::to_list() const
 {
     linked_list<ValueType> result;
 
-    for (auto it = this->begin(TreeData::INORDER); it != this->end(TreeData::INORDER); ++it)
+    for (auto it = basic_tree_map<ValueType>::begin(); it != basic_tree_map<ValueType>::end(); ++it)
     {
         result.add(it->key);
     }

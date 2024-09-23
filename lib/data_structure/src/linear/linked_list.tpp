@@ -559,6 +559,13 @@ typename linked_list<T>::Node * linked_list<T>::get_node_pointer(const size_t in
 }
 
 template <typename T>
+linked_list<T>::Iterator::Iterator(const Iterator &other): outer(other.outer)
+{
+    current = other.current;
+}
+
+
+template <typename T>
 T& linked_list<T>::Iterator::operator*() const
 {
     if (this->current == nullptr||this->current==outer.head_node||this->current==outer.tail_node) {
@@ -579,12 +586,12 @@ T* linked_list<T>::Iterator::operator->() const
 template <typename T>
 typename linked_list<T>::Iterator& linked_list<T>::Iterator::operator=(const Iterator &other)
 {
-    if (&this->outer!=&other.outer)
-    {
-        throw std::invalid_argument("Attempt to change outer of Iterator.");
-    }
     if (this != &other)
     {
+        if (&this->outer!=&other.outer)
+        {
+            throw std::invalid_argument("Attempt to change outer of Iterator.");
+        }
         this->current = other.current;
     }
     return *this;
@@ -613,6 +620,11 @@ typename linked_list<T>::Iterator& linked_list<T>::Iterator::operator--()
 template <typename T>
 linked_list<T>::Iterator::~Iterator() = default;
 
+template <typename T>
+linked_list<T>::ConstIterator::ConstIterator(const ConstIterator &other): outer(other.outer)
+{
+    current = other.current;
+}
 
 template <typename T>
 const T& linked_list<T>::ConstIterator::operator*() const
@@ -635,12 +647,12 @@ const T* linked_list<T>::ConstIterator::operator->() const
 template <typename T>
 typename linked_list<T>::ConstIterator& linked_list<T>::ConstIterator::operator=(const ConstIterator &other)
 {
-    if (&this->outer!=&other.outer)
-    {
-        throw std::invalid_argument("Attempt to change outer of Iterator.");
-    }
     if (this != &other)
     {
+        if (&this->outer!=&other.outer)
+        {
+            throw std::invalid_argument("Attempt to change outer of Iterator.");
+        }
         this->current = other.current;
     }
     return *this;
