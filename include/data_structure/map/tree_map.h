@@ -166,13 +166,44 @@ class tree_map : public basic_tree_map<KeyType, ValueType>
 public:
 
     using basic_tree_map<KeyType, ValueType>::basic_tree_map;
+
+    /**
+     * @brief Copy assignment operator.
+     * Assigns the contents of another tree_map to this tree_map.
+     *
+     * @param other The tree_map to assign from.
+     * @return tree_map& A reference to this tree_map.
+     */
     tree_map(const tree_map &other) : basic_tree_map<KeyType, ValueType>(other) {}
+
+    /**
+     * @brief Move constructor.
+     * Initializes the tree_map by moving another tree_map.
+     *
+     * @param other The tree_map to move from.
+     */
     tree_map(tree_map &&other) noexcept : basic_tree_map<KeyType, ValueType>(std::move(other)) {}
+
+    /**
+     * @brief Copy assignment operator.
+     * Assigns the contents of another tree_map to this tree_map.
+     *
+     * @param other The tree_map to assign from.
+     * @return tree_map& A reference to this tree_map.
+     */
     tree_map &operator=(const tree_map &other)
     {
         basic_tree_map<KeyType, ValueType>::operator=(other);
         return *this;
     }
+
+    /**
+     * @brief Move assignment operator.
+     * Moves the contents of another tree_map to this tree_map.
+     *
+     * @param other The tree_map to move from.
+     * @return tree_map& A reference to this tree_map.
+     */
     tree_map &operator=(tree_map &&other) noexcept
     {
         basic_tree_map<KeyType, ValueType>::operator=(std::move(other));

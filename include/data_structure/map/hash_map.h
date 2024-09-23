@@ -159,6 +159,7 @@ public:
      * @return std::unique_ptr<Set<std::pair<KeyType, ValueType>>> A set view of the key-value pairs contained in this map.
      */
     [[nodiscard]] std::unique_ptr<Set<std::pair<KeyType, ValueType>>> entry_set() const override;
+private:
 };
 
 template <typename KeyType, typename ValueType=char>
@@ -167,13 +168,43 @@ class hash_map : public basic_hash_map<KeyType, ValueType>
 public:
 
     using basic_hash_map<KeyType, ValueType>::basic_hash_map;
+
+    /**
+     * @brief Copy constructor.
+     * Initializes the hash_map as a copy of another hash_map.
+     *
+     * @param other The hash_map to copy from.
+     */
     hash_map(const hash_map &other) : basic_hash_map<KeyType, ValueType>(other) {}
+
+    /**
+     * @brief Move constructor.
+     * Initializes the hash_map by moving another hash_map.
+     *
+     * @param other The hash_map to move from.
+     */
     hash_map(hash_map &&other) noexcept : basic_hash_map<KeyType, ValueType>(std::move(other)) {}
+
+    /**
+     * @brief Copy assignment operator.
+     * Assigns the contents of another hash_map to this hash_map.
+     *
+     * @param other The hash_map to assign from.
+     * @return hash_map& A reference to this hash_map.
+     */
     hash_map &operator=(const hash_map &other)
     {
         basic_hash_map<KeyType, ValueType>::operator=(other);
         return *this;
     }
+
+    /**
+     * @brief Move assignment operator.
+     * Moves the contents of another hash_map to this hash_map.
+     *
+     * @param other The hash_map to move from.
+     * @return hash_map& A reference to this hash_map.
+     */
     hash_map &operator=(hash_map &&other) noexcept
     {
         basic_hash_map<KeyType, ValueType>::operator=(std::move(other));
