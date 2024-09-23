@@ -6,6 +6,101 @@
 #include "hash_map.h"
 
 template <typename KeyType, typename ValueType>
+std::optional<ValueType> hash_node<KeyType, ValueType>::put(const KeyType &key, const ValueType &value)
+{
+    if (map == nullptr)
+    {
+        for (auto it = list->begin(); it != list->end(); ++it)
+        {
+            if (it->key == key)
+            {
+                auto temp = it->value;
+                it->value = value;
+                return std::optional<ValueType>(temp);
+            }
+        }
+        list->add(Pair<KeyType, ValueType>(key, value));
+        return std::nullopt;
+    }
+    return map->put(key, value);
+}
+
+template <typename KeyType, typename ValueType>
+std::optional<ValueType> hash_node<KeyType, ValueType>::get(const KeyType &key) const
+{
+    if (map == nullptr)
+    {
+        for (auto it = list->begin(); it != list->end(); ++it)
+        {
+            if (it->key == key)
+            {
+                return std::optional<ValueType>(it->value);
+            }
+        }
+        return std::nullopt;
+    }
+    return map->get(key);
+}
+
+template <typename KeyType, typename ValueType>
+std::optional<ValueType> hash_node<KeyType, ValueType>::remove(const KeyType &key)
+{
+    if (map == nullptr)
+    {
+        for (auto it = list->begin(); it != list->end(); ++it)
+        {
+            if (it->key == key)
+            {
+                auto temp = it->value;
+                list->remove(it);
+                return std::optional<ValueType>(temp);
+            }
+        }
+        return std::nullopt;
+    }
+}
+
+template <typename KeyType, typename ValueType>
+bool hash_node<KeyType, ValueType>::contains_key(const KeyType &key) const
+{
+}
+
+template <typename KeyType, typename ValueType>
+bool hash_node<KeyType, ValueType>::is_empty() const
+{
+}
+
+template <typename KeyType, typename ValueType>
+std::size_t hash_node<KeyType, ValueType>::get_size() const
+{
+}
+
+template <typename KeyType, typename ValueType>
+void hash_node<KeyType, ValueType>::clear()
+{
+}
+
+template <typename KeyType, typename ValueType>
+void hash_node<KeyType, ValueType>::get_keys(KeyType *ptr)
+{
+}
+
+template <typename KeyType, typename ValueType>
+void hash_node<KeyType, ValueType>::get_values(ValueType *ptr)
+{
+}
+
+template <typename KeyType, typename ValueType>
+void hash_node<KeyType, ValueType>::get_pairs(std::pair<KeyType, ValueType> *ptr)
+{
+}
+
+template <typename KeyType, typename ValueType>
+void hash_node<KeyType, ValueType>::check_type_change()
+{
+}
+
+template <typename KeyType, typename ValueType>
 basic_hash_map<KeyType, ValueType>::basic_hash_map()
 {
 }

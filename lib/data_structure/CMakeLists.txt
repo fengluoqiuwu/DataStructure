@@ -35,6 +35,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     # 添加测试
     enable_testing()
     file(GLOB TEST_SRC
+            test/*.cpp
             test/linear/*.cpp
             test/tree/*.cpp
             test/map/*.cpp

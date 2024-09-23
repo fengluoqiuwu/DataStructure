@@ -8,7 +8,7 @@
 #include "set_interface.h"
 
 /**
- * @brief A generic set interface similar to Java's TreeSet, which implement from Set.
+ * @brief A generic set similar to Java's TreeSet, which implement from Set.
  *
  * @tparam ValueType Type of the value stored in the set.
  */

@@ -341,6 +341,14 @@ public:
         T *operator->() const;
 
         /**
+         * Copy operator
+         * Complexity: O(1)
+         * @param other other iterator
+         * @return self
+         */
+        Iterator& operator=(const Iterator &other);
+
+        /**
          * Equal operator
          * Complexity: O(1)
          * @param other other iterator
@@ -410,6 +418,14 @@ public:
          * @return A pointer to the value pointed to by the iterator.
          */
         const T *operator->() const;
+
+        /**
+         * Copy operator
+         * Complexity: O(1)
+         * @param other other iterator
+         * @return self
+         */
+        ConstIterator& operator=(const ConstIterator &other);
 
         /**
          * Equal operator
@@ -489,6 +505,16 @@ public:
      * @return const end iterator
      */
     ConstIterator end() const;
+
+    /**
+     * remove node of given iterator
+     */
+    void remove(const Iterator &it);
+
+    /**
+     * add node next of given iterator
+     */
+    void add(const Iterator &it,const T &value);
 };
 
 

@@ -577,6 +577,20 @@ T* linked_list<T>::Iterator::operator->() const
 }
 
 template <typename T>
+typename linked_list<T>::Iterator& linked_list<T>::Iterator::operator=(const Iterator &other)
+{
+    if (&this->outer!=&other.outer)
+    {
+        throw std::invalid_argument("Attempt to change outer of Iterator.");
+    }
+    if (this != &other)
+    {
+        this->current = other.current;
+    }
+    return *this;
+}
+
+template <typename T>
 typename linked_list<T>::Iterator& linked_list<T>::Iterator::operator++()
 {
     if (this->current == nullptr||this->current==outer.head_node) {
@@ -616,6 +630,20 @@ const T* linked_list<T>::ConstIterator::operator->() const
         throw std::out_of_range("Attempt to access an invalid iterator.");
     }
     return &(this->current->data);
+}
+
+template <typename T>
+typename linked_list<T>::ConstIterator& linked_list<T>::ConstIterator::operator=(const ConstIterator &other)
+{
+    if (&this->outer!=&other.outer)
+    {
+        throw std::invalid_argument("Attempt to change outer of Iterator.");
+    }
+    if (this != &other)
+    {
+        this->current = other.current;
+    }
+    return *this;
 }
 
 template <typename T>
@@ -663,4 +691,46 @@ template <typename T>
 typename linked_list<T>::ConstIterator linked_list<T>::end() const
 {
     return ConstIterator(tail_node,*this);
+}
+
+template <typename T>
+void linked_list<T>::remove(const Iterator &it)
+{
+    Node * node = it.current;
+
+    if (&it.outer!=this)
+    {
+        throw std::out_of_range("Attempt to remove an invalid class iterator.");
+    }
+
+    if (node == nullptr||node==head_node||node==tail_node)
+    {
+        throw std::out_of_range("index out of range");
+    }
+
+    node->next->previous = node->previous;
+    node->previous->next = node->next;
+    delete node;
+    size--;
+}
+
+template <typename T>
+void linked_list<T>::add(const Iterator &it, const T &value)
+{
+    Node * node = it.current;
+
+    if (&it.outer!=this)
+    {
+        throw std::out_of_range("Attempt to remove an invalid class iterator.");
+    }
+
+    if (node == nullptr||node==tail_node)
+    {
+        throw std::out_of_range("index out of range");
+    }
+
+    auto * new_node = new Node(value, node->next,node);
+    new_node->next->previous = new_node;
+    new_node->previous->next = new_node;
+    size++;
 }

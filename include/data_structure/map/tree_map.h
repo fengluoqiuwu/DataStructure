@@ -10,7 +10,7 @@
 #include "red_black_tree.h"
 
 /**
- * @brief A generic map interface similar to Java's TreeMap, which implement from Map.
+ * @brief A generic map similar to Java's TreeMap, which implement from Map.
  *
  * @tparam KeyType Type of the key used in the map.
  * @tparam ValueType Type of the value stored in the map.

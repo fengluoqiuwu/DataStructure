@@ -367,6 +367,20 @@ TEST_F(LinkedListTest,IteratorTest)
     ASSERT_EQ(list1->begin()->data,1);
 
     delete list1;
+
+    list = new linked_list(a,10);
+
+    linked_list<int>::Iterator it3 = list->begin();
+    list->remove(it3);
+    ASSERT_EQ(list->to_string(),"[2,3,4,5,6,7,8,9,10]");
+    ASSERT_EQ(list->get_size(),9);
+    it3 = list->begin();
+    --it3;
+    list->add(it3,1);
+    ASSERT_EQ(list->get_size(),10);
+    ASSERT_EQ(list->to_string(),"[1,2,3,4,5,6,7,8,9,10]");
+
+    delete list;
 }
 
 TEST_F(LinkedListTest,ConstIteratorTest)

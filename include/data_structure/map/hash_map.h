@@ -9,9 +9,124 @@
 #include <utility> // For std::pair
 #include "map_interface.h"
 #include "linked_list.h"
+#include "utils.h"
+
+template <typename KeyType, typename ValueType>
+class basic_hash_map;
 
 /**
  * @brief A generic map interface similar to Java's HashMap, which implement from Map.
+ *
+ * @tparam KeyType Type of the key used in the map.
+ * @tparam ValueType Type of the value stored in the map.
+ */
+template <typename KeyType, typename ValueType = char>
+class hash_node
+{
+public:
+    static bool has_comparator; /** KeyType has comparator */
+
+private:
+    friend class basic_hash_map<KeyType, ValueType>;
+    size_t size = 0; /** size of hash node */
+    linked_list<Pair<KeyType, ValueType>> *list =
+        new linked_list<Pair<KeyType, ValueType>>; /** pointer of list of data */
+    tree_map<KeyType, ValueType> *map = nullptr; /** pointer of tree map */
+
+    /**
+     * @brief Associates the specified value with the specified key in the map.
+     *
+     * If the map previously contained a mapping for the key, the old value is replaced.
+     *
+     * @param key The key with which the specified value is to be associated.
+     * @param value The values to be associated with the specified key.
+     * @return std::optional<ValueType> The previous value associated with key, or std::nullopt if there was no mapping
+     * for key.
+     */
+    std::optional<ValueType> put(const KeyType &key, const ValueType &value);
+
+    /**
+     * @brief Returns the value to which the specified key is mapped, or std::nullopt if this map contains no mapping
+     * for the key.
+     *
+     * @param key The key whose associated value is to be returned.
+     * @return std::optional<ValueType> The value to which the specified key is mapped, or std::nullopt if there is no
+     * mapping for the key.
+     */
+    std::optional<ValueType> get(const KeyType &key) const;
+
+    /**
+     * @brief Removes the mapping for the specified key from this map if present.
+     *
+     * @param key The key whose mapping is to be removed from the map.
+     * @return std::optional<ValueType> The previous value associated with key, or std::nullopt if there was no mapping
+     * for key.
+     */
+    std::optional<ValueType> remove(const KeyType &key);
+
+    /**
+     * @brief Returns true if this map contains a mapping for the specified key.
+     *
+     * @param key The key whose presence in this map is to be tested.
+     * @return true If this map contains a mapping for the specified key.
+     * @return false If this map does not contain a mapping for the specified key.
+     */
+    bool contains_key(const KeyType &key) const;
+
+    /**
+     * @brief Returns true if this map contains no key-value mappings.
+     *
+     * @return true If this map contains no key-value mappings.
+     * @return false If this map contains one or more key-value mappings.
+     */
+    [[nodiscard]] bool is_empty() const;
+
+    /**
+     * @brief Returns the number of key-value mappings in this map.
+     *
+     * @return std::size_t The number of key-value mappings in this map.
+     */
+    [[nodiscard]] std::size_t get_size() const;
+
+    /**
+     * @brief Removes all the mappings from this map.
+     *
+     * The map will be empty after this call returns.
+     */
+    void clear();
+
+    /**
+     * @brief write all keys to array of KeyType
+     *
+     * @param ptr pointer begin to write
+     */
+    void get_keys(KeyType *ptr);
+
+    /**
+     * @brief write all values to array of ValueType
+     *
+     * @param ptr pointer begin to write
+     */
+    void get_values(ValueType *ptr);
+
+    /**
+     * @brief write all pairs to array of std::pair<KeyType,ValueType>
+     *
+     * @param ptr pointer begin to write
+     */
+    void get_pairs(std::pair<KeyType, ValueType> *ptr);
+
+    /**
+     * @brief check should it change between linked list and tree_map
+     */
+    void check_type_change();
+};
+
+template <typename KeyType, typename ValueType>
+bool hash_node<KeyType,ValueType>::has_comparator = utils::has_all_comparisons<KeyType>::value;
+
+/**
+ * @brief A generic map similar to Java's HashMap, which implement from Map.
  *
  * @tparam KeyType Type of the key used in the map.
  * @tparam ValueType Type of the value stored in the map.
@@ -160,6 +275,11 @@ public:
      */
     [[nodiscard]] std::unique_ptr<Set<std::pair<KeyType, ValueType>>> entry_set() const override;
 private:
+    size_t size;
+    size_t length=16;
+    double alpha = 0.75;
+
+
 };
 
 template <typename KeyType, typename ValueType=char>
