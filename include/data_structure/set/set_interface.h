@@ -4,6 +4,7 @@
 
 #ifndef SET_INTERFACE_H
 #define SET_INTERFACE_H
+//TODO Add Iterator
 
 /**
  * @brief A generic set interface similar to Java's Set.

@@ -5,9 +5,13 @@ project(DataStructure)
 # 定义路径
 file(GLOB SRC
         src/linear/*.cpp
+        src/linear/*.tpp
         src/tree/*.cpp
+        src/tree/*.tpp
         src/map/*.cpp
+        src/map/*.tpp
         src/set/*.cpp
+        src/set/*.tpp
 )
 
 # 定义库
