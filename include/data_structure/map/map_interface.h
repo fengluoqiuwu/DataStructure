@@ -144,6 +144,54 @@ public:
      * @return std::unique_ptr<Set<std::pair<KeyType, ValueType>>> A unique_ptr of set view of the key-value pairs contained in this map.
      */
     [[nodiscard]] virtual std::unique_ptr<Set<Pair<KeyType, ValueType>>> entry_set() const = 0;
+
+    /**
+     * @brief Const forward iterator for the hash map.
+     *
+     * This iterator provides forward traversal capabilities for the hash map,
+     * with read-only access to the data.
+     */
+    class ConstIterator
+    {
+    public:
+        static constexpr iterator::type type = iterator::FORWARD;
+        virtual ~ConstIterator() = default;
+
+        /**
+         * This method allows you to access and modify the value at the current position of the iterator.
+         * @return A reference to the Pair pointed to by the iterator
+         */
+        virtual const Pair<KeyType, ValueType> &operator*() const =0;
+
+        /**
+         * This method provides access to the value pointed to by the iterator, similar to dereferencing the iterator.
+         * @return A pointer to the Pair pointed to by the iterator.
+         */
+        virtual const Pair<KeyType, ValueType> *operator->() const =0;
+
+        /**
+         * This method checks if two iterators are pointing to the same element.
+         * @param other other iterator
+         * @return true if the current iterator is equal to the other iterator (i.e., they point to the same position);
+         * otherwise, false.
+         */
+        virtual bool operator==(const ConstIterator &other) const =0;
+
+        /**
+         * This method checks if two iterators are pointing to different elements.
+         * @param other other iterator
+         * @return true if the current iterator is not equal to the other iterator (i.e., they point to different
+         * positions); otherwise, false.
+         */
+        virtual bool operator!=(const ConstIterator &other) const =0;
+
+        /**
+         * This is the pre-increment operator. It advances the iterator by one position and returns a reference to the
+         * modified iterator itself.
+         * @return A reference to the updated iterator after it has been incremented.
+         */
+        virtual ConstIterator &operator++() =0;
+    };
 };
 
 #endif // MAP_INTERFACE_H

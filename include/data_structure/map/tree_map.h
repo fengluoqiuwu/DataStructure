@@ -16,7 +16,7 @@
  * @tparam ValueType Type of the value stored in the map.
  */
 template <typename KeyType, typename ValueType = char>
-class basic_tree_map : public Map<KeyType, ValueType>, protected red_black_tree<Pair<KeyType, ValueType>>
+class basic_tree_map : public Map<KeyType, ValueType>, red_black_tree<Pair<KeyType, ValueType>>
 {
 public:
     /**
@@ -46,7 +46,7 @@ public:
      *
      * @param other The tree_map to copy from.
      */
-    basic_tree_map(const basic_tree_map &other);
+    explicit basic_tree_map(const Map<KeyType, ValueType> &other);
 
     /**
      * @brief Move constructor.
@@ -54,7 +54,7 @@ public:
      *
      * @param other The tree_map to move from.
      */
-    basic_tree_map(basic_tree_map &&other) noexcept;
+    explicit basic_tree_map(Map<KeyType,ValueType> &&other) noexcept;
 
     /**
      * @brief Destructor for the tree_map.
@@ -69,7 +69,7 @@ public:
      * @param other The tree_map to assign from.
      * @return tree_map& A reference to this tree_map.
      */
-    basic_tree_map &operator=(const basic_tree_map &other);
+    virtual basic_tree_map &operator=(const Map<KeyType,ValueType> &other);
 
     /**
      * @brief Move assignment operator.
@@ -78,7 +78,7 @@ public:
      * @param other The tree_map to move from.
      * @return tree_map& A reference to this tree_map.
      */
-    basic_tree_map &operator=(basic_tree_map &&other) noexcept;
+    virtual basic_tree_map &operator=(Map<KeyType,ValueType> &&other) noexcept;
 
     /**
      * @brief Associates the specified value with the specified key in the map.
@@ -170,7 +170,7 @@ public:
      * This iterator provides forward traversal capabilities for the tree map,
      * with read-only access to the data.
      */
-    class ConstIterator
+    class ConstIterator : public Map<KeyType, ValueType>::ConstIterator
     {
     public:
         static constexpr iterator::type type = iterator::FORWARD;
@@ -186,13 +186,13 @@ public:
          * This method allows you to access and modify the value at the current position of the iterator.
          * @return A reference to the Pair pointed to by the iterator
          */
-        const Pair<KeyType, ValueType> &operator*() const;
+        const Pair<KeyType, ValueType> &operator*() const override;
 
         /**
          * This method provides access to the value pointed to by the iterator, similar to dereferencing the iterator.
          * @return A pointer to the Pair pointed to by the iterator.
          */
-        const Pair<KeyType, ValueType> *operator->() const;
+        const Pair<KeyType, ValueType> *operator->() const override;
 
         /**
          * This method copy data from another ConstIterator.
@@ -207,7 +207,7 @@ public:
          * @return true if the current iterator is equal to the other iterator (i.e., they point to the same position);
          * otherwise, false.
          */
-        bool operator==(const ConstIterator &other) const;
+        bool operator==(const typename Map<KeyType, ValueType>::ConstIterator &other) const override;
 
         /**
          * This method checks if two iterators are pointing to different elements.
@@ -215,14 +215,14 @@ public:
          * @return true if the current iterator is not equal to the other iterator (i.e., they point to different
          * positions); otherwise, false.
          */
-        bool operator!=(const ConstIterator &other) const;
+        bool operator!=(const typename Map<KeyType, ValueType>::ConstIterator &other) const override;
 
         /**
          * This is the pre-increment operator. It advances the iterator by one position and returns a reference to the
          * modified iterator itself.
          * @return A reference to the updated iterator after it has been incremented.
          */
-        ConstIterator &operator++();
+        ConstIterator &operator++() override;
 
     private:
         friend class basic_tree_map;
@@ -265,7 +265,7 @@ public:
      * @param other The tree_map to assign from.
      * @return tree_map& A reference to this tree_map.
      */
-    tree_map(const tree_map &other) : basic_tree_map<KeyType, ValueType>(other) {}
+    explicit tree_map(const Map<KeyType,ValueType> &other) : basic_tree_map<KeyType, ValueType>(other) {}
 
     /**
      * @brief Move constructor.
@@ -273,7 +273,7 @@ public:
      *
      * @param other The tree_map to move from.
      */
-    tree_map(tree_map &&other) noexcept : basic_tree_map<KeyType, ValueType>(std::move(other)) {}
+    explicit tree_map(Map<KeyType,ValueType> &&other) noexcept : basic_tree_map<KeyType, ValueType>(std::move(other)) {}
 
     /**
      * @brief Copy assignment operator.
@@ -282,7 +282,7 @@ public:
      * @param other The tree_map to assign from.
      * @return tree_map& A reference to this tree_map.
      */
-    tree_map &operator=(const tree_map &other)
+    tree_map &operator=(const Map<KeyType, ValueType> &other) override
     {
         basic_tree_map<KeyType, ValueType>::operator=(other);
         return *this;
@@ -295,7 +295,7 @@ public:
      * @param other The tree_map to move from.
      * @return tree_map& A reference to this tree_map.
      */
-    tree_map &operator=(tree_map &&other) noexcept
+    tree_map &operator=(Map<KeyType, ValueType> &&other) noexcept override
     {
         basic_tree_map<KeyType, ValueType>::operator=(std::move(other));
         return *this;

@@ -49,7 +49,7 @@ TEST_F(TreeSetTest,ConstructorFromListTest)
 
 TEST_F(TreeSetTest,ConstructorCopyTest)
 {
-    const auto set(dynamic_cast<const tree_set<int>&>(*test_set));
+    const auto set = tree_set<int>(*test_set);
 
     for(int i : a)
     {
@@ -59,7 +59,7 @@ TEST_F(TreeSetTest,ConstructorCopyTest)
 
 TEST_F(TreeSetTest,ConstructorMoveTest)
 {
-    const auto set(dynamic_cast<tree_set<int>&&>(std::move(*test_set)));
+    const auto set=tree_set(std::move(*test_set));
 
     for(int i : a)
     {
@@ -85,7 +85,7 @@ TEST_F(TreeSetTest,OperatorMoveTest)
 {
     tree_set<int> set;
     // ReSharper disable once CppJoinDeclarationAndAssignment
-    set = dynamic_cast<tree_set<int>&&>(std::move(*test_set));
+    set = std::move(*test_set);
 
     for(int i : a)
     {

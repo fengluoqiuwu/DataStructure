@@ -8,7 +8,7 @@
 class HashMapTest : public ::testing::Test
 {
 protected:
-    hash_map<int,int> *test_map=nullptr;
+    Map<int,int> *test_map=nullptr;
     int a[10]={18, 42, 96, 80, 65, 56, 32, 64, 89, 85};
     std::pair<int,int> b[10];
 
@@ -56,7 +56,7 @@ TEST_F(HashMapTest,ConstructorWithListTest)
 
 TEST_F(HashMapTest,ConstructorCopyTest)
 {
-    const hash_map map(*test_map);
+    const auto map=hash_map<int,int>(*test_map);
 
     for(int i : a)
     {
@@ -67,7 +67,7 @@ TEST_F(HashMapTest,ConstructorCopyTest)
 
 TEST_F(HashMapTest,ConstructorMoveTest)
 {
-    const hash_map map(std::move(*test_map));
+    const auto map=hash_map<int,int>(std::move(*test_map));
 
     for(int i : a)
     {
@@ -79,7 +79,7 @@ TEST_F(HashMapTest,ConstructorMoveTest)
 
 TEST_F(HashMapTest,OperatorCopyTest)
 {
-    hash_map map(*test_map);
+    auto map=hash_map<int,int>(*test_map);
     map=*test_map;
 
     for(int i : a)
@@ -91,7 +91,7 @@ TEST_F(HashMapTest,OperatorCopyTest)
 
 TEST_F(HashMapTest,OperatorMoveTest)
 {
-    hash_map map(*test_map);
+    hash_map<int,int> map{};
     map=std::move(*test_map);
 
     for(int i : a)
@@ -189,5 +189,16 @@ TEST_F(HashMapTest,FunctionEntrySetTest)
     for(int i=0;i<10;i++)
     {
         ASSERT_TRUE(test_set->contains(Pair(a[i],i)));
+    }
+}
+
+TEST_F(HashMapTest,IteratorTest)
+{
+    const auto test=hash_map<int,int>(*test_map);
+
+    for(auto it = test.begin(); it != test.end(); ++it)
+    {
+        ASSERT_TRUE(test_map->contains_key(it->key));
+        ASSERT_EQ(test_map->get(it->key).value(),it->value);
     }
 }

@@ -190,7 +190,7 @@ public:
      *
      * @param other The hash_map to copy from.
      */
-    basic_hash_map(const basic_hash_map &other);
+    explicit basic_hash_map(const Map<KeyType,ValueType> &other);
 
     /**
      * @brief Move constructor.
@@ -198,7 +198,7 @@ public:
      *
      * @param other The hash_map to move from.
      */
-    basic_hash_map(basic_hash_map &&other) noexcept;
+    explicit basic_hash_map(Map<KeyType,ValueType> &&other) noexcept;
 
     /**
      * @brief Destructor for the hash_map.
@@ -213,7 +213,7 @@ public:
      * @param other The hash_map to assign from.
      * @return hash_map& A reference to this hash_map.
      */
-    basic_hash_map &operator=(const basic_hash_map &other);
+    virtual basic_hash_map &operator=(const Map<KeyType,ValueType> &other);
 
     /**
      * @brief Move assignment operator.
@@ -222,7 +222,7 @@ public:
      * @param other The hash_map to move from.
      * @return hash_map& A reference to this hash_map.
      */
-    basic_hash_map &operator=(basic_hash_map &&other) noexcept;
+    virtual basic_hash_map &operator=(Map<KeyType,ValueType> &&other) noexcept;
 
     /**
      * @brief Associates the specified value with the specified key in the map.
@@ -344,7 +344,7 @@ public:
      * This iterator provides forward traversal capabilities for the hash map,
      * with read-only access to the data.
      */
-    class ConstIterator
+    class ConstIterator : public Map<KeyType, ValueType>::ConstIterator
     {
     public:
         static constexpr iterator::type type = iterator::FORWARD;
@@ -360,13 +360,13 @@ public:
          * This method allows you to access and modify the value at the current position of the iterator.
          * @return A reference to the Pair pointed to by the iterator
          */
-        const Pair<KeyType, ValueType> &operator*() const;
+        const Pair<KeyType, ValueType> &operator*() const override;
 
         /**
          * This method provides access to the value pointed to by the iterator, similar to dereferencing the iterator.
          * @return A pointer to the Pair pointed to by the iterator.
          */
-        const Pair<KeyType, ValueType> *operator->() const;
+        const Pair<KeyType, ValueType> *operator->() const override;
 
         /**
          * This method copy data from another ConstIterator.
@@ -381,7 +381,7 @@ public:
          * @return true if the current iterator is equal to the other iterator (i.e., they point to the same position);
          * otherwise, false.
          */
-        bool operator==(const ConstIterator &other) const;
+        bool operator==(const typename Map<KeyType, ValueType>::ConstIterator &other) const override;
 
         /**
          * This method checks if two iterators are pointing to different elements.
@@ -389,22 +389,23 @@ public:
          * @return true if the current iterator is not equal to the other iterator (i.e., they point to different
          * positions); otherwise, false.
          */
-        bool operator!=(const ConstIterator &other) const;
+        bool operator!=(const typename Map<KeyType, ValueType>::ConstIterator &other) const override;
 
         /**
          * This is the pre-increment operator. It advances the iterator by one position and returns a reference to the
          * modified iterator itself.
          * @return A reference to the updated iterator after it has been incremented.
          */
-        ConstIterator &operator++();
+        ConstIterator &operator++() override;
 
     private:
+        friend class basic_hash_map;
         size_t current_index;                                                   /** current index in hash table */
         const basic_hash_map &outer;                                            /** outer class object */
-        typename linked_list<Pair<KeyType, ValueType>>::ConstIterator list_it;  /** iterator of linked list */
-        typename linked_list<Pair<KeyType, ValueType>>::ConstIterator list_end; /** end iterator of linked list */
-        typename tree_map<KeyType, ValueType>::ConstIterator tree_it;           /** iterator of tree map */
-        typename tree_map<KeyType, ValueType>::ConstIterator tree_end;          /** end iterator of tree map */
+        std::optional<typename linked_list<Pair<KeyType, ValueType>>::ConstIterator> list_it;  /** iterator of linked list */
+        std::optional<typename linked_list<Pair<KeyType, ValueType>>::ConstIterator> list_end; /** end iterator of linked list */
+        std::optional<typename tree_map<KeyType, ValueType>::ConstIterator> tree_it;           /** iterator of tree map */
+        std::optional<typename tree_map<KeyType, ValueType>::ConstIterator> tree_end;          /** end iterator of tree map */
 
         explicit ConstIterator(const basic_hash_map &outer, const size_t &current_index=0);
         ConstIterator(const basic_hash_map &other,
@@ -445,7 +446,7 @@ public:
      *
      * @param other The hash_map to copy from.
      */
-    hash_map(const hash_map &other) : basic_hash_map<KeyType, ValueType>(other) {}
+    explicit hash_map(const Map<KeyType,ValueType> &other) : basic_hash_map<KeyType, ValueType>(other) {}
 
     /**
      * @brief Move constructor.
@@ -453,7 +454,7 @@ public:
      *
      * @param other The hash_map to move from.
      */
-    hash_map(hash_map &&other) noexcept : basic_hash_map<KeyType, ValueType>(std::move(other)) {}
+    explicit hash_map(Map<KeyType,ValueType> &&other) noexcept : basic_hash_map<KeyType, ValueType>(std::move(other)) {}
 
     /**
      * @brief Copy assignment operator.
@@ -462,7 +463,7 @@ public:
      * @param other The hash_map to assign from.
      * @return hash_map& A reference to this hash_map.
      */
-    hash_map &operator=(const hash_map &other)
+    hash_map &operator=(const Map<KeyType, ValueType> &other) override
     {
         basic_hash_map<KeyType, ValueType>::operator=(other);
         return *this;
@@ -475,7 +476,7 @@ public:
      * @param other The hash_map to move from.
      * @return hash_map& A reference to this hash_map.
      */
-    hash_map &operator=(hash_map &&other) noexcept
+    hash_map &operator=(Map<KeyType, ValueType> &&other) noexcept override
     {
         basic_hash_map<KeyType, ValueType>::operator=(std::move(other));
         return *this;

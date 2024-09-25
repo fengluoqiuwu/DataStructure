@@ -41,14 +41,14 @@ public:
      *
      * @param other The hash_set to copy from.
      */
-    hash_set(const hash_set &other);
+    explicit hash_set(const Set<ValueType> &other);
 
     /**
      * @brief Move constructor that creates a new hash_set by moving another.
      *
      * @param other The hash_set to move from.
      */
-    hash_set(hash_set &&other) noexcept;
+    explicit hash_set(Set<ValueType> &&other) noexcept;
 
     /**
      * @brief Destructor for hash_set.
@@ -61,7 +61,7 @@ public:
      * @param other The hash_set to copy from.
      * @return hash_set& A reference to this hash_set.
      */
-    hash_set &operator=(const hash_set &other);
+    hash_set &operator=(const Set<ValueType> &other);
 
     /**
      * @brief Move assignment operator that moves the contents of another hash_set.
@@ -69,7 +69,7 @@ public:
      * @param other The hash_set to move from.
      * @return hash_set& A reference to this hash_set.
      */
-    hash_set &operator=(hash_set &&other) noexcept;
+    hash_set &operator=(Set<ValueType> &&other) noexcept;
 
     /**
      * @brief Adds the specified element to the set if it is not already present.

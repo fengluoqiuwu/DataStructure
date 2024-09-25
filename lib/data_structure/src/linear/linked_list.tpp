@@ -627,6 +627,12 @@ linked_list<T>::ConstIterator::ConstIterator(const ConstIterator &other): outer(
 }
 
 template <typename T>
+linked_list<T>::ConstIterator::ConstIterator(const Iterator &other): outer(other.outer)
+{
+    current = other.current;
+}
+
+template <typename T>
 const T& linked_list<T>::ConstIterator::operator*() const
 {
     if (this->current == nullptr||this->current==outer.head_node||this->current==outer.tail_node) {
@@ -655,6 +661,17 @@ typename linked_list<T>::ConstIterator& linked_list<T>::ConstIterator::operator=
         }
         this->current = other.current;
     }
+    return *this;
+}
+
+template <typename T>
+typename linked_list<T>::ConstIterator& linked_list<T>::ConstIterator::operator=(const Iterator &other)
+{
+    if (&this->outer!=&other.outer)
+    {
+        throw std::invalid_argument("Attempt to change outer of Iterator.");
+    }
+    this->current = other.current;
     return *this;
 }
 

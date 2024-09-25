@@ -13,7 +13,7 @@
  * @tparam ValueType Type of the value stored in the set.
  */
 template <typename ValueType>
-class tree_set : public Set<ValueType>, protected basic_tree_map<ValueType, char>
+class tree_set : public Set<ValueType>, basic_tree_map<ValueType, char>
 {
 public:
     /**
@@ -41,14 +41,14 @@ public:
      *
      * @param other The tree_set to copy from.
      */
-    tree_set(const tree_set &other);
+    explicit tree_set(const Set<ValueType> &other);
 
     /**
      * @brief Move constructor that creates a new tree_set by moving another.
      *
      * @param other The tree_set to move from.
      */
-    tree_set(tree_set &&other) noexcept;
+    explicit tree_set(Set<ValueType> &&other) noexcept;
 
     /**
      * @brief Destructor for tree_set.
@@ -61,7 +61,7 @@ public:
      * @param other The tree_set to copy from.
      * @return tree_set& A reference to this tree_set.
      */
-    tree_set &operator=(const tree_set &other);
+    tree_set &operator=(const Set<ValueType> &other);
 
     /**
      * @brief Move assignment operator that moves the contents of another tree_set.
@@ -69,7 +69,7 @@ public:
      * @param other The tree_set to move from.
      * @return tree_set& A reference to this tree_set.
      */
-    tree_set &operator=(tree_set &&other) noexcept;
+    tree_set &operator=(Set<ValueType> &&other) noexcept;
 
     /**
      * @brief Adds the specified element to the set if it is not already present.

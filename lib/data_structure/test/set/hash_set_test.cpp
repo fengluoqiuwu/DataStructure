@@ -49,7 +49,7 @@ TEST_F(HashSetTest,ConstructorFromListTest)
 
 TEST_F(HashSetTest,ConstructorCopyTest)
 {
-    const auto set(dynamic_cast<const hash_set<int>&>(*test_set));
+    const auto set=hash_set(*test_set);
 
     for(int i : a)
     {
@@ -59,7 +59,7 @@ TEST_F(HashSetTest,ConstructorCopyTest)
 
 TEST_F(HashSetTest,ConstructorMoveTest)
 {
-    const auto set(dynamic_cast<hash_set<int>&&>(std::move(*test_set)));
+    const auto set=hash_set(std::move(*test_set));
 
     for(int i : a)
     {
@@ -73,7 +73,7 @@ TEST_F(HashSetTest,OperatorCopyTest)
 {
     hash_set<int> set;
     // ReSharper disable once CppJoinDeclarationAndAssignment
-    set = dynamic_cast<const hash_set<int>&>(*test_set);
+    set = (*test_set);
 
     for(int i : a)
     {
@@ -85,7 +85,7 @@ TEST_F(HashSetTest,OperatorMoveTest)
 {
     hash_set<int> set;
     // ReSharper disable once CppJoinDeclarationAndAssignment
-    set = dynamic_cast<hash_set<int>&&>(std::move(*test_set));
+    set = (std::move(*test_set));
 
     for(int i : a)
     {
@@ -149,7 +149,12 @@ TEST_F(HashSetTest,FunctionClearTest)
 
 TEST_F(HashSetTest,FunctionToListTest)
 {
-    linked_list list=test_set->to_list();
+    const linked_list list=test_set->to_list();
 
     ASSERT_EQ(list.get_size(), 10);
+}
+
+TEST_F(HashSetTest,IteratorTest)
+{
+    for(auto it=test_set->begin();)
 }

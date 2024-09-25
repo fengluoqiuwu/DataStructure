@@ -30,27 +30,49 @@ basic_tree_map<KeyType, ValueType>::basic_tree_map(linked_list<std::pair<KeyType
 }
 
 template <typename KeyType, typename ValueType>
-basic_tree_map<KeyType, ValueType>::basic_tree_map(const basic_tree_map &other) : red_black_tree<Pair<KeyType, ValueType>>(other)
+basic_tree_map<KeyType, ValueType>::basic_tree_map(const Map<KeyType,ValueType> &other)
 {
+    auto* temp = dynamic_cast<const basic_tree_map<KeyType, ValueType> *>(&other);
+    if (!temp)
+    {
+        throw std::invalid_argument("basic_tree_map constructor receive not basic_tree_map Map reference. failed.");
+    }
+    red_black_tree<Pair<KeyType, ValueType>> ::operator=(*temp);
 }
 
 template <typename KeyType, typename ValueType>
-basic_tree_map<KeyType, ValueType>::basic_tree_map(basic_tree_map &&other) noexcept : red_black_tree<Pair<KeyType, ValueType>>(std::move(other))
+basic_tree_map<KeyType, ValueType>::basic_tree_map(Map<KeyType,ValueType> &&other) noexcept
 {
+    auto* temp = dynamic_cast<basic_tree_map<KeyType, ValueType> *>(std::addressof(other));
+    if (!temp)
+    {
+        throw std::invalid_argument("basic_tree_map constructor receive not basic_tree_map Map reference. failed.");
+    }
+    red_black_tree<Pair<KeyType, ValueType>> ::operator=(std::move(*temp));
 }
 
 template <typename KeyType, typename ValueType>
 basic_tree_map<KeyType, ValueType>::~basic_tree_map() = default;
 
 template <typename KeyType, typename ValueType>
-basic_tree_map<KeyType, ValueType> &basic_tree_map<KeyType, ValueType>::operator=(const basic_tree_map &other) {
-    red_black_tree<Pair<KeyType, ValueType>> ::operator=(other);
+basic_tree_map<KeyType, ValueType> &basic_tree_map<KeyType, ValueType>::operator=(const Map<KeyType,ValueType> &other) {
+    auto* temp = dynamic_cast<const basic_tree_map<KeyType, ValueType> *>(&other);
+    if (!temp)
+    {
+        throw std::invalid_argument("basic_tree_map copy operator receive not basic_tree_map Map reference. failed.");
+    }
+    red_black_tree<Pair<KeyType, ValueType>> ::operator=(*temp);
     return *this;
 }
 
 template <typename KeyType, typename ValueType>
-basic_tree_map<KeyType, ValueType> &basic_tree_map<KeyType, ValueType>::operator=(basic_tree_map &&other) noexcept {
-    red_black_tree<Pair<KeyType, ValueType>> ::operator=(std::move(other));
+basic_tree_map<KeyType, ValueType> &basic_tree_map<KeyType, ValueType>::operator=(Map<KeyType,ValueType> &&other) noexcept {
+    auto* temp = dynamic_cast<basic_tree_map<KeyType, ValueType> *>(std::addressof(other));
+    if (!temp)
+    {
+        throw std::invalid_argument("basic_tree_map move operator receive not basic_tree_map Map reference. failed.");
+    }
+    red_black_tree<Pair<KeyType, ValueType>> ::operator=(std::move(*temp));
     return *this;
 }
 
@@ -133,9 +155,8 @@ std::unique_ptr<Set<Pair<KeyType, ValueType>>> basic_tree_map<KeyType, ValueType
 }
 
 template <typename KeyType, typename ValueType>
-basic_tree_map<KeyType, ValueType>::ConstIterator::ConstIterator(const ConstIterator &other)
+basic_tree_map<KeyType, ValueType>::ConstIterator::ConstIterator(const ConstIterator &other) : m_it(other.m_it)
 {
-    m_it=other.m_it;
 }
 
 template <typename KeyType, typename ValueType>
@@ -155,15 +176,19 @@ typename basic_tree_map<KeyType, ValueType>::ConstIterator &
 basic_tree_map<KeyType, ValueType>::ConstIterator::operator=(const ConstIterator &other)=default;
 
 template <typename KeyType, typename ValueType>
-bool basic_tree_map<KeyType, ValueType>::ConstIterator::operator==(const ConstIterator &other) const
+bool basic_tree_map<KeyType, ValueType>::ConstIterator::operator==(
+    const typename Map<KeyType, ValueType>::ConstIterator &other) const
 {
-    return m_it == other.m_it;
+    const auto* temp = dynamic_cast<const ConstIterator*>(&other);
+    if (!temp) return false;
+    return m_it == temp->m_it;
 }
 
 template <typename KeyType, typename ValueType>
-bool basic_tree_map<KeyType, ValueType>::ConstIterator::operator!=(const ConstIterator &other) const
+bool basic_tree_map<KeyType, ValueType>::ConstIterator::operator!=(
+    const typename Map<KeyType, ValueType>::ConstIterator &other) const
 {
-    return m_it != other.m_it;
+    return !(*this==other);
 }
 
 template <typename KeyType, typename ValueType>

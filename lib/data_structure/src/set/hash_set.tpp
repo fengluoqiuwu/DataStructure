@@ -29,34 +29,56 @@ hash_set<ValueType>::hash_set(linked_list<ValueType> initialize_list)
 }
 
 template <typename ValueType>
-hash_set<ValueType>::hash_set(const hash_set &other) : basic_hash_map<ValueType,char>(other)
+hash_set<ValueType>::hash_set(const Set<ValueType> &other)
 {
+    auto* temp = dynamic_cast<const hash_set *>(&other);
+    if (!temp)
+    {
+        throw std::invalid_argument("hash_set constructor receive not hash_set Set reference. failed.");
+    }
+    basic_hash_map<ValueType, char>::operator=(*dynamic_cast<const Map<ValueType,char>*>(temp));
 }
 
 template <typename ValueType>
-hash_set<ValueType>::hash_set(hash_set &&other) noexcept : basic_hash_map<ValueType,char>(std::move(other))
+hash_set<ValueType>::hash_set(Set<ValueType> &&other) noexcept
 {
+    auto* temp = dynamic_cast<hash_set *>(std::addressof(other));
+    if (!temp)
+    {
+        throw std::invalid_argument("hash_set constructor receive not hash_set Set reference. failed.");
+    }
+    basic_hash_map<ValueType, char>::operator=(std::move(*dynamic_cast<Map<ValueType,char>*>(temp)));
 }
 
 template <typename ValueType>
 hash_set<ValueType>::~hash_set() = default;
 
 template <typename ValueType>
-hash_set<ValueType> &hash_set<ValueType>::operator=(const hash_set &other)
+hash_set<ValueType> &hash_set<ValueType>::operator=(const Set<ValueType> &other)
 {
-    if (this != &other)
+    auto* temp = dynamic_cast<const hash_set *>(&other);
+    if (!temp)
     {
-        basic_hash_map<ValueType, char>::operator=(other);
+        throw std::invalid_argument("hash_set copy operator receive not hash_set Set reference. failed.");
+    }
+    if (this != temp)
+    {
+        basic_hash_map<ValueType, char>::operator=(*dynamic_cast<const Map<ValueType,char>*>(temp));
     }
     return *this;
 }
 
 template <typename ValueType>
-hash_set<ValueType> &hash_set<ValueType>::operator=(hash_set &&other) noexcept
+hash_set<ValueType> &hash_set<ValueType>::operator=(Set<ValueType> &&other) noexcept
 {
-    if (this != &other)
+    auto* temp = dynamic_cast<hash_set *>(&other);
+    if (!temp)
     {
-        basic_hash_map<ValueType, char>::operator=(std::move(other));
+        throw std::invalid_argument("hash_set move operator receive not hash_set Set reference. failed.");
+    }
+    if (this != temp)
+    {
+        basic_hash_map<ValueType, char>::operator=(std::move(*dynamic_cast<Map<ValueType,char>*>(temp)));
     }
     return *this;
 }

@@ -8,7 +8,7 @@
 class TreeMapTest : public ::testing::Test
 {
 protected:
-    tree_map<int,int> *test_map=nullptr;
+    Map<int,int> *test_map=nullptr;
     int a[10]={18, 42, 96, 80, 65, 56, 32, 64, 89, 85};
     std::pair<int,int> b[10];
 
@@ -56,7 +56,7 @@ TEST_F(TreeMapTest,ConstructorWithListTest)
 
 TEST_F(TreeMapTest,ConstructorCopyTest)
 {
-    const tree_map map(*test_map);
+    const tree_map<int,int> map(*test_map);
 
     for(int i : a)
     {
@@ -67,7 +67,7 @@ TEST_F(TreeMapTest,ConstructorCopyTest)
 
 TEST_F(TreeMapTest,ConstructorMoveTest)
 {
-    const tree_map map(std::move(*test_map));
+    const tree_map<int,int> map(std::move(*test_map));
 
     for(int i : a)
     {
@@ -79,7 +79,7 @@ TEST_F(TreeMapTest,ConstructorMoveTest)
 
 TEST_F(TreeMapTest,OperatorCopyTest)
 {
-    tree_map map(*test_map);
+    tree_map<int,int> map(*test_map);
     map=*test_map;
 
     for(int i : a)
@@ -91,8 +91,8 @@ TEST_F(TreeMapTest,OperatorCopyTest)
 
 TEST_F(TreeMapTest,OperatorMoveTest)
 {
-    tree_map map(*test_map);
-    map=std::move(*test_map);
+    tree_map<int,int> map(*test_map);
+    map= std::move(*test_map);
 
     for(int i : a)
     {
@@ -189,5 +189,16 @@ TEST_F(TreeMapTest,FunctionEntrySetTest)
     for(int i=0;i<10;i++)
     {
         ASSERT_TRUE(test_set->contains(Pair(a[i],i)));
+    }
+}
+
+TEST_F(TreeMapTest,IteratorTest)
+{
+    const auto test =tree_map<int,int>(*test_map);
+
+    for(auto it = test.begin(); it != test.end(); ++it)
+    {
+        ASSERT_TRUE(test_map->contains_key(it->key));
+        ASSERT_EQ(test_map->get(it->key).value(),it->value);
     }
 }

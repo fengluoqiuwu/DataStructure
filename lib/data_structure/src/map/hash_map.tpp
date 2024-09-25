@@ -142,7 +142,6 @@ void hash_node<KeyType, ValueType>::clear()
         return;
     }
     list->clear();
-
 }
 
 template <typename KeyType, typename ValueType>
@@ -280,31 +279,43 @@ basic_hash_map<KeyType, ValueType>::basic_hash_map(linked_list<std::pair<KeyType
 }
 
 template <typename KeyType, typename ValueType>
-basic_hash_map<KeyType, ValueType>::basic_hash_map(const basic_hash_map &other)
+basic_hash_map<KeyType, ValueType>::basic_hash_map(const Map<KeyType,ValueType> &other)
 {
-    length=other.length;
-    size=other.size;
-    alpha=other.alpha;
+    auto *temp = dynamic_cast<const basic_hash_map<KeyType, ValueType> *>(&other);
+    if (!temp)
+    {
+        throw std::invalid_argument("basic_hash_map constructor receive not basic_hash_map Map reference. failed.");
+    }
+
+    length=temp->length;
+    size=temp->size;
+    alpha=temp->alpha;
     array = new hash_node<KeyType, ValueType>[length];
 
     for (size_t i=0;i<length;++i)
     {
-        array[i] = other.array[i];
+        array[i] = temp->array[i];
     }
 }
 
 template <typename KeyType, typename ValueType>
-basic_hash_map<KeyType, ValueType>::basic_hash_map(basic_hash_map &&other) noexcept
+basic_hash_map<KeyType, ValueType>::basic_hash_map(Map<KeyType,ValueType> &&other) noexcept
 {
-    length=other.length;
-    size=other.size;
-    alpha=other.alpha;
-    array=other.array;
+    auto *temp = dynamic_cast<basic_hash_map<KeyType, ValueType> *>(std::addressof(other));
+    if (!temp)
+    {
+        throw std::invalid_argument("basic_hash_map constructor receive not basic_hash_map Map reference. failed.");
+    }
 
-    other.length=16;
-    other.size=0;
-    other.alpha=0.75;
-    other.array=new hash_node<KeyType, ValueType>[other.length];
+    length=temp->length;
+    size=temp->size;
+    alpha=temp->alpha;
+    array=temp->array;
+
+    temp->length=16;
+    temp->size=0;
+    temp->alpha=0.75;
+    temp->array=new hash_node<KeyType, ValueType>[temp->length];
 }
 
 template <typename KeyType, typename ValueType>
@@ -315,20 +326,26 @@ basic_hash_map<KeyType, ValueType>::~basic_hash_map()
 }
 
 template <typename KeyType, typename ValueType>
-basic_hash_map<KeyType, ValueType> &basic_hash_map<KeyType, ValueType>::operator=(const basic_hash_map &other)
+basic_hash_map<KeyType, ValueType> &basic_hash_map<KeyType, ValueType>::operator=(const Map<KeyType,ValueType> &other)
 {
-    if (this != &other)
+    auto *temp = dynamic_cast<const basic_hash_map<KeyType, ValueType> *>(&other);
+    if (!temp)
+    {
+        throw std::invalid_argument("basic_hash_map copy operator receive not basic_hash_map Map reference. failed.");
+    }
+
+    if (this != temp)
     {
         delete[] array;
 
-        length=other.length;
-        size=other.size;
-        alpha=other.alpha;
+        length=temp->length;
+        size=temp->size;
+        alpha=temp->alpha;
         array = new hash_node<KeyType, ValueType>[length];
 
         for (size_t i=0;i<length;++i)
         {
-            array[i] = other.array[i];
+            array[i] = temp->array[i];
         }
     }
 
@@ -336,21 +353,27 @@ basic_hash_map<KeyType, ValueType> &basic_hash_map<KeyType, ValueType>::operator
 }
 
 template <typename KeyType, typename ValueType>
-basic_hash_map<KeyType, ValueType> &basic_hash_map<KeyType, ValueType>::operator=(basic_hash_map &&other) noexcept
+basic_hash_map<KeyType, ValueType> &basic_hash_map<KeyType, ValueType>::operator=(Map<KeyType,ValueType> &&other) noexcept
 {
-    if (this != &other)
+    auto *temp = dynamic_cast<basic_hash_map<KeyType, ValueType> *>(std::addressof(other));
+    if (!temp)
+    {
+        throw std::invalid_argument("basic_hash_map move operator receive not basic_hash_map Map reference. failed.");
+    }
+
+    if (this != temp)
     {
         delete[] array;
 
-        length=other.length;
-        size=other.size;
-        alpha=other.alpha;
-        array=other.array;
+        length=temp->length;
+        size=temp->size;
+        alpha=temp->alpha;
+        array=temp->array;
 
-        other.length=16;
-        other.size=0;
-        other.alpha=0.75;
-        other.array=new hash_node<KeyType, ValueType>[other.length];
+        temp->length=16;
+        temp->size=0;
+        temp->alpha=0.75;
+        temp->array=new hash_node<KeyType, ValueType>[temp->length];
     }
 
     return *this;
@@ -489,9 +512,9 @@ const Pair<KeyType, ValueType> &basic_hash_map<KeyType, ValueType>::ConstIterato
     }
     if(outer.array[current_index].is_list())
     {
-        return *list_it;
+        return *(*list_it);
     }
-    return *tree_it;
+    return *(*tree_it);
 }
 
 template <typename KeyType, typename ValueType>
@@ -503,9 +526,9 @@ const Pair<KeyType, ValueType> *basic_hash_map<KeyType, ValueType>::ConstIterato
     }
     if(outer.array[current_index].is_list())
     {
-        return &(*list_it);
+        return &(*(*list_it));
     }
-    return &(*tree_it);
+    return &(*(*tree_it));
 }
 
 template <typename KeyType, typename ValueType>
@@ -533,31 +556,27 @@ basic_hash_map<KeyType, ValueType>::ConstIterator::operator=(const ConstIterator
 }
 
 template <typename KeyType, typename ValueType>
-bool basic_hash_map<KeyType, ValueType>::ConstIterator::operator==(const ConstIterator &other) const
+bool basic_hash_map<KeyType, ValueType>::ConstIterator::operator==(
+    const typename Map<KeyType, ValueType>::ConstIterator &other) const
 {
-    if(&outer==&other.outer&&current_index==other.current_index&&current_index==outer.length)
+    const auto* temp = dynamic_cast<const ConstIterator*>(&other);
+    if (!temp) return false;
+    if(&outer==&temp->outer&&current_index==temp->current_index&&current_index==outer.length)
     {
         return true;
     }
     if(outer.array[current_index].is_list())
     {
-        return list_it==other.list_it;
+        return list_it==temp->list_it;
     }
-    return tree_it==other.tree_it;
+    return tree_it==temp->tree_it;
 }
 
 template <typename KeyType, typename ValueType>
-bool basic_hash_map<KeyType, ValueType>::ConstIterator::operator!=(const ConstIterator &other) const
+bool basic_hash_map<KeyType, ValueType>::ConstIterator::operator!=(
+    const typename Map<KeyType, ValueType>::ConstIterator &other) const
 {
-    if(&outer==&other.outer&&current_index==other.current_index&&current_index==outer.length)
-    {
-        return false;
-    }
-    if(outer.array[current_index].is_list())
-    {
-        return list_it!=other.list_it;
-    }
-    return tree_it!=other.tree_it;
+    return !(*this==other);
 }
 
 template <typename KeyType, typename ValueType>
@@ -566,29 +585,47 @@ basic_hash_map<KeyType, ValueType>::ConstIterator::operator++()
 {
     if (outer.array[current_index].is_list())
     {
-        ++list_it;
-        if (list_it == list_end)
+        ++(*list_it);
+        if (list_it != list_end)
         {
-            while (current_index != outer.length && !outer[current_index].is_empty())
-            {
-                ++current_index;
-            }
-            if(current_index == outer.length)
-            {
-                return *this;
-            }
-
-            if(outer.array[current_index].is_list())
-            {
-                list_it = outer.array[current_index].list.begin();
-                list_end = outer.array[current_index].list.end();
-            }
-            else
-            {
-                tree_it = outer.array[current_index].tree_begin();
-                tree_end = outer.array[current_index].tree_end();
-            }
+            return *this;
         }
+    }
+    else
+    {
+        ++(*tree_it);
+        if (tree_it != tree_end)
+        {
+            return *this;
+        }
+    }
+    ++current_index;
+    while (current_index != outer.length && outer.array[current_index].is_empty())
+    {
+        ++current_index;
+    }
+    if(current_index == outer.length)
+    {
+        return *this;
+    }
+
+    if(outer.array[current_index].is_list())
+    {
+        list_it.reset();
+        list_end.reset();
+        list_it = outer.array[current_index].list->begin();
+        list_end = outer.array[current_index].list->end();
+        tree_it = std::nullopt;
+        tree_end = std::nullopt;
+    }
+    else
+    {
+        tree_it.reset();
+        tree_end.reset();
+        tree_it = outer.array[current_index].map->begin();
+        tree_end = outer.array[current_index].map->end();
+        list_it = std::nullopt;
+        list_end = std::nullopt;
     }
     return *this;
 }
@@ -597,7 +634,7 @@ template <typename KeyType, typename ValueType>
 basic_hash_map<KeyType, ValueType>::ConstIterator::ConstIterator(const basic_hash_map &outer, const size_t &current_index) : outer(outer)
 {
     this->current_index = current_index;
-    while(array[this->current_index].is_empty()&&this->current_index<=outer.length)
+    while(this->current_index!=outer.length&&outer.array[this->current_index].is_empty())
     {
         ++this->current_index;
     }
@@ -608,8 +645,13 @@ basic_hash_map<KeyType, ValueType>::ConstIterator::ConstIterator(const basic_has
 
     if(outer.array[this->current_index].is_list())
     {
-        list_it = outer.array[this->current_index].list.begin();
-        list_end = outer.array[this->current_index].list.end();
+        list_it = outer.array[this->current_index].list->begin();
+        list_end = outer.array[this->current_index].list->end();
+    }
+    else
+    {
+        tree_it = outer.array[this->current_index].map->begin();
+        tree_end = outer.array[this->current_index].map->end();
     }
 }
 

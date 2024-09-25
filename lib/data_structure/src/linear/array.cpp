@@ -466,6 +466,11 @@ array::ConstIterator::ConstIterator(const ConstIterator &other) : outer(other.ou
     current = other.current;
 }
 
+array::ConstIterator::ConstIterator(const Iterator &other) : outer(other.outer)
+{
+    current = other.current;
+}
+
 const int& array::ConstIterator::operator*() const
 {
     if (this->current<outer.data||this->current>=outer.data+outer.size)
@@ -497,6 +502,17 @@ array::ConstIterator &array::ConstIterator::operator=(const ConstIterator &other
 
         this->current=other.current;
     }
+    return *this;
+}
+
+array::ConstIterator &array::ConstIterator::operator=(const Iterator &other)
+{
+    if (&this->outer != &other.outer)
+    {
+        throw std::invalid_argument("Attempt to change outer of Iterator.");
+    }
+
+    this->current=other.current;
     return *this;
 }
 

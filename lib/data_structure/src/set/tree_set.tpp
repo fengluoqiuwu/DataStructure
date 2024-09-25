@@ -16,7 +16,7 @@ tree_set<ValueType>::tree_set(ValueType *initialize_list, size_t size)
 {
     for (size_t i = 0; i < size; i++)
     {
-        this->insert(Pair<ValueType,char>(initialize_list[i]));
+        basic_tree_map<ValueType, char>::put(initialize_list[i],'\0');
     }
 }
 
@@ -25,39 +25,61 @@ tree_set<ValueType>::tree_set(linked_list<ValueType> initialize_list)
 {
     for (auto it = initialize_list.begin(); it != initialize_list.end(); ++it)
     {
-        this->insert(Pair<ValueType,char>(*it));
+        basic_tree_map<ValueType, char>::put(*it,'\0');
     }
 }
 
 template <typename ValueType>
-tree_set<ValueType>::tree_set(const tree_set &other) : basic_tree_map<ValueType,char>(other)
+tree_set<ValueType>::tree_set(const Set<ValueType> &other)
 {
+    auto* temp = dynamic_cast<const tree_set *>(&other);
+    if (!temp)
+    {
+        throw std::invalid_argument("tree_set constructor receive not tree_set Set reference. failed.");
+    }
+    basic_tree_map<ValueType, char>::operator=(*dynamic_cast<const Map<ValueType,char>*>(temp));
 }
 
 template <typename ValueType>
-tree_set<ValueType>::tree_set(tree_set &&other) noexcept : basic_tree_map<ValueType,char>(std::move(other))
+tree_set<ValueType>::tree_set(Set<ValueType> &&other) noexcept
 {
+    auto* temp = dynamic_cast<tree_set *>(std::addressof(other));
+    if (!temp)
+    {
+        throw std::invalid_argument("tree_set constructor receive not tree_set Set reference. failed.");
+    }
+    basic_tree_map<ValueType, char>::operator=(std::move(*dynamic_cast<Map<ValueType,char>*>(temp)));
 }
 
 template <typename ValueType>
 tree_set<ValueType>::~tree_set() = default;
 
 template <typename ValueType>
-tree_set<ValueType> &tree_set<ValueType>::operator=(const tree_set &other)
+tree_set<ValueType> &tree_set<ValueType>::operator=(const Set<ValueType> &other)
 {
-    if (this != &other)
+    auto* temp = dynamic_cast<const tree_set *>(&other);
+    if (!temp)
     {
-        basic_tree_map<ValueType, char>::operator=(other);
+        throw std::invalid_argument("tree_set copy operator receive not tree_set Set reference. failed.");
+    }
+    if (this != temp)
+    {
+        basic_tree_map<ValueType, char>::operator=(*dynamic_cast<const Map<ValueType,char>*>(temp));
     }
     return *this;
 }
 
 template <typename ValueType>
-tree_set<ValueType> &tree_set<ValueType>::operator=(tree_set &&other) noexcept
+tree_set<ValueType> &tree_set<ValueType>::operator=(Set<ValueType> &&other) noexcept
 {
-    if (this != &other)
+    auto* temp = dynamic_cast<tree_set *>(&other);
+    if (!temp)
     {
-        basic_tree_map<ValueType, char>::operator=(std::move(other));
+        throw std::invalid_argument("tree_set move operator receive not tree_set Set reference. failed.");
+    }
+    if (this != temp)
+    {
+        basic_tree_map<ValueType, char>::operator=(std::move(*dynamic_cast<Map<ValueType,char>*>(temp)));
     }
     return *this;
 }

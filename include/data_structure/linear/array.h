@@ -352,6 +352,14 @@ public:
          */
         ConstIterator(const ConstIterator& other);
 
+
+        /**
+         * @brief copy constructor
+         * Complexity:O(1)
+         * @param other other iterator
+         */
+        explicit ConstIterator(const Iterator& other);
+
         /**
          * This method allows you to access and modify the value at the current position of the iterator.
          * Complexity: O(1)
@@ -373,6 +381,14 @@ public:
          * @return self
          */
         ConstIterator & operator=(const ConstIterator& other);
+
+        /**
+         * @brief copy operator
+         * Complexity:O(1)
+         * @param other other iterator
+         * @return self
+         */
+        ConstIterator & operator=(const Iterator& other);
 
         /**
          * Equal operator
